@@ -1,11 +1,6 @@
-import { BaseExecIDModel } from "./baseExecIDModel";
-
-export interface AddUserInput extends BaseExecIDModel {
+export interface AddUserInput {
     firstName: string;
     lastName: string;
     loginName: string;
     password: string;
-    permissions: string[];
-    isActive: boolean;
-    isStaff: boolean;
 }

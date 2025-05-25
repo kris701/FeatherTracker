@@ -6,18 +6,14 @@ export const Endpoints = {
 		Authentication: {
 			Name: "Authentication",
 			Post_Authenticate: "endpoints/core/authentication",
-			Post_UpdatePassword: "endpoints/core/authentication/updatepassword",
-			Post_Impersonate: "endpoints/core/authentication/impersonate",
-			Get_AllPermissions: "endpoints/core/authentication/permissions",
-			Post_RegisterUser: "endpoints/core/authentication/register",
+			Get_IsSetup: "endpoints/core/authentication",
+			Post_Setup: "endpoints/core/authentication/setup",
 		},
-		Users: {
-			Name: "Users",
-			Post_AddUser: "endpoints/core/users",
-			Patch_UpdateUser: "endpoints/core/users",
-			Get_AllUsers: "endpoints/core/users/users",
-			Get_User: "endpoints/core/users",
-			Delete_User: "endpoints/core/users",
+		User: {
+			Name: "User",
+			Get_GetUser: "endpoints/core/user",
+			Patch_UpdateUser: "endpoints/core/user",
+			Patch_UpdatePassword: "endpoints/core/user/password",
 		},
 	},
 }

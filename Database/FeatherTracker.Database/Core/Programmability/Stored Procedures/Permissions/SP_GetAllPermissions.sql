@@ -1,6 +1,0 @@
-CREATE PROCEDURE [COR].[SP_GetAllPermissions]
-	@ExecID UNIQUEIDENTIFIER
-AS
-BEGIN
-	SELECT * FROM [COR].[Permissions]
-END

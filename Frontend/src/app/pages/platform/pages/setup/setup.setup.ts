@@ -12,15 +12,14 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { APIURL } from '../../../../../globals';
 import { Endpoints } from '../../../../../Endpoints';
 import { AuthenticationOutput } from '../../../../models/Core/authenticationOutput';
-import { AuthenticateInput } from '../../../../models/Core/authenticateInput';
 import { JWTTokenModel } from '../../../../models/Core/jWTTokenModel';
 import { TagModule } from 'primeng/tag';
 import { AppFloatingConfigurator } from '../../../../layout/app.floatingconfigurator';
 import { LayoutService } from '../../../../layout/services/layout.service';
-import { RegisterUserInput } from '../../../../models/Core/registerUserInput';
+import { AuthenticateOutput } from '../../../../models/Core/authenticateOutput';
 
 @Component({
-    selector: 'app-login',
+    selector: 'app-setup',
     standalone: true,
     imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, TagModule],
     template: `
@@ -57,7 +56,7 @@ import { RegisterUserInput } from '../../../../models/Core/registerUserInput';
         </div>
     `
 })
-export class Register {
+export class Setup {
     constructor(private router: Router, private http: HttpClient, layoutService: LayoutService){
         this.layoutService = layoutService;
      }
@@ -74,7 +73,6 @@ export class Register {
     ngOnInit(){
         if (!localStorage.getItem("jwtToken")){
             localStorage.removeItem("jwtToken");
-            localStorage.removeItem("perms");
         }
     }
 
@@ -89,24 +87,16 @@ export class Register {
             lastName: this.lastName,
             loginName: this.LoginName,
             password: this.Password
-        } as RegisterUserInput;
-        this.http.post<AuthenticationOutput>(APIURL + Endpoints.Core.Authentication.Post_RegisterUser, input).subscribe(c => {
-            if (c.jwtToken != "")
+        };
+        this.http.post<AuthenticateOutput>(APIURL + Endpoints.Core.Authentication.Post_Setup, input).subscribe(c => {
+            if (c.token != "")
             {
-                localStorage.removeItem("perms");
                 const helper = new JwtHelperService();
-                var result = helper.decodeToken<JWTTokenModel>(c.jwtToken);
+                var result = helper.decodeToken<JWTTokenModel>(c.token);
                 if (!result)
                     return;
-                if (result.role == null)
-                    result.role = [];
-                var permsStr = "";
-                result.role.forEach(p => {
-                    permsStr += p + ";"
-                });
-                localStorage.setItem("perms", permsStr);
-                localStorage.setItem("jwtToken", c.jwtToken);
-                this.router.navigate(["/platform"]);
+                localStorage.setItem("jwtToken", c.token);
+                this.router.navigate(["/"]);
             }
         }, e => {
             alert("Username or Password is incorrect!");

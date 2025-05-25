@@ -1,6 +1,4 @@
-﻿using DatabaseSharp;
-using FeatherTracker.Plugins.Core.Models.Internal.Authentication;
-using FeatherTracker.Plugins.Core.Services;
+﻿using FeatherTracker.Plugins.Core.Models.Internal.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +11,6 @@ namespace FeatherTracker.Plugins.Core
 {
 	public class CorePlugin : BaseUniAPIPlugin
 	{
-		public const string DBClientKeyName = "Core_ConnectionString";
-
-		private string _connectionString = "";
 		private string _jwtSecret = "";
 		private int _jwtLifetime = -1;
 
@@ -30,7 +25,6 @@ namespace FeatherTracker.Plugins.Core
 
 		public override void ConfigureConfiguration(IConfiguration configuration)
 		{
-			_connectionString = GetSectionValue(configuration, "DatabaseConnectionString");
 			_jwtSecret = GetSectionValue(configuration, "JWTSecret");
 			_jwtLifetime = int.Parse(GetSectionValue(configuration, "JWTLifetime"));
 
@@ -64,9 +58,6 @@ namespace FeatherTracker.Plugins.Core
 				var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
 				c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 			});
-
-			services.AddKeyedSingleton<IDBClient>(DBClientKeyName, new DBClient(_connectionString));
-			services.AddHostedService<PermissionBackgroundService>();
 
 			base.ConfigureServices(services);
 		}

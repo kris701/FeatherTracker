@@ -15,9 +15,7 @@ namespace FeatherTracker.Plugins.Core.Helpers
 
 			var claims = new Dictionary<string, object>()
 			{
-				["nameid"] = model.ID.ToString(),
-				["isstaff"] = model.IsStaff.ToString(),
-				["role"] = model.Permissions
+				["nameid"] = model.LoginName
 			};
 
 			var tokenDescriptor = new SecurityTokenDescriptor

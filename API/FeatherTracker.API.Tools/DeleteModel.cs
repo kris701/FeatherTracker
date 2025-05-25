@@ -2,7 +2,7 @@
 
 namespace FeatherTracker.API.Tools
 {
-	public class DeleteModel : BaseExecIDModel
+	public class DeleteModel
 	{
 		[Required]
 		public Guid ID { get; set; }
@@ -15,12 +15,6 @@ namespace FeatherTracker.API.Tools
 		public DeleteModel(Guid iD)
 		{
 			ID = iD;
-		}
-
-		public DeleteModel(Guid iD, Guid execID)
-		{
-			ID = iD;
-			ExecID = execID;
 		}
 	}
 }

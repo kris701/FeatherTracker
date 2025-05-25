@@ -14,17 +14,6 @@ export class JWTTokenHelpers
         localStorage.removeItem('jwtToken');
     }
 
-    public static GetUserID() : string{
-        var token = localStorage.getItem("jwtToken");
-        if (token){
-            const helper = new JwtHelperService();
-            var result = helper.decodeToken<JWTTokenModel>(token);
-            if (result)
-                return result.nameid;
-        }
-        return "";
-    }
-
     public static IsExpired() : boolean{
         var token = localStorage.getItem("jwtToken");
         if (token){

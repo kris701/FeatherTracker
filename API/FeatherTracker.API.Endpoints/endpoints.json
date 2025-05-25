@@ -14,28 +14,20 @@
                 "Route": ""
               },
               {
-                "Name": "Post_UpdatePassword",
-                "Route": "updatepassword"
+                "Name": "Get_IsSetup",
+                "Route": ""
               },
               {
-                "Name": "Post_Impersonate",
-                "Route": "impersonate"
-              },
-              {
-                "Name": "Get_AllPermissions",
-                "Route": "permissions"
-              },
-              {
-                "Name": "Post_RegisterUser",
-                "Route": "register"
+                "Name": "Post_Setup",
+                "Route": "setup"
               }
             ]
           },
           {
-            "Name": "Users",
+            "Name": "User",
             "Nodes": [
               {
-                "Name": "Post_AddUser",
+                "Name": "Get_GetUser",
                 "Route": ""
               },
               {
@@ -43,16 +35,8 @@
                 "Route": ""
               },
               {
-                "Name": "Get_AllUsers",
-                "Route": "users"
-              },
-              {
-                "Name": "Get_User",
-                "Route": ""
-              },
-              {
-                "Name": "Delete_User",
-                "Route": ""
+                "Name": "Patch_UpdatePassword",
+                "Route": "password"
               }
             ]
           }

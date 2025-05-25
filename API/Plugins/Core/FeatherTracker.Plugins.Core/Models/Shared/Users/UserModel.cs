@@ -1,33 +1,17 @@
-﻿using DatabaseSharp.Models;
-using FeatherTracker.API.Tools;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FeatherTracker.Plugins.Core.Models.Shared.Users
 {
-	public class UserModel : BaseExecIDModel
+	public class UserModel
 	{
-		[DatabaseSharp(ColumnName = "PK_ID")]
-		[JsonPropertyName("id")]
-		public Guid ID { get; set; }
 		[Required]
 		public string FirstName { get; set; }
 		[Required]
 		public string LastName { get; set; }
 
-		[Required]
-		public string LoginName { get; set; }
+		public string? Password { get; set; }
 
 		[Required]
-		[DatabaseSharp(FillTable = 1, ColumnName = "FK_Permission_ID")]
-		public List<string> Permissions { get; set; }
-		[Required]
-		public bool IsActive { get; set; }
-		[Required]
-		public bool IsStaff { get; set; }
-		[DatabaseSharpIgnore(IgnoreAsFill = false)]
-		public DateTime CreatedAt { get; set; }
-		[DatabaseSharpIgnore(IgnoreAsFill = false)]
-		public DateTime? UpdatedAt { get; set; }
+		public string LoginName { get; set; }
 	}
 }

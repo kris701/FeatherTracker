@@ -2,7 +2,7 @@
 
 namespace FeatherTracker.API.Tools
 {
-	public class GetModel : BaseExecIDModel
+	public class GetModel
 	{
 		[Required]
 		public Guid ID { get; set; }
@@ -15,12 +15,6 @@ namespace FeatherTracker.API.Tools
 		public GetModel(Guid iD)
 		{
 			ID = iD;
-		}
-
-		public GetModel(Guid iD, Guid execID)
-		{
-			ID = iD;
-			ExecID = execID;
 		}
 	}
 }

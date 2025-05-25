@@ -17,6 +17,7 @@ import { JWTTokenModel } from '../../../../models/Core/jWTTokenModel';
 import { TagModule } from 'primeng/tag';
 import { AppFloatingConfigurator } from '../../../../layout/app.floatingconfigurator';
 import { LayoutService } from '../../../../layout/services/layout.service';
+import { AuthenticateOutput } from '../../../../models/Core/authenticateOutput';
 
 @Component({
     selector: 'app-login',
@@ -50,7 +51,6 @@ import { LayoutService } from '../../../../layout/services/layout.service';
                             <p-password id="password1" [(ngModel)]="Password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" (keyup.enter)="doLogin()"></p-password>
 
                             <p-button label="Sign In" styleClass="w-full" (click)="doLogin()"></p-button>
-                            <p-button label="Register" severity="secondary" styleClass="w-full" (click)="doRegister()"></p-button>
                         </div>
                     </div>
                 </div>
@@ -70,10 +70,13 @@ export class Login {
     Password: string = '';
 
     ngOnInit(){
-        if (!localStorage.getItem("jwtToken")){
+        if (localStorage.getItem("jwtToken")){
             localStorage.removeItem("jwtToken");
-            localStorage.removeItem("perms");
         }
+        this.http.get<boolean>(APIURL + Endpoints.Core.Authentication.Get_IsSetup).subscribe(r => {
+            if (!r)
+                this.router.navigate(["/setup"]);
+        })
     }
 
     doLogin() {
@@ -81,30 +84,18 @@ export class Login {
             username: this.LoginName,
             password: this.Password
         } as AuthenticateInput;
-        this.http.post<AuthenticationOutput>(APIURL + Endpoints.Core.Authentication.Post_Authenticate, input).subscribe(c => {
-            if (c.jwtToken != "")
+        this.http.post<AuthenticateOutput>(APIURL + Endpoints.Core.Authentication.Post_Authenticate, input).subscribe(c => {
+            if (c.token != "")
             {
-                localStorage.removeItem("perms");
                 const helper = new JwtHelperService();
-                var result = helper.decodeToken<JWTTokenModel>(c.jwtToken);
+                var result = helper.decodeToken<JWTTokenModel>(c.token);
                 if (!result)
                     return;
-                if (result.role == null)
-                    result.role = [];
-                var permsStr = "";
-                result.role.forEach(p => {
-                    permsStr += p + ";"
-                });
-                localStorage.setItem("perms", permsStr);
-                localStorage.setItem("jwtToken", c.jwtToken);
-                this.router.navigate(["/platform"]);
+                localStorage.setItem("jwtToken", c.token);
+                this.router.navigate(["/"]);
             }
         }, e => {
             alert("Username or Password is incorrect!");
         });
-    }
-
-    doRegister(){
-        this.router.navigate(["/platform/auth/register"]);
     }
 }

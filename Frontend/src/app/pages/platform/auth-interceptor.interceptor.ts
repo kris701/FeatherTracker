@@ -22,7 +22,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             if (error instanceof HttpErrorResponse && error.status === 401) {
                 if (JWTTokenHelpers.IsExpired()) localStorage.removeItem('jwtToken');
                 if (localStorage.getItem('impersonating')) localStorage.removeItem('impersonating');
-                router.navigate(['/platform/auth']);
+                router.navigate(['/auth']);
             } else messageService.add({ severity: 'error', summary: 'Error duing HTTP request!', detail: '[' + error.error.status + '] Error: ' + error.error.message, life: 10000 });
             return throwError(() => error);
         })

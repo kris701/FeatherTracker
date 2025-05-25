@@ -1,6 +1,4 @@
-import { BaseExecIDModel } from "./baseExecIDModel";
-
-export interface UpdatePasswordInput extends BaseExecIDModel {
+export interface UpdatePasswordInput {
     oldPassword: string;
     newPassword: string;
 }

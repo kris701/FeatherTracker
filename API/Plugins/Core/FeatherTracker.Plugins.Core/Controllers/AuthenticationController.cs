@@ -1,15 +1,10 @@
-﻿using DatabaseSharp;
-using FeatherTracker.API.Tools;
-using FeatherTracker.API.Tools.Helpers;
-using FeatherTracker.Plugins.Core.DatabaseInterface;
-using FeatherTracker.Plugins.Core.DatabaseInterface.Authentication;
-using FeatherTracker.Plugins.Core.DatabaseInterface.Users;
+﻿using FeatherTracker.Plugins.Core.Helpers;
 using FeatherTracker.Plugins.Core.Models.Internal.Authentication;
 using FeatherTracker.Plugins.Core.Models.Shared.Authentication;
 using FeatherTracker.Plugins.Core.Models.Shared.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 
 namespace FeatherTracker.Plugins.Core.Controllers
 {
@@ -21,12 +16,12 @@ namespace FeatherTracker.Plugins.Core.Controllers
 	[Produces("application/json")]
 	public class AuthenticationController : ControllerBase
 	{
-		private readonly IDBClient _dbClient;
+		private static readonly string _authFile = "auth.json";
+
 		private readonly JWTSettings _settings;
 
-		public AuthenticationController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient, JWTSettings settings)
+		public AuthenticationController(JWTSettings settings)
 		{
-			_dbClient = dbClient;
 			_settings = settings;
 		}
 
@@ -38,71 +33,53 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		/// <response code="200">If login was successful.</response>
 		[AllowAnonymous]
 		[HttpPost(Endpoints.Core.Authentication.Post_Authenticate)]
-		public async Task<IActionResult> Post_Authenticate([FromBody] AuthenticateInput inputModel)
+		public IActionResult Post_Authenticate([FromBody] AuthenticateInput inputModel)
 		{
-			var model = new AuthenticateModel(_dbClient, _settings);
-			return Ok(await model.ExecuteAsync(inputModel));
+			if (!System.IO.File.Exists(_authFile))
+				return BadRequest("System have not be setup yet!");
+			var user = JsonSerializer.Deserialize<UserModel>(System.IO.File.ReadAllText(_authFile));
+			if (user == null)
+				throw new Exception("Error during deserialization!");
+
+			inputModel.Password = HashingHelpers.CreateMD5(inputModel.Password);
+			if (user.LoginName != inputModel.Username || user.Password != inputModel.Password)
+				return Unauthorized("Username or password is incorrect!");
+
+			user.Password = null;
+
+			return Ok(new AuthenticateOutput(user, JWTTokenHelpers.CreateToken(user, _settings.Secret, _settings.LifetimeMin)));
 		}
 
 		/// <summary>
-		/// Impersonate a given user
-		/// </summary>
-		/// <param name="inputModel"></param>
-		/// <returns></returns>
-		/// <response code="200">Resulting JWT token for the user.</response>
-		[HttpPost(Endpoints.Core.Authentication.Post_Impersonate)]
-		[Authorize(Roles = PermissionsTable.Core_User_Impersonate)]
-		public async Task<IActionResult> Post_Impersonate([FromBody] ImpersonateInput inputModel)
-		{
-			User.SetExecID(inputModel);
-			var model = new ImpersonateModel(_dbClient, _settings);
-			return Ok(await model.ExecuteAsync(inputModel));
-		}
-
-		/// <summary>
-		/// Change your password
-		/// </summary>
-		/// <param name="inputModel"></param>
-		/// <returns></returns>
-		/// <exception cref="Exception"></exception>
-		/// <response code="200">If password change was successful.</response>
-		[HttpPost(Endpoints.Core.Authentication.Post_UpdatePassword)]
-		[Authorize(Roles = PermissionsTable.Core_Users_Own_ChangePassword)]
-		public async Task<IActionResult> Post_UpdatePassword([FromBody] UpdatePasswordInput inputModel)
-		{
-			User.SetExecID(inputModel);
-			var model = new UpdatePasswordModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
-		}
-
-		/// <summary>
-		/// Get all the permissions in the system
+		/// Check if the system is set up
 		/// </summary>
 		/// <returns></returns>
-		/// <exception cref="Exception"></exception>
-		/// <response code="200">A list of all permissions and descriptions½.</response>
-		[HttpGet(Endpoints.Core.Authentication.Get_AllPermissions)]
-		[Authorize(Roles = PermissionsTable.Core_Permission_Read)]
-		public async Task<IActionResult> Get_AllPermissions()
-		{
-			var inputModel = new EmptyModel();
-			User.SetExecID(inputModel);
-			var model = new GetAllPermissionsModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
-		}
-
-		/// <summary>
-		/// Register a user
-		/// </summary>
-		/// <param name="inputModel"></param>
-		/// <returns></returns>
-		/// <response code="200">Returns the newly created user</response>
-		[HttpPost(Endpoints.Core.Authentication.Post_RegisterUser)]
+		/// <response code="200"></response>
 		[AllowAnonymous]
-		public async Task<IActionResult> Post_RegisterUser([FromBody] RegisterUserInput inputModel)
+		[HttpGet(Endpoints.Core.Authentication.Get_IsSetup)]
+		public IActionResult Get_IsSetup()
 		{
-			var model = new RegisterUserModel(_dbClient, _settings);
-			return Ok(await model.ExecuteAsync(inputModel));
+			return Ok(System.IO.File.Exists(_authFile));
+		}
+
+		/// <summary>
+		/// Perform the first setup
+		/// </summary>
+		/// <param name="inputModel"></param>
+		/// <returns></returns>
+		/// <response code="200">If login was successful.</response>
+		[AllowAnonymous]
+		[HttpPost(Endpoints.Core.Authentication.Post_Setup)]
+		public IActionResult Post_Setup([FromBody] UserModel inputModel)
+		{
+			if (System.IO.File.Exists(_authFile))
+				return BadRequest("System have already been setup!");
+			if (inputModel.Password == null)
+				return BadRequest("No password given!");
+			inputModel.Password = HashingHelpers.CreateMD5(inputModel.Password);
+			System.IO.File.WriteAllText(_authFile, JsonSerializer.Serialize(inputModel));
+			inputModel.Password = null;
+			return Ok(new AuthenticateOutput(inputModel, JWTTokenHelpers.CreateToken(inputModel, _settings.Secret, _settings.LifetimeMin)));
 		}
 	}
 }
