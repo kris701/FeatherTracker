@@ -9,6 +9,7 @@ export const Endpoints = {
 			Post_UpdatePassword: "endpoints/core/authentication/updatepassword",
 			Post_Impersonate: "endpoints/core/authentication/impersonate",
 			Get_AllPermissions: "endpoints/core/authentication/permissions",
+			Post_RegisterUser: "endpoints/core/authentication/register",
 		},
 		Users: {
 			Name: "Users",
@@ -17,7 +18,6 @@ export const Endpoints = {
 			Get_AllUsers: "endpoints/core/users/users",
 			Get_User: "endpoints/core/users",
 			Delete_User: "endpoints/core/users",
-			Post_RegisterUser: "endpoints/core/users/register",
 		},
 	},
 }

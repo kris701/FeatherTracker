@@ -1,6 +1,4 @@
-import { BaseExecIDModel } from "./baseExecIDModel";
-
-export interface RegisterUserInput extends BaseExecIDModel {
+export interface RegisterUserInput {
     firstName: string;
     lastName: string;
     loginName: string;

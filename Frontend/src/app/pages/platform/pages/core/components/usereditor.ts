@@ -25,7 +25,6 @@ import { ToggleSwitchLabel } from '../../../../../common/toggleswitchlabel';
 import { PermissionModel } from '../../../../../models/Core/permissionModel';
 import { UserModel } from '../../../../../models/Core/userModel';
 import { JWTTokenHelpers } from '../../../helpers/jwtTokenHelpers';
-import { UserInterface } from '../../../interfaces/usersinterface';
 import { PermissionsEditor } from './permissionsEditor';
 import { ConfirmDialogHelpers } from '../../../helpers/confirmdialoghelpers';
 import { AddUserInput } from '../../../../../models/Core/addUserInput';
@@ -64,17 +63,15 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
             <ng-template #header>
                 <tr>
                     <th class="font-bold">Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
                     <th>Is Active?</th>
+                    <th>Is Staff?</th>
                 </tr>
             </ng-template>
             <ng-template #body let-user>
                 <tr (click)="showEditUser(user.id)" class="rowclickable">
                     <td class="font-bold">{{ user.firstName }} {{ user.lastName }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.phoneNumber }}</td>
                     <td><app-booleanlabel [value]="user.isActive" /></td>
+                    <td><app-booleanlabel [value]="user.isStaff" /></td>
                 </tr>
             </ng-template>
         </p-table>
@@ -88,6 +85,7 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
             </ng-template>
             <div class="card flex flex-col gap-2">
                 <app-toggleswitchlabel [(value)]="currentUser.isActive" label="Is Active?" [disabled]="!canWrite" [hidden]="!canWrite" class="w-full " />
+                <app-toggleswitchlabel [(value)]="currentUser.isStaff" label="Is Staff?" [disabled]="!canWrite" [hidden]="!canWrite" class="w-full " />
 
                 <p-fieldset legend="Login Information">
                     <div class="flex flex-col gap-2">
@@ -105,8 +103,6 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
                     <div class="flex flex-col gap-2">
                         <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canWrite" label="First Name" icon="pi-pencil" />
                         <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canWrite" label="Last Name" icon="pi-pencil" />
-                        <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWrite" label="E-Mail" icon="pi-envelope" />
-                        <app-floattextinput [(value)]="currentUser.phoneNumber" [disabled]="!canWrite" label="Phone Number" icon="pi-phone" />
                     </div>
                 </p-fieldset>
 
@@ -127,6 +123,7 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
 export class UserEditor {
     newPassword1: string = '';
     newPassword2: string = '';
+    sourcePermissionList: PermissionModel[] = [];
     permissionsList: PermissionModel[] = [];
     isLoading: boolean = true;
 
@@ -143,8 +140,11 @@ export class UserEditor {
         private http: HttpClient,
         private service: MessageService,
         private confirmationService: ConfirmationService,
-        private userInterface: UserInterface
     ) {}
+    
+    ngOnInit(){
+        this.loadAll();
+    }
 
     loadAll() {
         if (this.canReadPermissions) this.loadPermissions();
@@ -163,8 +163,6 @@ export class UserEditor {
             loginName: 'newusername',
             firstName: 'New',
             lastName: 'User',
-            email: 'None',
-            phoneNumber: 'None',
             isActive: true
         } as UserModel;
         this.showDialog = true;
@@ -172,6 +170,10 @@ export class UserEditor {
 
     showEditUser(userID: string) {
         this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + '?ID=' + userID).subscribe((u) => {
+            if (u.isStaff)
+                this.permissionsList = [...this.sourcePermissionList]
+            else
+                this.permissionsList = [...this.sourcePermissionList.filter(x => !x.isStaff)]
             this.currentUser = u;
             this.showDialog = true;
         });
@@ -186,7 +188,6 @@ export class UserEditor {
                     this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User deleted!' });
                     this.showDialog = false;
                     this.loadUsers();
-                    this.userInterface.RefreshUsers();
                 });
             }
         });
@@ -194,15 +195,20 @@ export class UserEditor {
 
     loadUsers() {
         this.isLoading = true;
+        this.allUsers = []
         this.http.get<UserModel[]>(APIURL + Endpoints.Core.Users.Get_AllUsers).subscribe((l) => {
+            this.allUsers = l;
             this.isLoading = false;
         });
     }
 
     loadPermissions() {
+        this.isLoading = true;
         this.permissionsList = [];
         this.http.get<PermissionModel[]>(APIURL + Endpoints.Core.Authentication.Get_AllPermissions).subscribe((l) => {
+            this.sourcePermissionList = l;
             this.permissionsList = l;
+            this.isLoading = false;
         });
     }
 
@@ -226,14 +232,12 @@ export class UserEditor {
                 this.showDialog = false;
                 this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User created!' });
                 this.loadUsers();
-                this.userInterface.RefreshUsers();
             });
         } else {
             this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser).subscribe(() => {
                 this.showDialog = false;
                 this.service.add({ severity: 'info', summary: 'Info Message', detail: 'User updated!' });
                 this.loadUsers();
-                this.userInterface.RefreshUsers();
             });
         }
     }

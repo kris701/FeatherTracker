@@ -18,6 +18,12 @@ namespace FeatherTracker.Plugins.Core.Services
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
 			await _model.ExecuteAsync(new PermissionModel(
+				PermissionsTable.Core_Users_Own_Read,
+				"Read Own User",
+				"Ability to read your own user.",
+				false));
+
+			await _model.ExecuteAsync(new PermissionModel(
 				PermissionsTable.Core_Users_Read,
 				"Read All Users",
 				"Ability to read all users.",
@@ -34,12 +40,12 @@ namespace FeatherTracker.Plugins.Core.Services
 				"Ability to impersonate any one user.",
 				true));
 			await _model.ExecuteAsync(new PermissionModel(
-				PermissionsTable.Core_User_ChangePassword,
+				PermissionsTable.Core_Users_Own_ChangePassword,
 				"Change Password",
 				"Ability to change your own password.",
 				false));
 			await _model.ExecuteAsync(new PermissionModel(
-				PermissionsTable.Core_User_EditProfile,
+				PermissionsTable.Core_Users_Own_EditProfile,
 				"Edit your profile",
 				"Ability to edit your own user.",
 				false));

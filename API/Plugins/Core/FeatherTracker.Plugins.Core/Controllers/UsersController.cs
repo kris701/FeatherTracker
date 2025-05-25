@@ -2,6 +2,7 @@
 using FeatherTracker.API.Tools;
 using FeatherTracker.API.Tools.Helpers;
 using FeatherTracker.Plugins.Core.DatabaseInterface.Users;
+using FeatherTracker.Plugins.Core.Helpers;
 using FeatherTracker.Plugins.Core.Models.Shared.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,27 +19,10 @@ namespace FeatherTracker.Plugins.Core.Controllers
 	public class UsersController : ControllerBase
 	{
 		private readonly UsersInterface _interface;
-		private readonly IDBClient _dbClient;
 
 		public UsersController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient)
 		{
-			_dbClient = dbClient;
 			_interface = new UsersInterface(dbClient);
-		}
-
-		/// <summary>
-		/// Register a user
-		/// </summary>
-		/// <param name="inputModel"></param>
-		/// <returns></returns>
-		/// <response code="200">Returns the newly created user</response>
-		[HttpPost(Endpoints.Core.Users.Post_RegisterUser)]
-		[Authorize(Roles = PermissionsTable.Core_Users_Write)]
-		public async Task<IActionResult> Post_RegisterUser([FromBody] RegisterUserInput inputModel)
-		{
-			User.SetExecID(inputModel);
-			var model = new RegisterUserModel(_dbClient);
-			return Ok(await model.ExecuteAsync(inputModel));
 		}
 
 		/// <summary>
@@ -52,6 +36,7 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		public async Task<IActionResult> Post_AddUser([FromBody] AddUserInput inputModel)
 		{
 			User.SetExecID(inputModel);
+			inputModel.Password = HashingHelpers.CreateMD5(inputModel.Password);
 			return Ok(await _interface.addModel.ExecuteAsync(inputModel));
 		}
 
@@ -62,12 +47,12 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the updated user</response>
 		[HttpPatch(Endpoints.Core.Users.Patch_UpdateUser)]
-		[Authorize(Roles = PermissionsTable.Core_Users_Write + "," + PermissionsTable.Core_User_EditProfile)]
+		[Authorize(Roles = PermissionsTable.Core_Users_Write + "," + PermissionsTable.Core_Users_Own_EditProfile)]
 		public async Task<IActionResult> Patch_UpdateUser([FromBody] UserModel inputModel)
 		{
 			User.SetExecID(inputModel);
 			if (!User.HasPermission(PermissionsTable.Core_Users_Write) &&
-				User.HasPermission(PermissionsTable.Core_User_EditProfile) &&
+				User.HasPermission(PermissionsTable.Core_Users_Own_EditProfile) &&
 				User.GetExecID() != inputModel.ExecID)
 				return Unauthorized("You can only modify your own user!");
 			return Ok(await _interface.updateModel.ExecuteAsync(inputModel));
@@ -94,10 +79,12 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the requested user</response>
 		[HttpGet(Endpoints.Core.Users.Get_User)]
-		[Authorize(Roles = PermissionsTable.Core_Users_Read)]
+		[Authorize(Roles = PermissionsTable.Core_Users_Read + "," + PermissionsTable.Core_Users_Own_Read)]
 		public async Task<IActionResult> Get_User([FromQuery] GetModel inputModel)
 		{
 			User.SetExecID(inputModel);
+			if (!User.HasPermission(PermissionsTable.Core_Users_Read) && inputModel.ID != inputModel.ExecID)
+				return Unauthorized("You can only get your own user!");
 			return Ok(await _interface.getModel.ExecuteAsync(inputModel));
 		}
 

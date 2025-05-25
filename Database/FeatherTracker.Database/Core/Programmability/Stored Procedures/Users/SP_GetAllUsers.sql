@@ -8,6 +8,7 @@ BEGIN TRANSACTION
 		A.LastName, 
 		(SELECT COUNT(*) FROM [COR].[UserPermissions] WHERE FK_User_ID = A.PK_ID) AS PermissionsCount,
 		A.IsActive,
+		A.IsStaff,
 		A.CreatedAt,
 		A.UpdatedAt
 	FROM [COR].[Users] AS A

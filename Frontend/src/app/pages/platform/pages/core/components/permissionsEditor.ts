@@ -49,8 +49,8 @@ export class PermissionsEditor implements OnChanges {
         [PermissionsTable.Core_Users_Read]: 'pi pi-user',
         [PermissionsTable.Core_Users_Write]: 'pi pi-user',
         'core.user': 'pi pi-user',
-        [PermissionsTable.Core_User_EditProfile]: 'pi pi-user',
-        [PermissionsTable.Core_User_ChangePassword]: 'pi pi-asterisk',
+        [PermissionsTable.Core_Users_Own_EditProfile]: 'pi pi-user',
+        [PermissionsTable.Core_Users_Own_ChangePassword]: 'pi pi-asterisk',
 
         [PermissionsTable.Core_Permission_Read]: 'pi pi-user',
         [PermissionsTable.Core_User_Impersonate]: 'pi pi-at'        
@@ -70,6 +70,7 @@ export class PermissionsEditor implements OnChanges {
         var newItems: TreeNode[] = [];
         this.options.forEach((i) => {
             var icon: string | null = null;
+            if (i.isStaff) icon = 'pi pi-crown';
             if (icon == null) icon = this.iconMap[i.id];
             var newNode = {
                 key: i.id,
@@ -103,13 +104,15 @@ export class PermissionsEditor implements OnChanges {
                 var subSet = items.filter((y) => y.key?.startsWith(subPath));
                 var subTree = this.buildTree(subSet, selected, offset + 1, subPath);
                 var icon: string | null = null;
+                var isStaff = subTree.tree.every((y) => y.data.isStaff);
+                if (isStaff) icon = 'pi pi-crown';
                 if (icon == null) icon = this.iconMap[subPath];
                 if (icon == null && subTree.tree.length > 0 && subTree.tree.every((y) => y.icon == subTree.tree[0].icon)) icon = <string>subTree.tree[0].icon;
                 var selectedCount = subTree.tree.filter((y) => selected.includes(y)).length;
                 var newNode = {
                     key: subPath,
                     icon: icon,
-                    data: { id: '' } as PermissionModel,
+                    data: { id: '', isStaff: isStaff } as PermissionModel,
                     children: subTree.tree,
                     partialSelected: (selectedCount > 0 && selectedCount != subTree.tree.length) || subTree.tree.some((y) => y.partialSelected)
                 } as TreeNode;

@@ -6,13 +6,14 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { LayoutService } from '../../../layout/services/layout.service';
 import { UserMenu } from './app.usermenu';
 import { ImpersonationMenu } from './app.impersonationmenu';
-import { UserInterface } from '../interfaces/usersinterface';
 import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
 import { PermissionHelpers } from '../helpers/permissionHelpers';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { TagModule } from 'primeng/tag';
 import { PermissionsTable } from '../../../../PermissionsTable';
 import { AppConfigurator } from '../../../layout/app.configurator';
+import { UserModel } from '../../../models/Core/userModel';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-topbar',
@@ -60,11 +61,6 @@ import { AppConfigurator } from '../../../layout/app.configurator';
 
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
-                    <div class=" flex flex-row items-center justify-between">
-                        <p-tag>
-                            {{ userInterface.GetUserNameByID(JWTTokenHelpers.GetUserID()) }}
-                        </p-tag>
-                    </div>
                     <div class="relative">
                         <p-button
                             class="layout-topbar-action layout-topbar-action-highlight"
@@ -100,16 +96,14 @@ import { AppConfigurator } from '../../../layout/app.configurator';
 })
 export class AppTopbar {
     items!: MenuItem[];
-    userInterface: UserInterface;
     unreadMessages: number = 0;
+    user : UserModel = {} as UserModel
 
     JWTTokenHelpers = JWTTokenHelpers;
 
     constructor(
         public layoutService: LayoutService,
-        userInterface: UserInterface
     ) {
-        this.userInterface = userInterface;
     }
 
     showUnreadMessageBadge() {

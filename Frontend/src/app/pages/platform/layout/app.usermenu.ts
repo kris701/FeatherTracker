@@ -71,8 +71,6 @@ import { FieldsetModule } from 'primeng/fieldset';
                         <div class="flex flex-col gap-2">
                             <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canEditProfile" label="First Name" icon="pi-pencil" />
                             <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canEditProfile" label="Last Name" icon="pi-pencil" />
-                            <app-floattextinput [(value)]="currentUser.email" [disabled]="!canEditProfile" label="E-Mail" icon="pi-envelope" />
-                            <app-floattextinput [(value)]="currentUser.phoneNumber" [disabled]="!canEditProfile" label="Phone Number" icon="pi-phone" />
                         </div>
                     </p-fieldset>
                 </div>
@@ -92,8 +90,8 @@ export class UserMenu {
     newPassword1: string = '';
     newPassword2: string = '';
 
-    canChangePassword: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_User_ChangePassword);
-    canEditProfile: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_User_EditProfile);
+    canChangePassword: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_Users_Own_ChangePassword);
+    canEditProfile: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_Users_Own_EditProfile);
     isImpersonating: boolean = localStorage.getItem('impersonating') ? true : false;
 
     editProfileVisible: boolean = false;

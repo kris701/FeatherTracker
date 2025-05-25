@@ -1,0 +1,131 @@
+name: Build and Create Release
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  check-tag:
+    name: Check build tag
+    runs-on: ubuntu-latest
+    outputs: 
+        releaseExists: ${{ steps.check-tag.outputs.exists }}
+    steps:
+      - uses: actions/setup-dotnet@v4
+        with:
+            dotnet-version: '9.0'
+
+      - uses: actions/checkout@v4
+
+      - name: Get Client Project version
+        id: get-version
+        uses: kzrnm/get-net-sdk-project-versions-action@v1
+        with:
+          proj-path: API/FeatherTracker.API/FeatherTracker.API.csproj
+
+      - uses: mukunku/tag-exists-action@v1.6.0
+        id: check-tag
+        with: 
+          tag: 'v${{ steps.get-version.outputs.package-version }}'
+
+  createRelease:
+    name: Build and Create Release
+    needs: check-tag
+    if: needs.check-tag.outputs.releaseExists == 'false'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+            dotnet-version: '9.0'
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 23.6.0
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Compile Client project as publish files
+        run: |
+            cd Frontend
+            npm i
+            npm run deploy feathertracker
+            cd ..
+
+      - name: Compile API project as publish files
+        run: dotnet publish .\API\FeatherTracker.API\FeatherTracker.API.csproj /p:PublishProfile="PackagePublish.pubxml"
+
+      - name: Compile Database project as publish files
+        run: msbuild .\Database\FeatherTracker.Database\ /p:OutputPath=../../Output/Database /P:Configuration=Release
+
+      - name: Compress Client build files
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: Output/Frontend/browser/
+          dest: Output/client.zip
+
+      - name: Compress API build files
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: Output/API/net9.0/publish/
+          dest: Output/api.zip
+
+      - name: Compress Database build files
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: Output/Database/
+          dest: Output/database.zip
+
+      - name: Get API Project version
+        id: get-version
+        uses: kzrnm/get-net-sdk-project-versions-action@v1
+        with:
+          proj-path: .\API\FeatherTracker.API\FeatherTracker.API.csproj
+          
+      - name: Create Tag
+        uses: jaywcjlove/create-tag-action@main
+        with:
+          version: "v${{ steps.get-version.outputs.package-version }}"
+      
+      - name: Generate Release
+        uses: ncipollo/release-action@v1
+        with:
+          skipIfReleaseExists: true
+          artifacts: "Output/*.zip"
+          tag: "v${{ steps.get-version.outputs.package-version }}"
+          generateReleaseNotes: true
+
+  testBuild:
+    name: Build and Test
+    needs: check-tag
+    if: needs.check-tag.outputs.releaseExists == 'true'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/setup-dotnet@v4
+        with:
+            dotnet-version: '9.0'
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 23.6.0
+
+      - uses: actions/checkout@v4
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build API
+        run: dotnet build .\API\FeatherTracker.API\FeatherTracker.API.csproj
+        
+      - name: Build Database
+        run: msbuild .\Database\FeatherTracker.Database\
+
+      - name: Build Frontend
+        run: |
+            cd Frontend
+            npm i
+            npm run build

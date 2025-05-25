@@ -89,8 +89,8 @@
     <Build Include="Core\Programmability\Stored Procedures\Users\SP_UpdateUser.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_AddPermissionIfNotExist.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_GetAllPermissions.sql" />
-    <Build Include="Core\Programmability\Stored Procedures\Users\SP_RegisterUser.sql" />
     <Build Include="Core\Programmability\Functions\IsStaff.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_RegisterUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FeatherTracker.Database.publish.xml" />

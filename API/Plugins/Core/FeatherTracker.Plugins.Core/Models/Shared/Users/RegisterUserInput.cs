@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FeatherTracker.Plugins.Core.Models.Shared.Users
 {
-	public class RegisterUserInput : BaseExecIDModel
+	public class RegisterUserInput
 	{
 		[Required]
 		public string FirstName { get; set; }

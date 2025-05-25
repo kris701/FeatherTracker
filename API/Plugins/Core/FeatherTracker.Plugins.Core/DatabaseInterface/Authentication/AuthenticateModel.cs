@@ -23,9 +23,7 @@ namespace FeatherTracker.Plugins.Core.DatabaseInterface.Authentication
 			if (result[0].Count == 0)
 				throw new Exception("Username or password is invalid!");
 
-			var user = result[0][0].Fill<UserModel>();
-			user.Permissions = result[1].GetAllValues<string>("FK_Permission_ID");
-
+			var user = result[0][0].Fill<UserModel>(result);
 			return new AuthenticationOutput(user, JWTTokenHelpers.CreateToken(user, _settings.Secret, _settings.LifetimeMin));
 		}
 	}

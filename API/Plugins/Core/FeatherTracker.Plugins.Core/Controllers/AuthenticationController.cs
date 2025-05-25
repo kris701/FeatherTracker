@@ -3,8 +3,10 @@ using FeatherTracker.API.Tools;
 using FeatherTracker.API.Tools.Helpers;
 using FeatherTracker.Plugins.Core.DatabaseInterface;
 using FeatherTracker.Plugins.Core.DatabaseInterface.Authentication;
+using FeatherTracker.Plugins.Core.DatabaseInterface.Users;
 using FeatherTracker.Plugins.Core.Models.Internal.Authentication;
 using FeatherTracker.Plugins.Core.Models.Shared.Authentication;
+using FeatherTracker.Plugins.Core.Models.Shared.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,7 +67,7 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		/// <exception cref="Exception"></exception>
 		/// <response code="200">If password change was successful.</response>
 		[HttpPost(Endpoints.Core.Authentication.Post_UpdatePassword)]
-		[Authorize(Roles = PermissionsTable.Core_User_ChangePassword)]
+		[Authorize(Roles = PermissionsTable.Core_Users_Own_ChangePassword)]
 		public async Task<IActionResult> Post_UpdatePassword([FromBody] UpdatePasswordInput inputModel)
 		{
 			User.SetExecID(inputModel);
@@ -79,13 +81,27 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		/// <returns></returns>
 		/// <exception cref="Exception"></exception>
 		/// <response code="200">A list of all permissions and descriptions½.</response>
-		[HttpPost(Endpoints.Core.Authentication.Get_AllPermissions)]
+		[HttpGet(Endpoints.Core.Authentication.Get_AllPermissions)]
 		[Authorize(Roles = PermissionsTable.Core_Permission_Read)]
 		public async Task<IActionResult> Get_AllPermissions()
 		{
 			var inputModel = new EmptyModel();
 			User.SetExecID(inputModel);
 			var model = new GetAllPermissionsModel(_dbClient);
+			return Ok(await model.ExecuteAsync(inputModel));
+		}
+
+		/// <summary>
+		/// Register a user
+		/// </summary>
+		/// <param name="inputModel"></param>
+		/// <returns></returns>
+		/// <response code="200">Returns the newly created user</response>
+		[HttpPost(Endpoints.Core.Authentication.Post_RegisterUser)]
+		[AllowAnonymous]
+		public async Task<IActionResult> Post_RegisterUser([FromBody] RegisterUserInput inputModel)
+		{
+			var model = new RegisterUserModel(_dbClient, _settings);
 			return Ok(await model.ExecuteAsync(inputModel));
 		}
 	}

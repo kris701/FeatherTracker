@@ -4,6 +4,6 @@ CREATE TABLE [COR].[UserPermissions]
 	[FK_User_ID] UNIQUEIDENTIFIER NOT NULL,
 	[FK_Permission_ID] NVARCHAR(256) NOT NULL
 
-	CONSTRAINT [FK_UserPermissions_Users] FOREIGN KEY ([FK_User_ID]) REFERENCES [COR].[Users]([PK_ID])
-	CONSTRAINT [FK_UserPermissions_Permissions] FOREIGN KEY ([FK_Permission_ID]) REFERENCES [COR].[Permissions]([PK_ID])
+	CONSTRAINT [FK_UserPermissions_Users] FOREIGN KEY ([FK_User_ID]) REFERENCES [COR].[Users]([PK_ID]) ON DELETE CASCADE
+	CONSTRAINT [FK_UserPermissions_Permissions] FOREIGN KEY ([FK_Permission_ID]) REFERENCES [COR].[Permissions]([PK_ID]) ON DELETE CASCADE
 )

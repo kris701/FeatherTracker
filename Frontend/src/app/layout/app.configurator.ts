@@ -270,7 +270,7 @@ export class AppConfigurator {
 
     primaryColors = computed<SurfacesType[]>(() => {
         const presetPalette = presets[this.layoutService.layoutConfig().preset as KeyOfType<typeof presets>].primitive;
-        const colors = ['helvion', 'emerald', 'green', 'lime', 'orange', 'amber', 'yellow', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
+        const colors = ['emerald', 'green', 'lime', 'orange', 'amber', 'yellow', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
         const palettes: SurfacesType[] = [];
 
         colors.forEach((color) => {
@@ -287,22 +287,46 @@ export class AppConfigurator {
         const color: SurfacesType = this.primaryColors().find((c) => c.name === this.selectedPrimaryColor()) || {};
         const preset = this.layoutService.layoutConfig().preset;
 
-        if (color.name === 'helvion') {
+        if (preset === 'Nora') {
             return {
                 semantic: {
-                    primary: {
-                        50: 'var(--p-helvion-50)',
-                        100: 'var(--p-helvion-100)',
-                        200: 'var(--p-helvion-200)',
-                        300: 'var(--p-helvion-300)',
-                        400: 'var(--p-helvion-400)',
-                        500: 'var(--p-helvion-500)',
-                        600: 'var(--p-helvion-600)',
-                        700: 'var(--p-helvion-700)',
-                        800: 'var(--p-helvion-800)',
-                        900: 'var(--p-helvion-900)',
-                        950: 'var(--p-helvion-950)'
-                    },
+                    primary: color.palette,
+                    colorScheme: {
+                        light: {
+                            primary: {
+                                color: '{primary.600}',
+                                contrastColor: '#ffffff',
+                                hoverColor: '{primary.700}',
+                                activeColor: '{primary.800}'
+                            },
+                            highlight: {
+                                background: '{primary.600}',
+                                focusBackground: '{primary.700}',
+                                color: '#ffffff',
+                                focusColor: '#ffffff'
+                            }
+                        },
+                        dark: {
+                            primary: {
+                                color: '{primary.500}',
+                                contrastColor: '{surface.900}',
+                                hoverColor: '{primary.400}',
+                                activeColor: '{primary.300}'
+                            },
+                            highlight: {
+                                background: '{primary.500}',
+                                focusBackground: '{primary.400}',
+                                color: '{surface.900}',
+                                focusColor: '{surface.900}'
+                            }
+                        }
+                    }
+                }
+            };
+        } else {
+            return {
+                semantic: {
+                    primary: color.palette,
                     colorScheme: {
                         light: {
                             primary: {
@@ -335,80 +359,6 @@ export class AppConfigurator {
                     }
                 }
             };
-        } else {
-            if (preset === 'Nora') {
-                return {
-                    semantic: {
-                        primary: color.palette,
-                        colorScheme: {
-                            light: {
-                                primary: {
-                                    color: '{primary.600}',
-                                    contrastColor: '#ffffff',
-                                    hoverColor: '{primary.700}',
-                                    activeColor: '{primary.800}'
-                                },
-                                highlight: {
-                                    background: '{primary.600}',
-                                    focusBackground: '{primary.700}',
-                                    color: '#ffffff',
-                                    focusColor: '#ffffff'
-                                }
-                            },
-                            dark: {
-                                primary: {
-                                    color: '{primary.500}',
-                                    contrastColor: '{surface.900}',
-                                    hoverColor: '{primary.400}',
-                                    activeColor: '{primary.300}'
-                                },
-                                highlight: {
-                                    background: '{primary.500}',
-                                    focusBackground: '{primary.400}',
-                                    color: '{surface.900}',
-                                    focusColor: '{surface.900}'
-                                }
-                            }
-                        }
-                    }
-                };
-            } else {
-                return {
-                    semantic: {
-                        primary: color.palette,
-                        colorScheme: {
-                            light: {
-                                primary: {
-                                    color: '{primary.500}',
-                                    contrastColor: '#ffffff',
-                                    hoverColor: '{primary.600}',
-                                    activeColor: '{primary.700}'
-                                },
-                                highlight: {
-                                    background: '{primary.50}',
-                                    focusBackground: '{primary.100}',
-                                    color: '{primary.700}',
-                                    focusColor: '{primary.800}'
-                                }
-                            },
-                            dark: {
-                                primary: {
-                                    color: '{primary.400}',
-                                    contrastColor: '{surface.900}',
-                                    hoverColor: '{primary.300}',
-                                    activeColor: '{primary.200}'
-                                },
-                                highlight: {
-                                    background: 'color-mix(in srgb, {primary.400}, transparent 84%)',
-                                    focusBackground: 'color-mix(in srgb, {primary.400}, transparent 76%)',
-                                    color: 'rgba(255,255,255,.87)',
-                                    focusColor: 'rgba(255,255,255,.87)'
-                                }
-                            }
-                        }
-                    }
-                };
-            }
         }
     }
 

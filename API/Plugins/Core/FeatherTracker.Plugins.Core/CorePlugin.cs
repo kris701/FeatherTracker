@@ -1,4 +1,5 @@
 ﻿using DatabaseSharp;
+using FeatherTracker.Plugins.Core.Models.Internal.Authentication;
 using FeatherTracker.Plugins.Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +39,7 @@ namespace FeatherTracker.Plugins.Core
 
 		public override void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSingleton(new JWTSettings(_jwtSecret, _jwtLifetime));
 			var key = Encoding.ASCII.GetBytes(_jwtSecret);
 			services.AddAuthentication(options =>
 			{

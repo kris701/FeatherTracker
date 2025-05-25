@@ -8,6 +8,6 @@ BEGIN TRANSACTION
 	IF ((SELECT COUNT(*) FROM [COR].[Permissions] WHERE PK_ID = @ID) = 0)
 		BEGIN
 			INSERT INTO [COR].[Permissions] VALUES (@ID, @Name, @Description, @IsStaff)
-			INSERT INTO [COR].[UserPermissions] SELECT NEWID(), PK_ID, @ID FROM [COR].[Users];
+			INSERT INTO [COR].[UserPermissions] SELECT NEWID(), PK_ID, @ID FROM [COR].[Users] WHERE IsStaff = 1;
 		END
 COMMIT

@@ -24,6 +24,10 @@
               {
                 "Name": "Get_AllPermissions",
                 "Route": "permissions"
+              },
+              {
+                "Name": "Post_RegisterUser",
+                "Route": "register"
               }
             ]
           },
@@ -49,10 +53,6 @@
               {
                 "Name": "Delete_User",
                 "Route": ""
-              },
-              {
-                "Name": "Post_RegisterUser",
-                "Route": "register"
               }
             ]
           }

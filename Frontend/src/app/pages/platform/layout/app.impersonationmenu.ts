@@ -9,7 +9,6 @@ import { ButtonModule } from 'primeng/button';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { SelectModule } from 'primeng/select';
-import { UserInterface } from '../interfaces/usersinterface';
 import { TooltipModule } from 'primeng/tooltip';
 import { Endpoints } from '../../../../Endpoints';
 import { APIURL } from '../../../../globals';
@@ -18,6 +17,10 @@ import { ImpersonateInput } from '../../../models/Core/impersonateInput';
 import { JWTTokenModel } from '../../../models/Core/jWTTokenModel';
 import { FloatMultiSelectControl } from '../../../common/floatmultiselectcontrol';
 import { FloatSelectControl } from '../../../common/floatselectcontrol';
+import { UserModel } from '../../../models/Core/userModel';
+import { ListUserModel } from '../../../models/Core/listUserModel';
+import { PermissionsTable } from '../../../../PermissionsTable';
+import { PermissionHelpers } from '../helpers/permissionHelpers';
 
 @Component({
     selector: 'app-impersonationmenu',
@@ -26,7 +29,7 @@ import { FloatSelectControl } from '../../../common/floatselectcontrol';
     template: `
         <div class="flex flex-col gap-2" *ngIf="!isImpersonating()">
             <span>Select a user to impersonate.</span>
-            <app-floatselect [(selected)]="targetID" [options]="userInterface.allUsers" (selectedChange)="impersonate()" icon="pi-user" />
+            <app-floatselect [(selected)]="targetID" [options]="allUsers" optionLabel="firstName" optionValue="id" (selectedChange)="impersonate()" icon="pi-user" />
         </div>
         <div class="flex flex-col gap-4" *ngIf="isImpersonating()">
             <p-button icon="pi pi-eject" severity="danger" label="Stop Impersonating" (click)="stopImpersonate()" [style]="{ width: '100%' }" />
@@ -37,19 +40,27 @@ import { FloatSelectControl } from '../../../common/floatselectcontrol';
     }
 })
 export class ImpersonationMenu {
-    userInterface: UserInterface;
     targetID: string = '';
+    allUsers : ListUserModel[] = []
 
     constructor(
-        private router: Router,
         private http: HttpClient,
-        userInterface: UserInterface
     ) {
-        this.userInterface = userInterface;
     }
 
     ngOnInit() {
+        if (!PermissionHelpers.HasPermission(PermissionsTable.Core_User_Impersonate))
+            return;
+
+        if (PermissionHelpers.HasPermission(PermissionsTable.Core_Users_Read))
+            this.loadUsers();
         if (this.isImpersonating()) return;
+    }
+
+    loadUsers() {
+        this.http.get<ListUserModel[]>(APIURL + Endpoints.Core.Users.Get_AllUsers).subscribe((l) => {
+            this.allUsers = l;
+        });
     }
 
     impersonate() {

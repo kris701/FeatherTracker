@@ -17,6 +17,7 @@ import { JWTTokenModel } from '../../../../models/Core/jWTTokenModel';
 import { TagModule } from 'primeng/tag';
 import { AppFloatingConfigurator } from '../../../../layout/app.floatingconfigurator';
 import { LayoutService } from '../../../../layout/services/layout.service';
+import { RegisterUserInput } from '../../../../models/Core/registerUserInput';
 
 @Component({
     selector: 'app-login',
@@ -30,27 +31,25 @@ import { LayoutService } from '../../../../layout/services/layout.service';
                 <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 2%, rgba(33, 150, 243, 0) 110%)">
                     <div class="w-full card py-20 px-8 sm:px-20" style="border-radius: 53px">
                         <div class="text-center mb-2">
-                            @if (layoutService.isDarkTheme())
-                            {
-                                <img class="mb-2 w-64 shrink-0 mx-auto" src="src/assets/images/logo_large_transparant.png"/>
-                            }
-                            @else
-                            {
-                                <img class="mb-2 w-64 shrink-0 mx-auto" src="src/assets/images/logo_large_transparant_inv.png"/>
-                            }
-                            <div class="text-3xl font-medium mb-4">Welcome to PrimeNG Template!</div>
-                            <span class="text-muted-color font-medium">Sign in to continue</span>
+                            <div class="text-3xl font-medium mb-4">Welcome to Feather Tracker!</div>
+                            <span class="text-muted-color font-medium">Create a new user here to continue.</span>
                         </div>
 
-                        <div class="flex flex-col gap-2">
+                        <div class="flex flex-col">
+                            <label for="firstname">First Name</label>
+                            <input pInputText id="firstname" type="text" placeholder="First Name" class="w-full md:w-[30rem] mb-2" [(ngModel)]="LoginName" />
+
+                            <label for="lastname">Last Name</label>
+                            <input pInputText id="lastname" type="text" placeholder="Last Name" class="w-full md:w-[30rem] mb-2" [(ngModel)]="firstName" />
+                            
                             <label for="email1">Username</label>
-                            <input pInputText id="email1" type="text" placeholder="Username" class="w-full md:w-[30rem] mb-2" [(ngModel)]="LoginName" />
+                            <input pInputText id="email1" type="text" placeholder="Username" class="w-full md:w-[30rem] mb-2" [(ngModel)]="lastName" />
 
                             <label for="password1">Password</label>
-                            <p-password id="password1" [(ngModel)]="Password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" (keyup.enter)="doLogin()"></p-password>
+                            <p-password id="password1" [(ngModel)]="Password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
+                            <p-password id="password2" [(ngModel)]="RepeatPassword" placeholder="Repeat Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
 
-                            <p-button label="Sign In" styleClass="w-full" (click)="doLogin()"></p-button>
-                            <p-button label="Register" severity="secondary" styleClass="w-full" (click)="doRegister()"></p-button>
+                            <p-button label="Create User" styleClass="w-full" (click)="doCreateUser()"></p-button>
                         </div>
                     </div>
                 </div>
@@ -58,7 +57,7 @@ import { LayoutService } from '../../../../layout/services/layout.service';
         </div>
     `
 })
-export class Login {
+export class Register {
     constructor(private router: Router, private http: HttpClient, layoutService: LayoutService){
         this.layoutService = layoutService;
      }
@@ -66,8 +65,11 @@ export class Login {
     layoutService : LayoutService;
     apiUrl : string = APIURL;
     LoginName: string = '';
+    firstName: string = '';
+    lastName: string = '';
 
     Password: string = '';
+    RepeatPassword: string = '';
 
     ngOnInit(){
         if (!localStorage.getItem("jwtToken")){
@@ -76,12 +78,19 @@ export class Login {
         }
     }
 
-    doLogin() {
+    doCreateUser() {
+        if (this.Password != this.RepeatPassword){
+            alert("Passwords do not match!")
+            return;
+        }
+
         var input = {
-            username: this.LoginName,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            loginName: this.LoginName,
             password: this.Password
-        } as AuthenticateInput;
-        this.http.post<AuthenticationOutput>(APIURL + Endpoints.Core.Authentication.Post_Authenticate, input).subscribe(c => {
+        } as RegisterUserInput;
+        this.http.post<AuthenticationOutput>(APIURL + Endpoints.Core.Authentication.Post_RegisterUser, input).subscribe(c => {
             if (c.jwtToken != "")
             {
                 localStorage.removeItem("perms");
@@ -102,9 +111,5 @@ export class Login {
         }, e => {
             alert("Username or Password is incorrect!");
         });
-    }
-
-    doRegister(){
-        this.router.navigate(["/platform/auth/register"]);
     }
 }
