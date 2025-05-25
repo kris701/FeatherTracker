@@ -1,0 +1,85 @@
+.layout-main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    padding: 6rem 2rem 0 2rem;
+    transition: margin-left var(--layout-section-transition-duration);
+}
+
+.layout-main {
+    flex: 1 1 auto;
+    padding-bottom: 2rem;
+}
+
+.dashboardwrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-flow: dense;
+}
+
+.dashboardwrapper > * {
+    display: contents;
+    margin-bottom: 0px !important;
+}
+
+.inputOffsetter > * > input {
+    padding-left: 2.5rem;
+}
+
+.inputOffsetter > input {
+    padding-left: 2.5rem;
+}
+
+.changelogview > * > ul {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+.changelogview > ul {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+.masterclaswrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.masterclaswrapper > * {
+    max-width: 300px !important;
+}
+
+.layout-main-landing-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    padding: 6rem 0 0 0;
+    transition: margin-left var(--layout-section-transition-duration);
+}
+
+.layout-main-landing {
+    flex: 1 1 auto;
+    padding: 2rem;
+}
+
+.landingbackground {
+    background: radial-gradient(circle, var(--surface-card), hsl(from var(--primary-color) h s calc(l - 15)) 1%, var(--surface-card));
+    background-size: 400% 400%;
+    animation: gradient 30s ease infinite;
+    height: 100%;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 10%;
+    }
+    50% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 10%;
+    }
+}

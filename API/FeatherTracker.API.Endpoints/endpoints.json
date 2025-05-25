@@ -1,0 +1,63 @@
+﻿{
+  "Includes": [],
+  "Branch": {
+    "Name": "Endpoints",
+    "Nodes": [
+      {
+        "Name": "Core",
+        "Nodes": [
+          {
+            "Name": "Authentication",
+            "Nodes": [
+              {
+                "Name": "Post_Authenticate",
+                "Route": ""
+              },
+              {
+                "Name": "Post_UpdatePassword",
+                "Route": "updatepassword"
+              },
+              {
+                "Name": "Post_Impersonate",
+                "Route": "impersonate"
+              },
+              {
+                "Name": "Get_AllPermissions",
+                "Route": "permissions"
+              }
+            ]
+          },
+          {
+            "Name": "Users",
+            "Nodes": [
+              {
+                "Name": "Post_AddUser",
+                "Route": ""
+              },
+              {
+                "Name": "Patch_UpdateUser",
+                "Route": ""
+              },
+              {
+                "Name": "Get_AllUsers",
+                "Route": "users"
+              },
+              {
+                "Name": "Get_User",
+                "Route": ""
+              },
+              {
+                "Name": "Delete_User",
+                "Route": ""
+              },
+              {
+                "Name": "Post_RegisterUser",
+                "Route": "register"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="autopoint -t endpoints.json -p CSharpProducer TypeScriptProducer"  ContinueOnError="true"/>
+	<Exec Command="copy Endpoints.ts ..\..\Frontend\src\Endpoints.ts /Y"  ContinueOnError="true"/>
+  </Target>
+
+  <ItemGroup>
+    <None Update="endpoints.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

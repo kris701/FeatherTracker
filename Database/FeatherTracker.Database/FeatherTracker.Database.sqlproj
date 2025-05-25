@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>FeatherTracker.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{dd9ec741-711c-4f91-92e1-c21154c9a77a}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Helvion.HelForm.Database</RootNamespace>
+    <AssemblyName>Helvion.HelForm.Database</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Core" />
+    <Folder Include="Core\Schemas" />
+    <Folder Include="Core\Tables" />
+    <Folder Include="Core\Programmability" />
+    <Folder Include="Global" />
+    <Folder Include="Global\Programmability" />
+    <Folder Include="Global\Programmability\Types" />
+    <Folder Include="Global\Schema" />
+    <Folder Include="Core\Programmability\Stored Procedures" />
+    <Folder Include="Core\Programmability\Stored Procedures\Authentication" />
+    <Folder Include="Core\Programmability\Stored Procedures\Users" />
+    <Folder Include="Core\Programmability\Stored Procedures\Permissions" />
+    <Folder Include="Core\Programmability\Functions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Core\Schemas\CoreSchema.sql" />
+    <Build Include="Core\Tables\Users.sql" />
+    <Build Include="Core\Tables\UserPermissions.sql" />
+    <Build Include="Core\Tables\Permissions.sql" />
+    <Build Include="Global\Programmability\Types\GuidListType.sql" />
+    <Build Include="Global\Schema\GlobalSchema.sql" />
+    <Build Include="Global\Programmability\Types\StringListType.sql" />
+    <PostDeploy Include="postDeploy.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_Authenticate.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_Impersonate.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Authentication\SP_UpdatePassword.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_AddUser.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_DeleteUser.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_GetAllUsers.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_GetUser.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_UpdateUser.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_AddPermissionIfNotExist.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Permissions\SP_GetAllPermissions.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_RegisterUser.sql" />
+    <Build Include="Core\Programmability\Functions\IsStaff.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FeatherTracker.Database.publish.xml" />
+    <None Include="FeatherTracker.Database-test.publish.xml" />
+  </ItemGroup>
+</Project>
