@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
     imports: [TagModule, CommonModule],
     selector: 'app-footer',
     template: `<div class="layout-footer">
-        Company Name © 2025
+        Kristian Skov © 2025
+        <p-tag severity="success" value="Staff Mode" *ngIf="isStaff" />
         <p-tag severity="warn" value="Impersonating user" *ngIf="isImpersonating" />
     </div>`
 })

@@ -11,7 +11,7 @@ import { PermissionModel } from '../../../../../models/Core/permissionModel';
 import { PermissionsTable } from '../../../../../../PermissionsTable';
 
 @Component({
-    selector: 'app-company-components-permissionseditor',
+    selector: 'app-core-components-permissionseditor',
     imports: [FormsModule, CommonModule, ButtonModule, DrawerModule, TableModule, TagModule, TreeModule],
     template: `
         @if (selected && selected.length > 0) {
@@ -39,6 +39,7 @@ import { PermissionsTable } from '../../../../../../PermissionsTable';
 export class PermissionsEditor implements OnChanges {
     @Input() options: PermissionModel[] = [];
     @Input() selected: string[] = [];
+    @Input() allowStaff: boolean = false;
     @Output() selectedChange = new EventEmitter<string[]>();
 
     lastSelected: string[] = [];
@@ -46,21 +47,18 @@ export class PermissionsEditor implements OnChanges {
     items!: TreeNode[];
     selectedItems!: TreeNode[];
     iconMap: { [key: string]: string } = {
-        [PermissionsTable.Core_Users_Read]: 'pi pi-user',
-        [PermissionsTable.Core_Users_Write]: 'pi pi-user',
-        'core.user': 'pi pi-user',
-        [PermissionsTable.Core_Users_Own_Read]: 'pi pi-user',
-        [PermissionsTable.Core_Users_Own_Write]: 'pi pi-user',
-
-        [PermissionsTable.Core_Permission_Read]: 'pi pi-user',
-        [PermissionsTable.Core_User_Impersonate]: 'pi pi-at'        
+        'core.user': 'pi pi-user'  
     };
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['selected'] && this.lastSelected != changes['selected'].currentValue) {
             this.lastSelected = changes['selected'].currentValue;
             this.loadTree();
-        } else if (changes['options'] && changes['options'].previousValue != changes['options'].currentValue) this.loadTree();
+        } 
+        else if (changes['options'] && changes['options'].previousValue != changes['options'].currentValue) 
+            this.loadTree();
+        else if (changes['allowStaff'] && changes['allowStaff'].previousValue != changes['allowStaff'].currentValue) 
+            this.loadTree();
     }
 
     loadTree() {
@@ -70,15 +68,17 @@ export class PermissionsEditor implements OnChanges {
         var newItems: TreeNode[] = [];
         this.options.forEach((i) => {
             var icon: string | null = null;
-            if (i.isStaff) icon = 'pi pi-crown';
-            if (icon == null) icon = this.iconMap[i.id];
-            var newNode = {
-                key: i.id,
-                label: i.name,
-                data: i,
-                icon: icon
-            } as TreeNode;
-            newItems.push(newNode);
+            if (!i.isStaff || this.allowStaff){
+                if (i.isStaff) icon = 'pi pi-crown';
+                if (icon == null) icon = this.iconMap[i.id];
+                var newNode = {
+                    key: i.id,
+                    label: i.name,
+                    data: i,
+                    icon: icon
+                } as TreeNode;
+                newItems.push(newNode);
+            }
         });
         var newTree = this.buildTree(newItems, [], 0, '');
         this.items = newTree.tree;

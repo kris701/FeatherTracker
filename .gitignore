@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Output
+!*.publish.xml

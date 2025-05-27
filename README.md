@@ -1,4 +1,4 @@
-# PrimeNGTemplate
+# FeatherTracker
 
 This is a general template, mostly for myself, that i use for general projects.
 

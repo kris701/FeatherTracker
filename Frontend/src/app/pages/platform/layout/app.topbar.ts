@@ -32,7 +32,7 @@ import { Endpoints } from '../../../../Endpoints';
                 } @else {
                     <img src="src/assets/images/logo_small_transparant_inv.png" [style]="{ height: '45px' }" />
                 }
-                <span>Platform Name</span>
+                <span>Feather Tracker</span>
             </a>
         </div>
 

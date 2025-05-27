@@ -130,7 +130,8 @@ export class UserMenu {
             newPassword: this.newPassword1
         } as UpdatePasswordInput;
         this.http.patch<UpdatePasswordInput>(APIURL + Endpoints.Core.Users.Patch_UpdatePassword, input).subscribe(() => {
-            this.router.navigate(['/platform/auth/login']);
+            this.router.navigate(['/platform/auth']);
+            this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Password updated!' });
         });
     }
 

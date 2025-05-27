@@ -17,11 +17,13 @@ import { JWTTokenModel } from '../../../../models/Core/jWTTokenModel';
 import { TagModule } from 'primeng/tag';
 import { AppFloatingConfigurator } from '../../../../layout/app.floatingconfigurator';
 import { LayoutService } from '../../../../layout/services/layout.service';
+import { FloatTextInput } from "../../../../common/floattextinput";
+import { FloatPasswordInput } from "../../../../common/floatpasswordinput";
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, TagModule],
+    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, TagModule, FloatTextInput, FloatPasswordInput],
     template: `
         <app-floating-configurator />
         <p-tag [style]="{ 'position': 'absolute', 'left':'15px', 'top':'15px' }">Running on API: {{ apiUrl }}</p-tag>
@@ -38,18 +40,16 @@ import { LayoutService } from '../../../../layout/services/layout.service';
                             {
                                 <img class="mb-2 w-64 shrink-0 mx-auto" src="src/assets/images/logo_large_transparant_inv.png"/>
                             }
-                            <div class="text-3xl font-medium mb-4">Welcome to PrimeNG Template!</div>
+                            <div class="text-3xl font-medium mb-4">Welcome to Feather Tracker!</div>
                             <span class="text-muted-color font-medium">Sign in to continue</span>
                         </div>
 
-                        <div class="flex flex-col">
-                            <label for="email1">Username</label>
-                            <input pInputText id="email1" type="text" placeholder="Username" class="w-full md:w-[30rem] mb-2" [(ngModel)]="LoginName" />
-
-                            <label for="password1">Password</label>
-                            <p-password id="password1" [(ngModel)]="Password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" (keyup.enter)="doLogin()"></p-password>
+                        <div class="flex flex-col gap-2">
+                            <app-floattextinput [(value)]="LoginName" label="Username"/>
+                            <app-floatpasswordinput [(value)]="Password" label="Password"/>
 
                             <p-button label="Sign In" styleClass="w-full" (click)="doLogin()"></p-button>
+                            <p-button label="Sign up" severity="secondary" styleClass="w-full" (click)="doSignUp()"></p-button>
                         </div>
                     </div>
                 </div>
@@ -96,10 +96,14 @@ export class Login {
                 });
                 localStorage.setItem("perms", permsStr);
                 localStorage.setItem("jwtToken", c.jwtToken);
-                this.router.navigate(["/"]);
+                this.router.navigate(["/platform"]);
             }
         }, e => {
             alert("Username or Password is incorrect!");
         });
+    }
+
+    doSignUp(){
+        this.router.navigate(["/platform/auth/signup"]);
     }
 }

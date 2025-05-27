@@ -21,7 +21,7 @@ import { JWTTokenHelpers } from '../../platform/helpers/jwtTokenHelpers';
                 } @else {
                     <img src="src/assets/images/logo_small_transparant_inv.png" [style]="{ height: '45px' }" />
                 }
-                <span>Company Name</span>
+                <span>Feather Tracker</span>
             </a>
         </div>
 

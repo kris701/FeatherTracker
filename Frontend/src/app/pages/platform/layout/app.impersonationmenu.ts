@@ -25,7 +25,7 @@ import { ListUserModel } from '../../../models/Core/listUserModel';
     template: `
         <div class="flex flex-col gap-2" *ngIf="!isImpersonating()">
             <span>Select a user to impersonate.</span>
-            <app-floatselect [(selected)]="targetID" [options]="allUsers" (selectedChange)="impersonate()" icon="pi-user" />
+            <app-floatselect [(selected)]="targetID" [options]="allUsers" optionLabel="loginName" optionValue="id" (selectedChange)="impersonate()" icon="pi-user" />
         </div>
         <div class="flex flex-col gap-4" *ngIf="isImpersonating()">
             <p-button icon="pi pi-eject" severity="danger" label="Stop Impersonating" (click)="stopImpersonate()" [style]="{ width: '100%' }" />

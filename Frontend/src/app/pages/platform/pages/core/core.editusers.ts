@@ -16,7 +16,7 @@ import { UserEditor } from './components/usereditor';
 import { PermissionsTable } from '../../../../../PermissionsTable';
 import { PermissionHelpers } from '../../helpers/permissionHelpers';
 @Component({
-    selector: 'app-core-company-editusers',
+    selector: 'app-core-editusers',
     imports: [FormsModule, CommonModule, DialogModule, ButtonModule, FloatLabelModule, InputTextModule, MultiSelectModule, PasswordModule, TableModule, ChipModule, TooltipModule, ConfirmDialogModule, TagModule, UserEditor],
     template: `
         <div class="card">
@@ -24,7 +24,7 @@ import { PermissionHelpers } from '../../helpers/permissionHelpers';
             <p-tag severity="warn">Do remember, if you update the permissions for a user (including yourself) they will have to log out and log back in again for the changes to take effect.</p-tag>
         </div>
         <div class="card">
-            <app-company-components-usereditor
+            <app-core-components-usereditor
                 [canRead]="canRead"
                 [canWrite]="canWrite"
                 [canReadPermissions]="canReadPermissions"

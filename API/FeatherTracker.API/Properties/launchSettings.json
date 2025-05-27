@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "FeatherTracker.API": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:63098;http://localhost:63099"
+    }
+  }
+}

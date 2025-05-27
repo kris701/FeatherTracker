@@ -30,7 +30,7 @@ import { ConfirmDialogHelpers } from '../../../helpers/confirmdialoghelpers';
 import { AddUserInput } from '../../../../../models/Core/addUserInput';
 
 @Component({
-    selector: 'app-company-components-usereditor',
+    selector: 'app-core-components-usereditor',
     imports: [
         FormsModule,
         CommonModule,
@@ -64,16 +64,16 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
                 <tr>
                     <th class="font-bold">Name</th>
                     <th>Email</th>
-                    <th>Phone</th>
                     <th>Is Active?</th>
+                    <th>Is Staff?</th>
                 </tr>
             </ng-template>
             <ng-template #body let-user>
                 <tr (click)="showEditUser(user.id)" class="rowclickable">
                     <td class="font-bold">{{ user.firstName }} {{ user.lastName }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.phoneNumber }}</td>
                     <td><app-booleanlabel [value]="user.isActive" /></td>
+                    <td><app-booleanlabel [value]="user.isStaff" /></td>
                 </tr>
             </ng-template>
         </p-table>
@@ -111,7 +111,7 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
 
                 <p-fieldset legend="Permissions">
                     <div class="flex flex-col gap-2">
-                        <app-company-components-permissionseditor [options]="permissionsList" [(selected)]="currentUser.permissions" />
+                        <app-core-components-permissionseditor [options]="permissionsList" [(selected)]="currentUser.permissions" [allowStaff]="currentUser.isStaff"/>
                     </div>
                 </p-fieldset>
             </div>
@@ -143,6 +143,10 @@ export class UserEditor {
         private service: MessageService,
         private confirmationService: ConfirmationService,
     ) {}
+
+    ngOnInit(){
+        this.loadAll();
+    }
 
     loadAll() {
         if (this.canReadPermissions) this.loadPermissions();
@@ -192,14 +196,17 @@ export class UserEditor {
     loadUsers() {
         this.isLoading = true;
         this.http.get<UserModel[]>(APIURL + Endpoints.Core.Users.Get_AllUsers).subscribe((l) => {
+            this.allUsers = l;
             this.isLoading = false;
         });
     }
 
     loadPermissions() {
+        this.isLoading = true;
         this.permissionsList = [];
         this.http.get<PermissionModel[]>(APIURL + Endpoints.Core.Permissions.Get_AllPermissions).subscribe((l) => {
             this.permissionsList = l;
+            this.isLoading = false;
         });
     }
 
