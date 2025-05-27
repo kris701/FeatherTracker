@@ -33,6 +33,17 @@ export class AppMenu {
                 ]
             },
             {
+                label: 'Birds',
+                items: [
+                    {
+                        label: 'Edit Birds',
+                        routerLink: ['/platform/birds/editbirds'],
+                        visible: PermissionHelpers.HasPermission(PermissionsTable.Birds_Read),
+                        icon: 'pi pi-book'
+                    }
+                ]
+            },
+            {
                 label: 'Core',
                 items: [
                     {

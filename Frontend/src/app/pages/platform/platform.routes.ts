@@ -17,6 +17,7 @@ export default [
         children: [
             { path: '', component: Dashboard },
             { path: 'core', loadChildren: () => import('./pages/core/core.routes') },
+            { path: 'birds', loadChildren: () => import('./pages/birds/birds.routes') },
         ]
     }
 ] as Routes;
