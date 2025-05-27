@@ -53,7 +53,7 @@
               },
               {
                 "Name": "Get_AllUsers",
-                "Route": "users"
+                "Route": "all"
               },
               {
                 "Name": "Get_User",
@@ -61,6 +61,56 @@
               },
               {
                 "Name": "Delete_User",
+                "Route": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Birds",
+        "Nodes": [
+          {
+            "Name": "Post_AddBird",
+            "Route": ""
+          },
+          {
+            "Name": "Patch_UpdateBird",
+            "Route": ""
+          },
+          {
+            "Name": "Get_AllBirds",
+            "Route": "all"
+          },
+          {
+            "Name": "Get_Bird",
+            "Route": ""
+          },
+          {
+            "Name": "Delete_Bird",
+            "Route": ""
+          },
+          {
+            "Name": "Weights",
+            "Nodes": [
+              {
+                "Name": "Post_AddBirdWeight",
+                "Route": ""
+              },
+              {
+                "Name": "Patch_UpdateBirdWeight",
+                "Route": ""
+              },
+              {
+                "Name": "Get_AllBirdWeights",
+                "Route": "all"
+              },
+              {
+                "Name": "Get_BirdWeight",
+                "Route": ""
+              },
+              {
+                "Name": "Delete_BirdWeight",
                 "Route": ""
               }
             ]

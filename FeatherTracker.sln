@@ -40,6 +40,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Birds", "Birds", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.Plugins.Birds", "API\Plugins\Birds\FeatherTracker.Plugins.Birds\FeatherTracker.Plugins.Birds.csproj", "{3C94CAE0-6D4C-46E7-838F-5356719ECA97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,10 @@ Global
 		{352B878C-E55C-43C5-BF6F-1EC605E38759}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{352B878C-E55C-43C5-BF6F-1EC605E38759}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{352B878C-E55C-43C5-BF6F-1EC605E38759}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +88,8 @@ Global
 		{5F032695-6ACA-4EF5-9B15-F4C9E876C789} = {AB5EC79D-EF66-4E20-A870-53790EC9D348}
 		{C58D282E-DADA-40BA-9DC6-CE5A0882B8B3} = {97699228-AE2B-419F-B266-4C420080CE80}
 		{352B878C-E55C-43C5-BF6F-1EC605E38759} = {97699228-AE2B-419F-B266-4C420080CE80}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {AB5EC79D-EF66-4E20-A870-53790EC9D348}
+		{3C94CAE0-6D4C-46E7-838F-5356719ECA97} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E40F5D4-F940-48BA-B7A0-28744AA87C19}

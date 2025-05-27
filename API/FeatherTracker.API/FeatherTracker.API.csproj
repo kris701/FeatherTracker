@@ -16,6 +16,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Plugins\Core\FeatherTracker.Plugins.Core\FeatherTracker.Plugins.Core.csproj" />
+		<ProjectReference Include="..\Plugins\Birds\FeatherTracker.Plugins.Birds\FeatherTracker.Plugins.Birds.csproj" />
 	</ItemGroup>
 
 
@@ -29,7 +30,7 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="autoconst -m -o ../../FrontEnd/src -p TypeScriptProducer -t ../Plugins/Core/FeatherTracker.Plugins.Core/PermissionsTable.cs" ContinueOnError="true" />
+		<Exec Command="autoconst -m -o ../../FrontEnd/src -p TypeScriptProducer -t ../Plugins/Core/FeatherTracker.Plugins.Core/PermissionsTable.cs ../Plugins/Birds/FeatherTracker.Plugins.Birds/PermissionsTable.cs" ContinueOnError="true" />
 	</Target>
 
 </Project>

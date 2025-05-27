@@ -19,9 +19,25 @@ public static class Endpoints {
 			public const string Get_IsUsernameTaken = "endpoints/core/users/isusernametaken";
 			public const string Patch_UpdateUser = "endpoints/core/users";
 			public const string Patch_UpdatePassword = "endpoints/core/users/updatepassword";
-			public const string Get_AllUsers = "endpoints/core/users/users";
+			public const string Get_AllUsers = "endpoints/core/users/all";
 			public const string Get_User = "endpoints/core/users";
 			public const string Delete_User = "endpoints/core/users";
+		}
+	}
+	public static class Birds {
+		public const string Name = "endpoints/birds";
+		public const string Post_AddBird = "endpoints/birds";
+		public const string Patch_UpdateBird = "endpoints/birds";
+		public const string Get_AllBirds = "endpoints/birds/all";
+		public const string Get_Bird = "endpoints/birds";
+		public const string Delete_Bird = "endpoints/birds";
+		public static class Weights {
+			public const string Name = "endpoints/birds/weights";
+			public const string Post_AddBirdWeight = "endpoints/birds/weights";
+			public const string Patch_UpdateBirdWeight = "endpoints/birds/weights";
+			public const string Get_AllBirdWeights = "endpoints/birds/weights/all";
+			public const string Get_BirdWeight = "endpoints/birds/weights";
+			public const string Delete_BirdWeight = "endpoints/birds/weights";
 		}
 	}
 }
