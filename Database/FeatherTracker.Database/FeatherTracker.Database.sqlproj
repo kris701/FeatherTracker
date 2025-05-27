@@ -69,6 +69,13 @@
     <Folder Include="Core\Programmability\Stored Procedures\Users" />
     <Folder Include="Core\Programmability\Stored Procedures\Permissions" />
     <Folder Include="Core\Programmability\Functions" />
+    <Folder Include="Birds" />
+    <Folder Include="Birds\Schemas" />
+    <Folder Include="Birds\Tables" />
+    <Folder Include="Birds\Programmability" />
+    <Folder Include="Birds\Programmability\Stored Procedures" />
+    <Folder Include="Birds\Programmability\Stored Procedures\Birds" />
+    <Folder Include="Birds\Programmability\Stored Procedures\BirdWeights" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Core\Schemas\CoreSchema.sql" />
@@ -92,6 +99,19 @@
     <Build Include="Core\Programmability\Stored Procedures\Users\SP_UpdatePassword.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Users\SP_SignupUser.sql" />
     <Build Include="Core\Programmability\Stored Procedures\Users\SP_IsUsernameTaken.sql" />
+    <Build Include="Birds\Schemas\BirdsSchema.sql" />
+    <Build Include="Birds\Tables\Birds.sql" />
+    <Build Include="Birds\Tables\BirdWeights.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\Birds\SP_AddBird.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\Birds\SP_DeleteBird.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\Birds\SP_GetBird.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\Birds\SP_GetAllBird.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\Birds\SP_UpdateBird.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_AddBirdWeight.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_DeleteBirdWeight.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_GetAllBirdWeights.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_GetBirdWeight.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_UpdateBirdWeight.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FeatherTracker.Database.publish.xml" />

@@ -1,0 +1,9 @@
+CREATE PROCEDURE [BRD].[SP_GetAllBirdWeights]
+	@ExecID UNIQUEIDENTIFIER,
+	@BirdID UNIQUEIDENTIFIER,
+	@From DAtETIME,
+	@To DAtETIME
+AS
+BEGIN
+	SELECT * FROM [BRD].[BirdWeights] WHERE FK_BirdID = @BirdID AND Timestamp >= @From AND Timestamp <= @To
+END
