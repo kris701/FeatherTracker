@@ -11,16 +11,12 @@ export default [
         providers: [provideHttpClient()]
     },
     {
-        path: 'setup',
-        loadChildren: () => import('./pages/setup/setup.routes'),
-        providers: [provideHttpClient()]
-    },
-    {
         path: '',
         component: AppLayout,
         providers: [provideHttpClient(withInterceptors([authInterceptor]))],
         children: [
-            { path: '', component: Dashboard }
+            { path: '', component: Dashboard },
+            { path: 'core', loadChildren: () => import('./pages/core/core.routes') },
         ]
     },
     { path: '**', redirectTo: '/notfound' }

@@ -17,7 +17,6 @@ import { JWTTokenModel } from '../../../../models/Core/jWTTokenModel';
 import { TagModule } from 'primeng/tag';
 import { AppFloatingConfigurator } from '../../../../layout/app.floatingconfigurator';
 import { LayoutService } from '../../../../layout/services/layout.service';
-import { AuthenticateOutput } from '../../../../models/Core/authenticateOutput';
 
 @Component({
     selector: 'app-login',
@@ -43,7 +42,7 @@ import { AuthenticateOutput } from '../../../../models/Core/authenticateOutput';
                             <span class="text-muted-color font-medium">Sign in to continue</span>
                         </div>
 
-                        <div class="flex flex-col gap-2">
+                        <div class="flex flex-col">
                             <label for="email1">Username</label>
                             <input pInputText id="email1" type="text" placeholder="Username" class="w-full md:w-[30rem] mb-2" [(ngModel)]="LoginName" />
 
@@ -70,13 +69,10 @@ export class Login {
     Password: string = '';
 
     ngOnInit(){
-        if (localStorage.getItem("jwtToken")){
+        if (!localStorage.getItem("jwtToken")){
             localStorage.removeItem("jwtToken");
+            localStorage.removeItem("perms");
         }
-        this.http.get<boolean>(APIURL + Endpoints.Core.Authentication.Get_IsSetup).subscribe(r => {
-            if (!r)
-                this.router.navigate(["/setup"]);
-        })
     }
 
     doLogin() {
@@ -84,14 +80,22 @@ export class Login {
             username: this.LoginName,
             password: this.Password
         } as AuthenticateInput;
-        this.http.post<AuthenticateOutput>(APIURL + Endpoints.Core.Authentication.Post_Authenticate, input).subscribe(c => {
-            if (c.token != "")
+        this.http.post<AuthenticationOutput>(APIURL + Endpoints.Core.Authentication.Post_Authenticate, input).subscribe(c => {
+            if (c.jwtToken != "")
             {
+                localStorage.removeItem("perms");
                 const helper = new JwtHelperService();
-                var result = helper.decodeToken<JWTTokenModel>(c.token);
+                var result = helper.decodeToken<JWTTokenModel>(c.jwtToken);
                 if (!result)
                     return;
-                localStorage.setItem("jwtToken", c.token);
+                if (result.role == null)
+                    result.role = [];
+                var permsStr = "";
+                result.role.forEach(p => {
+                    permsStr += p + ";"
+                });
+                localStorage.setItem("perms", permsStr);
+                localStorage.setItem("jwtToken", c.jwtToken);
                 this.router.navigate(["/"]);
             }
         }, e => {

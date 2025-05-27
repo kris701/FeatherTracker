@@ -1,0 +1,11 @@
+{
+  "UsePlugins": [
+    "Core"
+  ],
+
+  "Core": {
+    "JWTSecret": "some_sort_of_long_key_some_sort_of_long_key_some_sort_of_long_key",
+    "JWTLifetime": 9999,
+    "DatabaseConnectionString": "Server=tcp:localhost,1333;Initial Catalog=PrimeNGTemplate.Database;Persist Security Info=False;User ID=sa;Password=yourStrong(!)Password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;"
+  }
+}

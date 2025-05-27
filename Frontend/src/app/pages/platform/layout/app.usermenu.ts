@@ -43,8 +43,9 @@ import { FieldsetModule } from 'primeng/fieldset';
     ],
     template: `
         <div class="flex flex-col gap-2">
-            <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="showChangePassword()" [style]="{ width: '100%' }"/>
+            <p-button icon="pi pi-asterisk" label="Change Password" pTooltip="Change your password" (click)="showChangePassword()" [style]="{ width: '100%' }" [hidden]="!canWriteSelf" />
             <p-button icon="pi pi-user-edit" label="Profile" pTooltip="View and edit profile" (click)="showEditProfile()" [style]="{ width: '100%' }" />
+            <p-button icon="pi pi-sign-out" label="Log Out" severity="danger" pTooltip="Log out and return to the login screen" (click)="logOut()" [disabled]="isImpersonating" [style]="{ width: '100%' }" />
 
             <p-dialog header="Change Password" [(visible)]="changePasswordVisible" [style]="{ width: '30vw' }" [modal]="true">
                 <div class="card flex flex-col gap-2">
@@ -63,18 +64,19 @@ import { FieldsetModule } from 'primeng/fieldset';
                     <p-fieldset legend="Login Information">
                         <div class="flex flex-col gap-2">
                             <p>Your login name must be unique!</p>
-                            <app-floattextinput [(value)]="currentUser.loginName" label="Login Name" icon="pi-sign-in" />
+                            <app-floattextinput [(value)]="currentUser.loginName" [disabled]="!canWriteSelf" label="Login Name" icon="pi-sign-in" />
                         </div>
                     </p-fieldset>
                     <p-fieldset legend="General Information">
                         <div class="flex flex-col gap-2">
-                            <app-floattextinput [(value)]="currentUser.firstName" label="First Name" icon="pi-pencil" />
-                            <app-floattextinput [(value)]="currentUser.lastName" label="Last Name" icon="pi-pencil" />
+                            <app-floattextinput [(value)]="currentUser.firstName" [disabled]="!canWriteSelf" label="First Name" icon="pi-pencil" />
+                            <app-floattextinput [(value)]="currentUser.lastName" [disabled]="!canWriteSelf" label="Last Name" icon="pi-pencil" />
+                            <app-floattextinput [(value)]="currentUser.email" [disabled]="!canWriteSelf" label="E-Mail" icon="pi-envelope" />
                         </div>
                     </p-fieldset>
                 </div>
                 <ng-template #footer>
-                    <p-button label="Save" icon="pi pi-save" (click)="updateUser()" />
+                    <p-button label="Save" icon="pi pi-save" (click)="updateUser()" [hidden]="!canWriteSelf" />
                 </ng-template>
             </p-dialog>
         </div>
@@ -89,6 +91,9 @@ export class UserMenu {
     newPassword1: string = '';
     newPassword2: string = '';
 
+    canWriteSelf: boolean = PermissionHelpers.HasPermission(PermissionsTable.Core_Users_Own_Write);
+    isImpersonating: boolean = localStorage.getItem('impersonating') ? true : false;
+
     editProfileVisible: boolean = false;
     currentUser: UserModel = {} as UserModel;
 
@@ -99,9 +104,15 @@ export class UserMenu {
     ) {}
 
     ngOnInit() {
-        this.http.get<UserModel>(APIURL + Endpoints.Core.User.Get_GetUser).subscribe((r) => {
+        this.http.get<UserModel>(APIURL + Endpoints.Core.Users.Get_User + '?ID=' + JWTTokenHelpers.GetUserID()).subscribe((r) => {
             this.currentUser = r;
         });
+    }
+
+    logOut() {
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('perms');
+        this.router.navigate(['/']);
     }
 
     showChangePassword() {
@@ -118,11 +129,8 @@ export class UserMenu {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword1
         } as UpdatePasswordInput;
-        this.http.patch<UpdatePasswordInput>(APIURL + Endpoints.Core.User.Patch_UpdatePassword, input).subscribe(() => {
-            this.changePasswordVisible = false;
-            this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Password updated!' });
-            JWTTokenHelpers.ClearToken();
-            this.router.navigate(['/auth']);            
+        this.http.patch<UpdatePasswordInput>(APIURL + Endpoints.Core.Users.Patch_UpdatePassword, input).subscribe(() => {
+            this.router.navigate(['/platform/auth/login']);
         });
     }
 
@@ -131,7 +139,7 @@ export class UserMenu {
     }
 
     updateUser() {
-        this.http.patch<UserModel>(APIURL + Endpoints.Core.User.Patch_UpdateUser, this.currentUser).subscribe(() => {
+        this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser).subscribe(() => {
             this.editProfileVisible = false;
             this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Profile updated!' });
         });

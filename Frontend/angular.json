@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "feathertracker": {
+        "primengtemplate": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -80,16 +80,13 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "buildTarget": "feathertracker:build:production"
+                            "buildTarget": "primengtemplate:build:production"
                         },
                         "development": {
-                            "buildTarget": "feathertracker:build:development"
+                            "buildTarget": "primengtemplate:build:development"
                         }
                     },
-                    "defaultConfiguration": "development",
-                    "options": {
-                        "port": 4205
-                    }
+                    "defaultConfiguration": "development"
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n"

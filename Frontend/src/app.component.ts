@@ -11,6 +11,4 @@ import { ToastModule } from 'primeng/toast';
         <router-outlet></router-outlet>
     `
 })
-export class AppComponent {
-    
-}
+export class AppComponent {}

@@ -9,7 +9,15 @@ import { CommonModule } from '@angular/common';
     selector: 'app-footer',
     template: `<div class="layout-footer">
         Company Name © 2025
+        <p-tag severity="warn" value="Impersonating user" *ngIf="isImpersonating" />
     </div>`
 })
 export class AppFooter {
+    isStaff: boolean = false;
+    isImpersonating: boolean = false;
+
+    ngOnInit() {
+        this.isStaff = JWTTokenHelpers.IsStaff();
+        if (localStorage.getItem('impersonating')) this.isImpersonating = true;
+    }
 }
