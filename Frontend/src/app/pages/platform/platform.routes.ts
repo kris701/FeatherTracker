@@ -18,6 +18,5 @@ export default [
             { path: '', component: Dashboard },
             { path: 'core', loadChildren: () => import('./pages/core/core.routes') },
         ]
-    },
-    { path: '**', redirectTo: '/notfound' }
+    }
 ] as Routes;

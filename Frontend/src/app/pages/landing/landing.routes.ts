@@ -11,6 +11,5 @@ export default [
         children: [
             { path: '', component: LandingPage },
         ]
-    },
-    { path: '**', redirectTo: '/notfound' }
+    }
 ] as Routes;

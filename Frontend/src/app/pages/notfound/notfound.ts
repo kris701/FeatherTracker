@@ -24,7 +24,7 @@ import { LayoutService } from '../../layout/services/layout.service';
                         <span class="text-primary font-bold text-3xl">404</span>
                         <h1 class="font-bold text-3xl lg:text-5xl mb-2">Not Found</h1>
                         <div class="mb-8">Requested resource is not available.</div>
-                        <p-button label="Go to Dashboard" routerLink="/" />
+                        <p-button label="Go to Home page" routerLink="/" />
                     </div>
                 </div>
             </div>
