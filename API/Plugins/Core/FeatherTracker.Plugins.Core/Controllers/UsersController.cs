@@ -51,8 +51,36 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> Post_SignupUser([FromBody] SignupUserInput inputModel)
 		{
+			if (inputModel.LoginName == null || inputModel.LoginName == "" ||
+				inputModel.Password == null || inputModel.Password == "" ||
+				inputModel.FirstName == null || inputModel.FirstName == "" ||
+				inputModel.LastName == null || inputModel.LastName == "" ||
+				inputModel.Email == null || inputModel.Email == "" ||
+				!IsValidEmail(inputModel.Email))
+				return BadRequest("Input data was not valid!!");
+
 			var model = new SignupUserModel(_dbClient);
 			return Ok(await model.ExecuteAsync(inputModel));
+		}
+
+		// https://stackoverflow.com/a/1374644
+		bool IsValidEmail(string email)
+		{
+			var trimmedEmail = email.Trim();
+
+			if (trimmedEmail.EndsWith("."))
+			{
+				return false; // suggested by @TK-421
+			}
+			try
+			{
+				var addr = new System.Net.Mail.MailAddress(email);
+				return addr.Address == trimmedEmail;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		/// <summary>
