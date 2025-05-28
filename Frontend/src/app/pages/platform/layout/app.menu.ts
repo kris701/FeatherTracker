@@ -40,11 +40,18 @@ export class AppMenu {
                         routerLink: ['/platform/birds/editbirds'],
                         visible: PermissionHelpers.HasPermission(PermissionsTable.Birds_Read),
                         icon: 'pi pi-book'
+                    },
+                    {
+                        label: 'Weight Tracking',
+                        routerLink: ['/platform/birds/weighttracking'],
+                        visible: PermissionHelpers.HasPermission(PermissionsTable.Birds_Weight_Read),
+                        icon: 'pi pi-chart-line'
                     }
                 ]
             },
             {
                 label: 'Core',
+                visible: PermissionHelpers.HasPermission(PermissionsTable.Core_Users_Write),
                 items: [
                     {
                         label: 'Edit Users',

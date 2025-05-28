@@ -36,6 +36,7 @@ export const Endpoints = {
 			Post_AddBirdWeight: "endpoints/birds/weights",
 			Patch_UpdateBirdWeight: "endpoints/birds/weights",
 			Get_AllBirdWeights: "endpoints/birds/weights/all",
+			Get_GetDateRanges: "endpoints/birds/weights/ranges",
 			Get_BirdWeight: "endpoints/birds/weights",
 			Delete_BirdWeight: "endpoints/birds/weights",
 		},

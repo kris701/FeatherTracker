@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DatabaseSharp" Version="1.3.5" />
+    <PackageReference Include="DatabaseSharp" Version="1.3.6" />
     <PackageReference Include="Uni.API" Version="1.0.15" />
   </ItemGroup>
 

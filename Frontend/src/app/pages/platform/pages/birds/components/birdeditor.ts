@@ -64,17 +64,17 @@ import { DateHelpers } from '../../../../../helpers/dateHelpers';
                     </label>
                     <input type="file" id="imageselect" accept="image/*" style="display:none;" (change)="changeIcon($event)">
                     <div class="flex flex-col gap-2 w-full">
-                        <app-floattextinput [(value)]="currentBird.name" [disabled]="!canWrite" label="Name" icon="pi-sign-in" class="w-full"/>
+                        <app-floattextinput [(value)]="currentBird.name" [disabled]="!canWrite" label="Name" icon="pi-pen-to-square" class="w-full"/>
                         <app-floattextinput [(value)]="currentBird.type" [disabled]="!canWrite" label="Type" icon="pi-sign-in" class="w-full" />
                     </div>
                 </div>
-                <app-datepicker [(value)]="currentBird.birthDate" label="Birthday"/>
+                <app-datepicker [(value)]="currentBird.birthDate" label="Birthday" icon="pi-calendar"/>
                 <p-editor [(ngModel)]="currentBird.description" [style]="{ height: '150px' }" [readonly]="!canWrite" />
             </div>
             <ng-template #footer>
                 <p-button label="Save" icon="pi pi-save" (click)="saveBird()" [hidden]="!canWrite" />
                 <p-confirmdialog />
-                <p-button icon="pi pi-times" label="Delete" severity="danger" (click)="deleteBird(currentBird.id)" [hidden]="!canWrite"></p-button>
+                <p-button icon="pi pi-times" label="Delete" severity="danger" (click)="deleteBird(currentBird.id)" [hidden]="!canWrite || currentBird.id == ''"></p-button>
             </ng-template>
         </p-dialog>
     `

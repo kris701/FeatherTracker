@@ -18,9 +18,11 @@ namespace FeatherTracker.Plugins.Birds.Controllers
 	public class BirdWeightController : ControllerBase
 	{
 		private readonly BirdWeightsInterface _interface;
+		private readonly IDBClient _dbClient;
 
 		public BirdWeightController([FromKeyedServices(BirdsPlugin.DBClientKeyName)] IDBClient dbClient)
 		{
+			_dbClient = dbClient;
 			_interface = new BirdWeightsInterface(dbClient);
 		}
 
@@ -63,6 +65,20 @@ namespace FeatherTracker.Plugins.Birds.Controllers
 		{
 			User.SetExecID(inputModel);
 			return Ok(await _interface.getAllModel.ExecuteAsync(inputModel));
+		}
+
+		/// <summary>
+		/// Get the min and max dates for a given bird
+		/// </summary>
+		/// <returns></returns>
+		/// <response code="200">Returns the min and max dates</response>
+		[HttpGet(Endpoints.Birds.Weights.Get_GetDateRanges)]
+		[Authorize(Roles = PermissionsTable.Birds_Weight_Read)]
+		public async Task<IActionResult> Get_GetDateRanges([FromQuery] GetModel inputModel)
+		{
+			User.SetExecID(inputModel);
+			var model = new GetDateRangesModel(_dbClient);
+			return Ok(await model.ExecuteAsync(inputModel));
 		}
 
 		/// <summary>

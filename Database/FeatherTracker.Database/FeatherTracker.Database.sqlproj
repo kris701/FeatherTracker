@@ -112,6 +112,7 @@
     <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_GetAllBirdWeights.sql" />
     <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_GetBirdWeight.sql" />
     <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_UpdateBirdWeight.sql" />
+    <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_GetDateRanges.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FeatherTracker.Database.publish.xml" />

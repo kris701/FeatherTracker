@@ -36,6 +36,7 @@ public static class Endpoints {
 			public const string Post_AddBirdWeight = "endpoints/birds/weights";
 			public const string Patch_UpdateBirdWeight = "endpoints/birds/weights";
 			public const string Get_AllBirdWeights = "endpoints/birds/weights/all";
+			public const string Get_GetDateRanges = "endpoints/birds/weights/ranges";
 			public const string Get_BirdWeight = "endpoints/birds/weights";
 			public const string Delete_BirdWeight = "endpoints/birds/weights";
 		}
