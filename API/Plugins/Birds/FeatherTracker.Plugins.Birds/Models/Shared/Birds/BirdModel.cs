@@ -22,6 +22,8 @@ namespace FeatherTracker.Plugins.Birds.Models.Shared.Birds
 		[DatabaseSharp(ColumnName = "FK_UserID")]
 		[Required]
 		public Guid UserID { get; set; }
+		[Required]
+		public DateTime BirthDate { get; set; }
 
 		[DatabaseSharpIgnore(IgnoreAsFill = false)]
 		public DateTime CreatedAt { get; set; }

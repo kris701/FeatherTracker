@@ -14,17 +14,23 @@ import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { PermissionsTable } from '../../../../../PermissionsTable';
 import { PermissionHelpers } from '../../helpers/permissionHelpers';
+import { BirdEditor } from "./components/birdeditor";
 @Component({
-    selector: 'app-birds-editusers',
-    imports: [FormsModule, CommonModule, DialogModule, ButtonModule, FloatLabelModule, InputTextModule, MultiSelectModule, PasswordModule, TableModule, ChipModule, TooltipModule, ConfirmDialogModule, TagModule],
+    selector: 'app-birds-editbirds',
+    imports: [FormsModule, CommonModule, DialogModule, ButtonModule, FloatLabelModule, InputTextModule, MultiSelectModule, PasswordModule, TableModule, ChipModule, TooltipModule, ConfirmDialogModule, TagModule, BirdEditor],
     template: `
         <div class="card">
             <p>Here you can add and modify your birds.</p>
         </div>
         <div class="card">
-
+            <app-birds-components-birdeditor
+                [canRead]="canRead"
+                [canWrite]="canWrite"
+            />
         </div>
     `
 })
 export class BirdsEditBirds {
+    canRead: boolean = PermissionHelpers.HasPermission(PermissionsTable.Birds_Read);
+    canWrite: boolean = PermissionHelpers.HasPermission(PermissionsTable.Birds_Write);
 }

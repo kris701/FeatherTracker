@@ -3,10 +3,12 @@ CREATE PROCEDURE [BRD].[SP_AddBird]
 	@Name NVARCHAR(MAX),
 	@Description NVARCHAR(MAX),
 	@Type NVARCHAR(MAX),
-	@Icon NVARCHAR(MAX)
+	@Icon NVARCHAR(MAX),
+	@BirthDate DATETIME,
+	@UserID UNIQUEIDENTIFIER
 AS
 BEGIN TRANSACTION
 	DECLARE @ID UNIQUEIDENTIFIER = NEWID()
-	INSERT INTO [BRD].[Birds] VALUES (@ID, @Name, @Description, @Type, @Icon, @ExecID, GETUTCDATE(), NULL);
+	INSERT INTO [BRD].[Birds] VALUES (@ID, @Name, @Description, @Type, @Icon, @UserID, @BirthDate, GETUTCDATE(), NULL);
 	EXEC [BRD].[SP_GetBird] @ExecID, @ID
 COMMIT

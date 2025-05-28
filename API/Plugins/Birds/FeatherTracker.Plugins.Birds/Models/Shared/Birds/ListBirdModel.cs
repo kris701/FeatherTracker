@@ -10,9 +10,8 @@ namespace FeatherTracker.Plugins.Birds.Models.Shared.Birds
 		[JsonPropertyName("id")]
 		public Guid ID { get; set; }
 		public string Name { get; set; }
-		[Required]
 		public string Type { get; set; }
-		[Required]
 		public string Icon { get; set; }
+		public DateTime BirthDate { get; set; }
 	}
 }

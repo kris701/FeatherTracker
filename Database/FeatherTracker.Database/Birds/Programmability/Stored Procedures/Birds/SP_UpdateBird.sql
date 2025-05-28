@@ -4,7 +4,9 @@ CREATE PROCEDURE [BRD].[SP_UpdateBird]
 	@Name NVARCHAR(MAX),
 	@Description NVARCHAR(MAX),
 	@Type NVARCHAR(MAX),
-	@Icon NVARCHAR(MAX)
+	@Icon NVARCHAR(MAX),
+	@BirthDate DATETIME,
+	@UserID UNIQUEIDENTIFIER
 AS
 BEGIN TRANSACTION
 	UPDATE [BRD].[Birds] SET
@@ -12,7 +14,9 @@ BEGIN TRANSACTION
 		Description = @Description,
 		Type = @Type,
 		Icon = @Icon,
-		UpdatedAt = GETUTCDATE()
+		UpdatedAt = GETUTCDATE(),
+		FK_UserID = @UserID,
+		BirthDate = @BirthDate
 			WHERE PK_ID = @ID
 	EXEC [BRD].[SP_GetBird] @ExecID, @ID
 COMMIT

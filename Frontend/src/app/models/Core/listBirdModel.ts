@@ -3,4 +3,5 @@ export interface ListBirdModel {
     name: string;
     type: string;
     icon: string;
+    birthDate: string | Date;
 }

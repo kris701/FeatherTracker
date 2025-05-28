@@ -6,4 +6,5 @@ export interface AddBirdInput extends BaseExecIDModel {
     type: string;
     icon: string;
     userID: string;
+    birthDate: string | Date;
 }

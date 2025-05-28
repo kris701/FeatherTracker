@@ -15,5 +15,7 @@ namespace FeatherTracker.Plugins.Birds.Models.Shared.Birds
 		public string Icon { get; set; }
 		[Required]
 		public Guid UserID { get; set; }
+		[Required]
+		public DateTime BirthDate { get; set; }
 	}
 }
