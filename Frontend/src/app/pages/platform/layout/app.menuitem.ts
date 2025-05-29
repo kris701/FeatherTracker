@@ -26,7 +26,7 @@ import { LayoutService } from '../../../layout/services/layout.service';
                 [ngClass]="item.styleClass"
                 [routerLink]="item.routerLink"
                 routerLinkActive="active-route"
-                [routerLinkActiveOptions]="item.routerLinkActiveOptions || { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+                [routerLinkActiveOptions]="item.routerLinkActiveOptions || { paths: 'exact', queryParams: 'exact', matrixParams: 'ignored', fragment: 'ignored' }"
                 [fragment]="item.fragment"
                 [queryParamsHandling]="item.queryParamsHandling"
                 [preserveFragment]="item.preserveFragment"
@@ -78,7 +78,7 @@ export class AppMenuitem {
 
     @Input() parentKey!: string;
 
-    active = false;
+    active = true;
 
     menuSourceSubscription: Subscription;
 
@@ -122,7 +122,7 @@ export class AppMenuitem {
     }
 
     updateActiveStateFromRoute() {
-        let activeRoute = this.router.isActive(this.item.routerLink[0], { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' });
+        let activeRoute = this.router.isActive(this.item.routerLink[0], { paths: 'exact', queryParams: 'exact', matrixParams: 'ignored', fragment: 'ignored' });
 
         if (activeRoute) {
             this.layoutService.onMenuStateChange({ key: this.key, routeEvent: true });

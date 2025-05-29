@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { PermissionHelpers } from '../helpers/permissionHelpers';
 import { PermissionsTable } from '../../../../PermissionsTable';
 import { AppMenuitem } from './app.menuitem';
+import { HttpClient } from '@angular/common/http';
+import { ListBirdModel } from '../../../models/Core/listBirdModel';
+import { APIURL } from '../../../../globals';
+import { Endpoints } from '../../../../Endpoints';
 
 @Component({
     selector: 'app-menu',
@@ -17,10 +21,39 @@ import { AppMenuitem } from './app.menuitem';
         </ng-container>
     </ul> `
 })
+
 export class AppMenu {
     model: MenuItem[] = [];
+    editBirdNode : MenuItem = {} as MenuItem;
+    editBirdAddNode : MenuItem = {} as MenuItem;
+    birdWeightNode : MenuItem = {} as MenuItem;
+    lastUpdate : Date = new Date(-8640000000000000);
 
-    ngOnInit() {
+    constructor(
+        private http: HttpClient
+    ) {
+        this.editBirdAddNode = {
+            id: 'addnode',
+            label: 'Add Bird',
+            icon: 'pi pi-plus',
+            routerLink: ['/platform/birds/editbirds'],
+            queryParams: {'add':'true'},
+            visible: PermissionHelpers.HasPermission(PermissionsTable.Birds_Write)
+        } as MenuItem
+        this.editBirdNode  = {
+            label: "Edit birds",
+            icon: 'pi pi-book',
+            items: [
+                this.editBirdAddNode
+            ]
+        } as MenuItem;
+
+        this.birdWeightNode  = {
+            label: "Weight Tracking",
+            icon: 'pi pi-chart-line',
+            items: []
+        } as MenuItem;
+
         this.model = [
             {
                 label: 'Home',
@@ -35,18 +68,8 @@ export class AppMenu {
             {
                 label: 'Birds',
                 items: [
-                    {
-                        label: 'Edit Birds',
-                        routerLink: ['/platform/birds/editbirds'],
-                        visible: PermissionHelpers.HasPermission(PermissionsTable.Birds_Read),
-                        icon: 'pi pi-book'
-                    },
-                    {
-                        label: 'Weight Tracking',
-                        routerLink: ['/platform/birds/weighttracking'],
-                        visible: PermissionHelpers.HasPermission(PermissionsTable.Birds_Weight_Read),
-                        icon: 'pi pi-chart-line'
-                    }
+                    this.editBirdNode,
+                    this.birdWeightNode
                 ]
             },
             {
@@ -62,5 +85,38 @@ export class AppMenu {
                 ]
             }
         ];
+        setInterval(() => {this.loadBirds();}, 5000);
+    }
+
+    ngOnInit() {
+        this.loadBirds();
+    }
+
+    public loadBirds(){
+        this.http.get<ListBirdModel[]>(APIURL + Endpoints.Birds.Get_AllBirds).subscribe((l) => {
+            var newest = l.map(x => new Date(<Date>x.updatedAt)).reduce((a,b) => new Date(Math.max(a.getTime(), b.getTime())))
+
+            if (newest > this.lastUpdate){
+                this.editBirdNode.items = [];
+                this.birdWeightNode.items = [];
+                this.editBirdNode.items?.push(this.editBirdAddNode);
+                l.forEach(b => {
+                    this.editBirdNode.items?.push({
+                        key: b.id,
+                        label: b.name,
+                        routerLink: ['/platform/birds/editbirds'],
+                        queryParams: {'id':b.id}
+                    })
+                    this.birdWeightNode.items?.push({
+                        key: b.id,
+                        label: b.name,
+                        routerLink: ['/platform/birds/weighttracking'],
+                        queryParams: {'id':b.id}
+                    })
+                })
+                this.model = [...this.model]
+                this.lastUpdate = newest;
+            }
+        });
     }
 }

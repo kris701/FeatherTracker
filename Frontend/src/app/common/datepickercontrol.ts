@@ -27,6 +27,8 @@ import { IconFieldModule } from 'primeng/iconfield';
                     fluid
                     appendTo="body"
                     (ngModelChange)="valueChanged()"
+                    [minDate]="min"
+                    [maxDate]="max"
                 />
                 <p-inputicon styleClass="pi pi-times" class="cursor-pointer" *ngIf="showClear && value != null" style="z-index:1" (click)="value = null; valueChanged()" />
             </p-iconfield>
@@ -43,6 +45,9 @@ export class DatePickerControl implements OnChanges {
     @Input() label: string = '';
     @Input() value: string | Date | null = null;
     @Output() valueChange = new EventEmitter<string | Date | null>();
+
+    @Input() min: Date | null = null;
+    @Input() max: Date | null = null;
 
     isValid: boolean = true;
 

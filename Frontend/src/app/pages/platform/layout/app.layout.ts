@@ -10,6 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { AppVersion } from './app.version';
 import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
+import { AppMenu } from './app.menu';
 
 @Component({
     selector: 'app-layout',

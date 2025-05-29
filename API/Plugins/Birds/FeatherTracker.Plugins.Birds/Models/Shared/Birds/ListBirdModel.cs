@@ -13,5 +13,6 @@ namespace FeatherTracker.Plugins.Birds.Models.Shared.Birds
 		public string Type { get; set; }
 		public string Icon { get; set; }
 		public DateTime BirthDate { get; set; }
+		public DateTime? UpdatedAt { get; set; }
 	}
 }

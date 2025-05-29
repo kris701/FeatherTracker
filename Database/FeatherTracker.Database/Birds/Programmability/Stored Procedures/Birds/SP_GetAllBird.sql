@@ -2,5 +2,5 @@ CREATE PROCEDURE [BRD].[SP_GetAllBirds]
 	@ExecID UNIQUEIDENTIFIER
 AS
 BEGIN TRANSACTION
-	SELECT PK_ID, Name, Type, Icon, BirthDate FROM [BRD].[Birds] WHERE FK_UserID = @ExecID
+	SELECT PK_ID, Name, Type, Icon, BirthDate, UpdatedAt FROM [BRD].[Birds] WHERE FK_UserID = @ExecID
 COMMIT

@@ -4,5 +4,5 @@ CREATE PROCEDURE [BRD].[SP_GetDateRanges]
 AS
 BEGIN
 	SELECT COALESCE(MIN(Timestamp), '2025-01-01') AS Oldest FROM [BRD].[BirdWeights] WHERE FK_BirdID = @ID
-	SELECT COALESCE(MIN(Timestamp), '2025-01-01') AS Newest FROM [BRD].[BirdWeights] WHERE FK_BirdID = @ID
+	SELECT COALESCE(MAX(Timestamp), '2025-01-01') AS Newest FROM [BRD].[BirdWeights] WHERE FK_BirdID = @ID
 END
