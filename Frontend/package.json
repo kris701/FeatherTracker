@@ -20,6 +20,7 @@
         "@auth0/angular-jwt": "^5.2.0",
         "@primeng/themes": "^19.0.5",
         "chart.js": "4.4.2",
+        "chartjs-plugin-zoom": "^2.2.0",
         "file-saver": "^2.0.5",
         "jwt-decode": "^4.0.0",
         "primeclt": "^0.1.5",

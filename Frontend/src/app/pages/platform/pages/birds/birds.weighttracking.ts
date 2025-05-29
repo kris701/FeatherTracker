@@ -34,6 +34,10 @@ import saveAs from 'file-saver';
 import { PurgeBirdWeightsInput } from '../../../../models/Core/purgeBirdWeightsInput';
 import { MenubarModule } from 'primeng/menubar';
 import { InputNumberModule } from 'primeng/inputnumber';
+import zoomPlugin from 'chartjs-plugin-zoom';
+import { Chart } from 'chart.js';
+import { min, repeat } from 'rxjs';
+Chart.register(zoomPlugin);
 
 @Component({
     selector: 'app-birds-weighttracking',
@@ -66,17 +70,30 @@ import { InputNumberModule } from 'primeng/inputnumber';
                     <div class="font-semibold text-xl mb-4">Historical Weight</div>
                     <p>You can click on individual points to edit them.</p>
                     <p-chart type="line" [data]="chartData" [options]="chartOptions" (onDataSelect)="selectDatapoint($event)"/>
-                    <p-floatlabel>
-                        <p-inputnumber inputId="over_label" [(ngModel)]="currentStandardDeviation" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="0.25" (ngModelChange)="processGraph()" [min]="0.1">
-                            <ng-template #incrementbuttonicon>
-                                <span class="pi pi-plus"></span>
-                            </ng-template>
-                            <ng-template #decrementbuttonicon>
-                                <span class="pi pi-minus"></span>
-                            </ng-template>
-                        </p-inputnumber>
-                        <label for="over_label">Standard deviation</label>
-                    </p-floatlabel>
+                    <div class="flex flex-row gap-2 pt-5">
+                        <p-floatlabel class="w-full">
+                            <p-inputnumber inputId="stddevlabel" [(ngModel)]="currentStandardDeviation" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="0.25" (ngModelChange)="processGraph()" [min]="0.1" class="w-full">
+                                <ng-template #incrementbuttonicon>
+                                    <span class="pi pi-plus"></span>
+                                </ng-template>
+                                <ng-template #decrementbuttonicon>
+                                    <span class="pi pi-minus"></span>
+                                </ng-template>
+                            </p-inputnumber>
+                            <label for="stddevlabel">Standard deviation</label>
+                        </p-floatlabel>
+                        <p-floatlabel class="w-full">
+                            <p-inputnumber inputId="paddinglabel" [(ngModel)]="padding" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" (ngModelChange)="processGraph()" [min]="0" class="w-full">
+                                <ng-template #incrementbuttonicon>
+                                    <span class="pi pi-plus"></span>
+                                </ng-template>
+                                <ng-template #decrementbuttonicon>
+                                    <span class="pi pi-minus"></span>
+                                </ng-template>
+                            </p-inputnumber>
+                            <label for="paddinglabel">Min/Max padding</label>
+                        </p-floatlabel>
+                    </div>
                 </div>
             </div>
         </div>
@@ -148,6 +165,7 @@ export class BirdsWeightTracking {
     showBirdWeightDialog : boolean = false;
 
     currentStandardDeviation : number = 2;
+    padding : number = 5;
 
     route = inject(ActivatedRoute);
     loadedQueryOnce: boolean = false;
@@ -157,42 +175,6 @@ export class BirdsWeightTracking {
         private confirmationService: ConfirmationService,
         private router: Router
     ) {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--p-text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
-        const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
-        this.chartOptions = {
-            scales:{
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: textColorSecondary,
-                        drawBorder: false
-                    },
-                    title:{
-                        text:"Date",
-                        display:true,
-                        color:textColor
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: textColorSecondary,
-                        drawBorder: false
-                    },
-                    title:{
-                        text:"Grams",
-                        display:true,
-                        color:textColor
-                    }
-                }
-            }
-        };
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd){
                 this.loadedQueryOnce = false;
@@ -242,6 +224,10 @@ export class BirdsWeightTracking {
 
     processGraph(){
         const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--p-text-color');
+        const redColor = documentStyle.getPropertyValue('--p-red-300');
+        const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
+        const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
         var avg = this.getAvgWeight();
         var pointColors : any[] = []
         this.allWeights.forEach(p => {
@@ -250,7 +236,55 @@ export class BirdsWeightTracking {
             var percentile = 1 * Math.exp(-((Math.abs(p.grams - avg)^2)/(2 * this.currentStandardDeviation^2)));
             pointColors.push('rgb(' + red * (1 - percentile) + ', ' + green * percentile + ', 0)')
         })
-
+        this.chartOptions = {
+            scales:{
+                x: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: textColorSecondary,
+                        drawBorder: false
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: textColorSecondary,
+                        drawBorder: false
+                    },
+                    title:{
+                        text:"Grams",
+                        display:true,
+                        color:textColorSecondary
+                    },
+                    min: this.getMinWeight() - this.padding,
+                    max: this.getMaxWeight() + this.padding
+                }
+            },
+            plugins: {
+                zoom: {
+                    zoom: {
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'x',
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                    },
+                },
+                legend:{
+                    display:false
+                }
+            }
+        };
         this.chartData = {
             labels: this.allWeights.map(x => formatDate(x.timestamp, 'dd-MMM-YYYY','en-US')),
             datasets: [
@@ -262,6 +296,20 @@ export class BirdsWeightTracking {
                     tension: 0.4,
                     pointRadius: 10,
                     pointHoverRadius: 15
+                },
+                {
+                    label: "Max",
+                    data: Array(this.allWeights.length).fill(this.getMaxWeight()),
+                    borderColor: redColor,
+                    pointStyle: false,
+                    borderDash: [2,5]
+                },
+                {
+                    label: "Min",
+                    data: Array(this.allWeights.length).fill(this.getMinWeight()),
+                    borderColor: redColor,
+                    pointStyle: false,
+                    borderDash: [2,5]
                 }
             ]
         }
@@ -316,7 +364,7 @@ export class BirdsWeightTracking {
     }
 
     selectDatapoint(event : Event){
-        if ('element' in event && 'index' in <any>event.element){
+        if ('element' in event && 'index' in <any>event.element && 'datasetIndex' in <any>event.element && (<any>event.element).datasetIndex == 0){
             this.currentBirdWeight = this.allWeights[<number>(<any>event.element).index];
             this.showBirdWeightDialog = true;
         }
