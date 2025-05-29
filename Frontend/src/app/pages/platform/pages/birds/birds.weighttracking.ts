@@ -1,5 +1,5 @@
 import { CommonModule, formatDate } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
@@ -20,7 +20,7 @@ import { HttpClient } from '@angular/common/http';
 import { APIURL } from '../../../../../globals';
 import { Endpoints } from '../../../../../Endpoints';
 import { FloatSelectControl } from "../../../../common/floatselectcontrol";
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, MenuItem } from 'primeng/api';
 import { BirdWeightModel } from '../../../../models/Core/birdWeightModel';
 import { GetDateRangesOutput } from '../../../../models/Core/getDateRangesOutput';
 import { ConfirmDialogHelpers } from '../../helpers/confirmdialoghelpers';
@@ -30,18 +30,23 @@ import { DatePickerControl } from '../../../../common/datepickercontrol';
 import { FloatNumberInput } from '../../../../common/floatnumberinput';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import saveAs from 'file-saver';
+import { PurgeBirdWeightsInput } from '../../../../models/Core/purgeBirdWeightsInput';
+import { MenubarModule } from 'primeng/menubar';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
     selector: 'app-birds-weighttracking',
-    imports: [FormsModule, CommonModule, DialogModule, ButtonModule, FloatLabelModule, InputTextModule, MultiSelectModule, PasswordModule, TableModule, ChipModule, TooltipModule, ConfirmDialogModule, TagModule, ChartModule, FloatNumberInput, DatePickerControl, ProgressSpinnerModule],
+    imports: [FormsModule, CommonModule, DialogModule, ButtonModule, FloatLabelModule, InputTextModule, MultiSelectModule, PasswordModule, TableModule, ChipModule, TooltipModule, ConfirmDialogModule, TagModule, ChartModule, FloatNumberInput, DatePickerControl, ProgressSpinnerModule, MenubarModule, InputNumberModule],
     template: `
-        <div class="card flex flex-col gap-2">
-            <p>Here you can track your birds weight.</p>
-            <p-button icon="pi pi-plus" label="Add Weight Log" rounded raised (click)="showAddWeightLog()" [hidden]="!canWrite" fluid [disabled]="isLoading"/>
-        </div>
-        <div class="card flex flex-row gap-2">
-            <app-datepicker [(value)]="currentMinDate" label="From Date" class="w-full" (valueChange)="loadWeightsWithin()" [min]="minDate" [max]="currentMaxDate" [disabled]="isLoading"/>
-            <app-datepicker [(value)]="currentMaxDate" label="To Date" class="w-full" (valueChange)="loadWeightsWithin()" [min]="currentMinDate" [max]="maxDate" [disabled]="isLoading"/>
+        <p-confirmdialog />
+        <div class="card flex flex-col gap-3">
+            <p-menubar [model]="menuItems" />
+            <input #importinput type='file' accept='.csv' multiple (change)='importLogs($event)' style="display:none;">
+            <div class="flex flex-row gap-2">
+                <app-datepicker [(value)]="currentMinDate" label="From Date" class="w-full" (valueChange)="loadWeightsWithin()" [min]="minDate" [max]="currentMaxDate" [disabled]="isLoading"/>
+                <app-datepicker [(value)]="currentMaxDate" label="To Date" class="w-full" (valueChange)="loadWeightsWithin()" [min]="currentMinDate" [max]="maxDate" [disabled]="isLoading"/>
+            </div>
         </div>
 
         <div class="flex flex-col gap-2 p-2">                
@@ -61,6 +66,17 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
                     <div class="font-semibold text-xl mb-4">Historical Weight</div>
                     <p>You can click on individual points to edit them.</p>
                     <p-chart type="line" [data]="chartData" [options]="chartOptions" (onDataSelect)="selectDatapoint($event)"/>
+                    <p-floatlabel>
+                        <p-inputnumber inputId="over_label" [(ngModel)]="currentStandardDeviation" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="0.25" (ngModelChange)="processGraph()" [min]="0.1">
+                            <ng-template #incrementbuttonicon>
+                                <span class="pi pi-plus"></span>
+                            </ng-template>
+                            <ng-template #decrementbuttonicon>
+                                <span class="pi pi-minus"></span>
+                            </ng-template>
+                        </p-inputnumber>
+                        <label for="over_label">Standard deviation</label>
+                    </p-floatlabel>
                 </div>
             </div>
         </div>
@@ -72,7 +88,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
             </div>
             <ng-template #footer>
                 <p-button label="Save" icon="pi pi-save" (click)="saveBirdWeight()" [hidden]="!canWrite" />
-                <p-confirmdialog />
                 <p-button icon="pi pi-times" label="Delete" severity="danger" (click)="deleteBirdWeight(currentBirdWeight.id)" [hidden]="!canWrite || currentBirdWeight.id == ''"></p-button>
             </ng-template>
         </p-dialog>
@@ -81,6 +96,39 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 export class BirdsWeightTracking {
     canRead: boolean = PermissionHelpers.HasPermission(PermissionsTable.Birds_Weight_Read);
     canWrite: boolean = PermissionHelpers.HasPermission(PermissionsTable.Birds_Weight_Write);
+    @ViewChild('importinput') inputFile!: ElementRef;
+
+    menuItems : MenuItem[] = [
+        {
+            icon:"pi pi-refresh",
+            command: () => this.loadWeights()
+        },
+        {
+            label:"Add Weight Log",
+            icon:"pi pi-plus",
+            command: () => this.showAddWeightLog()
+        },
+        {
+            label:"Data Management",
+            items: [
+                {
+                    label:"Import Logs",
+                    icon:"pi pi-file-import",
+                    command: () => this.inputFile.nativeElement.click()
+                },
+                {
+                    label:"Export Logs",
+                    icon:"pi pi-file-export",
+                    command: () => this.exportLogs()
+                },
+                {
+                    label:"Purge",
+                    icon:"pi pi-trash",
+                    command: () => this.purgeLogs()
+                },
+            ]
+        }
+    ]
 
     allBirds: ListBirdModel[] = [];
     currentBird: ListBirdModel = {} as ListBirdModel;
@@ -98,6 +146,8 @@ export class BirdsWeightTracking {
 
     currentBirdWeight : BirdWeightModel = {} as BirdWeightModel
     showBirdWeightDialog : boolean = false;
+
+    currentStandardDeviation : number = 2;
 
     route = inject(ActivatedRoute);
     loadedQueryOnce: boolean = false;
@@ -181,41 +231,40 @@ export class BirdsWeightTracking {
 
     loadWeightsWithin(){
         this.isLoading = true;
-        const documentStyle = getComputedStyle(document.documentElement);
         this.allWeights = []
         this.http.get<BirdWeightModel[]>(APIURL + Endpoints.Birds.Weights.Get_AllBirdWeights + "?BirdID=" + this.currentBird.id + "&From=" + this.currentMinDate.toISOString() + "&To=" + this.currentMaxDate.toISOString()).subscribe(r => {
             r.forEach(b => b.timestamp = new Date(<Date>b.timestamp))
             this.allWeights = r;
-
-            var avg = this.getAvgWeight();
-            var min = this.getMinWeight();
-            var max = this.getMaxWeight();
-            var pointColors : any[] = []
-            this.allWeights.forEach(p => {
-                var green = 255;
-                if (p.grams > avg)
-                    green = green * (avg / p.grams);
-                else
-                    green = green * (p.grams / avg);
-                pointColors.push('rgb(' + (255 - green) + ', ' + green + ', 0)')
-            })
-
-            this.chartData = {
-                labels: this.allWeights.map(x => formatDate(x.timestamp, 'dd-MMM-YYYY','en-US')),
-                datasets: [
-                    {
-                        label: "Weight (Grams)",
-                        data: this.allWeights.map(x => x.grams),
-                        borderColor: documentStyle.getPropertyValue('--p-primary-color'),
-                        pointBorderColor: pointColors,
-                        tension: 0.4,
-                        pointRadius: 10,
-                        pointHoverRadius: 15
-                    }
-                ]
-            }
+            this.processGraph();
             this.isLoading = false;
         })
+    }
+
+    processGraph(){
+        const documentStyle = getComputedStyle(document.documentElement);
+        var avg = this.getAvgWeight();
+        var pointColors : any[] = []
+        this.allWeights.forEach(p => {
+            var green = 255;
+            var red = 255;
+            var percentile = 1 * Math.exp(-((Math.abs(p.grams - avg)^2)/(2 * this.currentStandardDeviation^2)));
+            pointColors.push('rgb(' + red * (1 - percentile) + ', ' + green * percentile + ', 0)')
+        })
+
+        this.chartData = {
+            labels: this.allWeights.map(x => formatDate(x.timestamp, 'dd-MMM-YYYY','en-US')),
+            datasets: [
+                {
+                    label: "Weight (Grams)",
+                    data: this.allWeights.map(x => x.grams),
+                    borderColor: documentStyle.getPropertyValue('--p-primary-color'),
+                    pointBorderColor: pointColors,
+                    tension: 0.4,
+                    pointRadius: 10,
+                    pointHoverRadius: 15
+                }
+            ]
+        }
     }
 
     showAddWeightLog(){
@@ -301,5 +350,50 @@ export class BirdsWeightTracking {
         var sum = 0;
         this.allWeights.forEach(l => sum += l.grams)
         return Math.round(sum / this.allWeights.length);
+    }
+
+    exportLogs(){
+        this.isLoading = true;
+        var content = "timestamp,grams\n";
+        this.allWeights.forEach(w => {
+            content += new Date(<Date>w.timestamp).toISOString() + "," + w.grams + "\n";
+        });
+        var data : Blob = new Blob(
+            [content], {
+            type: 'text/plain'
+        });
+        saveAs(data, "Feather Tracker Export " + new Date().toISOString() + ".csv")
+        this.isLoading = false;
+    }
+
+    importLogs(event : Event){
+        if (confirm("Are you sure you want to import data? This will simply merge it with all the existing data for this bird.")){
+            this.isLoading = true;
+            let input = <any>event.target;
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+            this.http.post(APIURL + Endpoints.Birds.Weights.Post_ImportWeights + "?BirdID=" + this.currentBird.id, formData).subscribe(r => {
+                this.isLoading = false;
+                input.value = null
+                this.loadWeights();
+            });
+        }
+    }
+
+    purgeLogs(){
+        this.confirmationService.confirm({
+            ...ConfirmDialogHelpers.DeleteContent(),
+            message: 'Are you sure you want to delete all ' + this.allWeights.length + ' logs for this period? This action can not be reverted!',
+            accept: () => {
+                this.isLoading = true;
+                var input = {
+                    iDs: this.allWeights.map(x => x.id)
+                } as PurgeBirdWeightsInput
+                this.http.patch(APIURL + Endpoints.Birds.Weights.Patch_PurgeBirdWeights, input).subscribe(() => {
+                    this.isLoading = false;                
+                    this.loadWeights();
+                });
+            }
+        });
     }
 }

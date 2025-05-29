@@ -116,6 +116,14 @@
               {
                 "Name": "Delete_BirdWeight",
                 "Route": ""
+              },
+              {
+                "Name": "Patch_PurgeBirdWeights",
+                "Route": "purge"
+              },
+              {
+                "Name": "Post_ImportWeights",
+                "Route": "import"
               }
             ]
           }

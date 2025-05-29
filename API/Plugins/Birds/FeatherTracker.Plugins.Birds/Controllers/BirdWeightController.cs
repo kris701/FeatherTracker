@@ -4,8 +4,12 @@ using FeatherTracker.API.Tools.Helpers;
 using FeatherTracker.Plugins.Birds.DatabaseInterfaces.BirdWeights;
 using FeatherTracker.Plugins.Birds.Models.Shared.BirdWeights;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace FeatherTracker.Plugins.Birds.Controllers
 {
@@ -107,6 +111,66 @@ namespace FeatherTracker.Plugins.Birds.Controllers
 		{
 			User.SetExecID(inputModel);
 			return Ok(await _interface.deleteModel.ExecuteAsync(inputModel));
+		}
+
+		/// <summary>
+		/// Deletes a set of weight logs
+		/// </summary>
+		/// <param name="inputModel"></param>
+		/// <returns></returns>
+		/// <response code="200">If successful</response>
+		[HttpPatch(Endpoints.Birds.Weights.Patch_PurgeBirdWeights)]
+		[Authorize(Roles = PermissionsTable.Birds_Weight_Write)]
+		public async Task<IActionResult> Patch_PurgeBirdWeights([FromBody] PurgeBirdWeightsInput inputModel)
+		{
+			User.SetExecID(inputModel);
+			var model = new PurgeBirdWeightsModel(_dbClient);
+			return Ok(await model.ExecuteAsync(inputModel));
+		}
+
+		/// <summary>
+		/// Imports a CSV file with weights
+		/// </summary>
+		/// <returns></returns>
+		/// <response code="200">If successful</response>
+		[HttpPost(Endpoints.Birds.Weights.Post_ImportWeights)]
+		[Authorize(Roles = PermissionsTable.Birds_Weight_Write)]
+		public async Task<IActionResult> Post_ImportWeights([Required] IFormFile file, [FromQuery] Guid BirdID)
+		{
+			using (StreamReader str = new StreamReader(file.OpenReadStream()))
+			{
+				var text = str.ReadToEnd();
+				text = text.Replace("\r\n","\n");
+				var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+				if (lines.Length > 0)
+				{
+					var timestampColumnIndex = 0;
+					var gramsColumnIndex = 1;
+					var lineOffset = 0;
+					if (lines[0].ToUpper().Contains("TIMESTAMP"))
+					{
+						var split = lines[0].ToUpper().Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+						timestampColumnIndex = split.IndexOf("TIMESTAMP");
+						gramsColumnIndex = split.IndexOf("GRAMS");
+						lineOffset++;
+					}
+					foreach (var line in lines.Skip(lineOffset))
+					{
+						var split = line.Split(',', StringSplitOptions.RemoveEmptyEntries);
+						var timestamp = DateTime.Parse(split[timestampColumnIndex]);
+						var grams = int.Parse(split[gramsColumnIndex]);
+						await _interface.addModel.ExecuteAsync(new AddBirdWeightInput()
+						{
+							BirdID = BirdID,
+							ExecID = User.GetExecID(),
+							Grams = grams,
+							Timestamp = timestamp
+						});
+					}
+				}
+
+				return Ok();
+			}
 		}
 	}
 }
