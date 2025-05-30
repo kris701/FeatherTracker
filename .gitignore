@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Output
+
+/API/FeatherTracker.API/configuration.json
