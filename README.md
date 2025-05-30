@@ -7,6 +7,8 @@ Currently, thats basically all it does, however i might extend it in the future.
 
 Feel free to use [the website](https://feathertracker.dk) im hosting for this project.
 
+The icon is from [Pictogrammers](https://pictogrammers.com/).
+
 ## Implementation Details
 
 The tech-stack is:

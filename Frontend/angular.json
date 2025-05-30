@@ -33,6 +33,10 @@
                             {
                                 "glob": "src/assets/images/**",
                                 "input": "."
+                            },
+                            {
+                                "glob": "src/assets/showcaseimages/**",
+                                "input": "."
                             }
                         ],
                         "styles": [
