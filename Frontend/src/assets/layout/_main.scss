@@ -12,10 +12,24 @@
     padding-bottom: 2rem;
 }
 
-.dashboardwrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-auto-flow: dense;
+@media (min-width: 900px){
+    .dashboardwrapper2col {
+        grid-column:span 2
+    }
+}
+@media (max-width: 900px){
+    .dashboardwrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-auto-flow: dense;
+    }
+}
+@media (min-width: 900px){
+    .dashboardwrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-auto-flow: dense;
+    }
 }
 
 .dashboardwrapper > * {

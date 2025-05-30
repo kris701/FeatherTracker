@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule],
     template: `
         <div class="card">
-            Dashboard
+            Welcome to Feather Tracker!
         </div>
     `
 })

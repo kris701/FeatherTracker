@@ -14,17 +14,14 @@ import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { PermissionsTable } from '../../../../../PermissionsTable';
 import { PermissionHelpers } from '../../helpers/permissionHelpers';
-import { ListBirdModel } from '../../../../models/Core/listBirdModel';
 import { BirdModel } from '../../../../models/Core/birdModel';
 import { HttpClient } from '@angular/common/http';
 import { APIURL } from '../../../../../globals';
 import { Endpoints } from '../../../../../Endpoints';
-import { FloatSelectControl } from "../../../../common/floatselectcontrol";
 import { MessageService, ConfirmationService, MenuItem } from 'primeng/api';
 import { BirdWeightModel } from '../../../../models/Core/birdWeightModel';
 import { GetDateRangesOutput } from '../../../../models/Core/getDateRangesOutput';
 import { ConfirmDialogHelpers } from '../../helpers/confirmdialoghelpers';
-import { FloatTextInput } from '../../../../common/floattextinput';
 import { ChartModule } from 'primeng/chart';
 import { DatePickerControl } from '../../../../common/datepickercontrol';
 import { FloatNumberInput } from '../../../../common/floatnumberinput';
@@ -36,12 +33,13 @@ import { MenubarModule } from 'primeng/menubar';
 import { InputNumberModule } from 'primeng/inputnumber';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { Chart } from 'chart.js';
-import { min, repeat } from 'rxjs';
 Chart.register(zoomPlugin);
+import { MenuModule } from 'primeng/menu';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
     selector: 'app-birds-weighttracking',
-    imports: [FormsModule, CommonModule, DialogModule, ButtonModule, FloatLabelModule, InputTextModule, MultiSelectModule, PasswordModule, TableModule, ChipModule, TooltipModule, ConfirmDialogModule, TagModule, ChartModule, FloatNumberInput, DatePickerControl, ProgressSpinnerModule, MenubarModule, InputNumberModule],
+    imports: [FormsModule, CommonModule, DialogModule, ButtonModule, FloatLabelModule, InputTextModule, MultiSelectModule, PasswordModule, TableModule, ChipModule, TooltipModule, ConfirmDialogModule, TagModule, ChartModule, FloatNumberInput, DatePickerControl, ProgressSpinnerModule, MenubarModule, InputNumberModule, MenuModule, DividerModule],
     template: `
         <p-confirmdialog />
         <div class="card flex flex-col gap-3">
@@ -53,6 +51,8 @@ Chart.register(zoomPlugin);
             </div>
         </div>
 
+        <p-divider/>
+
         <div class="flex flex-col gap-2 p-2">                
             <p-tag severity="warn" *ngIf="!isLoading && allWeights.length == 0">No data to show!</p-tag>
             <p-progress-spinner *ngIf="isLoading"/>
@@ -61,39 +61,58 @@ Chart.register(zoomPlugin);
             <div>
                 <div class="card">
                     <div class="font-semibold text-xl mb-4">General</div>
+                    <div class="font-semibold text-l mb-4"><b>{{allWeights.length}} datapoints</b></div>
                     <div class="font-semibold text-l mb-4">Highest weight: <b>{{getMaxWeight()}}g</b></div>
                     <div class="font-semibold text-l mb-4">Lowest weight: <b>{{getMinWeight()}}g</b></div>
                     <div class="font-semibold text-l mb-4">Average weight: <b>{{getAvgWeight()}}g</b></div>
-                    
                 </div>
-                <div class="card" style="grid-column:span 2">
+            </div>
+            <div>
+                <div class="card dashboardwrapper2col">
                     <div class="font-semibold text-xl mb-4">Historical Weight</div>
-                    <p>You can click on individual points to edit them.</p>
-                    <p-chart type="line" [data]="chartData" [options]="chartOptions" (onDataSelect)="selectDatapoint($event)"/>
-                    <div class="flex flex-row gap-2 pt-5">
-                        <p-floatlabel class="w-full">
-                            <p-inputnumber inputId="stddevlabel" [(ngModel)]="currentStandardDeviation" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="0.25" (ngModelChange)="processGraph()" [min]="0.1" class="w-full">
-                                <ng-template #incrementbuttonicon>
-                                    <span class="pi pi-plus"></span>
-                                </ng-template>
-                                <ng-template #decrementbuttonicon>
-                                    <span class="pi pi-minus"></span>
-                                </ng-template>
-                            </p-inputnumber>
-                            <label for="stddevlabel">Standard deviation</label>
-                        </p-floatlabel>
-                        <p-floatlabel class="w-full">
-                            <p-inputnumber inputId="paddinglabel" [(ngModel)]="padding" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" (ngModelChange)="processGraph()" [min]="0" class="w-full">
-                                <ng-template #incrementbuttonicon>
-                                    <span class="pi pi-plus"></span>
-                                </ng-template>
-                                <ng-template #decrementbuttonicon>
-                                    <span class="pi pi-minus"></span>
-                                </ng-template>
-                            </p-inputnumber>
-                            <label for="paddinglabel">Min/Max padding</label>
-                        </p-floatlabel>
+                    <div class="flex flex-row gap-2">
+                        <p-button (click)="menu.toggle($event)" icon="pi pi-cog"/>
+                        <p class="content-center">You can click on individual points to edit them.</p>
                     </div>
+                    <p-chart type="line" [data]="chartData" [options]="chartOptions" (onDataSelect)="selectDatapoint($event)"/>
+
+                    <p-menu #menu [popup]="true">
+                        <ng-template #start>
+                            <div class="flex flex-col gap-2 p-5">
+                                <label>Standard deviation</label>
+                                <p-inputnumber [(ngModel)]="currentStandardDeviation" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="0.25" (ngModelChange)="processGraph()" [min]="0.1" class="w-full">
+                                    <ng-template #incrementbuttonicon>
+                                        <span class="pi pi-plus"></span>
+                                    </ng-template>
+                                    <ng-template #decrementbuttonicon>
+                                        <span class="pi pi-minus"></span>
+                                    </ng-template>
+                                </p-inputnumber>
+
+                                <label>Min/Max padding</label>
+                                <p-inputnumber [(ngModel)]="padding" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1" (ngModelChange)="processGraph()" [min]="0" class="w-full">
+                                    <ng-template #incrementbuttonicon>
+                                        <span class="pi pi-plus"></span>
+                                    </ng-template>
+                                    <ng-template #decrementbuttonicon>
+                                        <span class="pi pi-minus"></span>
+                                    </ng-template>
+                                </p-inputnumber>
+                            </div>
+                        </ng-template>
+                    </p-menu>
+                </div>
+            </div>
+            <div>
+                <div class="card">
+                    <div class="font-semibold text-xl mb-4">Highest Weight Area</div>
+                    <p-chart type="line" [data]="maxChartData" [options]="smallChartOptions"/>
+                </div>
+            </div>
+            <div>
+                <div class="card">
+                    <div class="font-semibold text-xl mb-4">Lowest Weight Area</div>
+                    <p-chart type="line" [data]="minChartData" [options]="smallChartOptions"/>
                 </div>
             </div>
         </div>
@@ -117,6 +136,7 @@ export class BirdsWeightTracking {
 
     menuItems : MenuItem[] = [
         {
+            label:"Reload",
             icon:"pi pi-refresh",
             command: () => this.loadWeights()
         },
@@ -147,8 +167,7 @@ export class BirdsWeightTracking {
         }
     ]
 
-    allBirds: ListBirdModel[] = [];
-    currentBird: ListBirdModel = {} as ListBirdModel;
+    currentBirdId: string = '';
 
     allWeights : BirdWeightModel[] = []
     dateRanges : GetDateRangesOutput = {} as GetDateRangesOutput
@@ -158,7 +177,10 @@ export class BirdsWeightTracking {
     minDate : Date = new Date();
     maxDate : Date = new Date();
     chartData: any;
+    maxChartData: any;
+    minChartData: any;
     chartOptions: any;
+    smallChartOptions: any;
     isLoading : boolean = true;
 
     currentBirdWeight : BirdWeightModel = {} as BirdWeightModel
@@ -184,12 +206,12 @@ export class BirdsWeightTracking {
     }
 
     ngOnInit(){
-        this.loadBirds();
+        this.processQueryParameters();
     }
 
     loadWeights(){
         this.isLoading = true;
-        this.http.get<GetDateRangesOutput>(APIURL + Endpoints.Birds.Weights.Get_GetDateRanges + "?ID=" + this.currentBird.id).subscribe(r => {
+        this.http.get<GetDateRangesOutput>(APIURL + Endpoints.Birds.Weights.Get_GetDateRanges + "?ID=" + this.currentBirdId).subscribe(r => {
             if (r.newest == null || r.newest == '')
                 return;
             r.newest = new Date(<Date>r.newest);
@@ -214,7 +236,7 @@ export class BirdsWeightTracking {
     loadWeightsWithin(){
         this.isLoading = true;
         this.allWeights = []
-        this.http.get<BirdWeightModel[]>(APIURL + Endpoints.Birds.Weights.Get_AllBirdWeights + "?BirdID=" + this.currentBird.id + "&From=" + this.currentMinDate.toISOString() + "&To=" + this.currentMaxDate.toISOString()).subscribe(r => {
+        this.http.get<BirdWeightModel[]>(APIURL + Endpoints.Birds.Weights.Get_AllBirdWeights + "?BirdID=" + this.currentBirdId + "&From=" + this.currentMinDate.toISOString() + "&To=" + this.currentMaxDate.toISOString()).subscribe(r => {
             r.forEach(b => b.timestamp = new Date(<Date>b.timestamp))
             this.allWeights = r;
             this.processGraph();
@@ -285,6 +307,40 @@ export class BirdsWeightTracking {
                 }
             }
         };
+        this.smallChartOptions = {
+            scales:{
+                x: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: textColorSecondary,
+                        drawBorder: false
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: textColorSecondary,
+                        drawBorder: false
+                    },
+                    title:{
+                        text:"Grams",
+                        display:true,
+                        color:textColorSecondary
+                    },
+                    min: this.getMinWeight() - this.padding,
+                    max: this.getMaxWeight() + this.padding
+                }
+            },
+            plugins: {
+                legend:{
+                    display:false
+                }
+            }
+        };
         this.chartData = {
             labels: this.allWeights.map(x => formatDate(x.timestamp, 'dd-MMM-YYYY','en-US')),
             datasets: [
@@ -313,13 +369,71 @@ export class BirdsWeightTracking {
                 }
             ]
         }
-    }
 
+        var rangeTargets = 3;
+
+        var maxDatapoint = this.allWeights.find(x => x.grams == this.getMaxWeight());
+        if (maxDatapoint){
+            var highestIndex = this.allWeights.indexOf(maxDatapoint)
+            if (highestIndex != -1){
+                var minIndex = highestIndex - rangeTargets;
+                if (minIndex < 0)
+                    minIndex = 0;
+                var maxIndex = highestIndex + rangeTargets;
+                if (maxIndex > this.allWeights.length - 1)
+                    maxIndex = this.allWeights.length - 1;
+
+                var subset = this.allWeights.slice(minIndex, maxIndex)
+
+                this.maxChartData = {
+                    labels: subset.map(x => formatDate(x.timestamp, 'dd-MMM-YYYY','en-US')),
+                    datasets: [
+                        {
+                            label: "Weight (Grams)",
+                            data: subset.map(x => x.grams),
+                            borderColor: documentStyle.getPropertyValue('--p-primary-color'),
+                            tension: 0.4,
+                            pointRadius: 10,
+                            pointHoverRadius: 15
+                        }
+                    ]
+                }
+            }
+        }
+        var minDatapoint = this.allWeights.find(x => x.grams == this.getMinWeight());
+        if (minDatapoint){
+            var highestIndex = this.allWeights.indexOf(minDatapoint)
+            if (highestIndex != -1){
+                var minIndex = highestIndex - rangeTargets;
+                if (minIndex < 0)
+                    minIndex = 0;
+                var maxIndex = highestIndex + rangeTargets;
+                if (maxIndex > this.allWeights.length - 1)
+                    maxIndex = this.allWeights.length - 1;
+
+                var subset = this.allWeights.slice(minIndex, maxIndex)
+
+                this.minChartData = {
+                    labels: subset.map(x => formatDate(x.timestamp, 'dd-MMM-YYYY','en-US')),
+                    datasets: [
+                        {
+                            label: "Weight (Grams)",
+                            data: subset.map(x => x.grams),
+                            borderColor: documentStyle.getPropertyValue('--p-primary-color'),
+                            tension: 0.4,
+                            pointRadius: 10,
+                            pointHoverRadius: 15
+                        }
+                    ]
+                }
+            }
+        }
+    }
     showAddWeightLog(){
         this.currentBirdWeight = {
             id: '',
             grams: 0,
-            birdID: this.currentBird.id,
+            birdID: this.currentBirdId,
             timestamp: new Date()
         } as BirdWeightModel
         this.showBirdWeightDialog = true;
@@ -355,14 +469,6 @@ export class BirdsWeightTracking {
         });
     }
 
-    loadBirds() {
-        this.http.get<ListBirdModel[]>(APIURL + Endpoints.Birds.Get_AllBirds).subscribe((l) => {
-            l.forEach(b => b.birthDate = new Date(<Date>b.birthDate))
-            this.allBirds = l;
-            this.processQueryParameters();
-        });
-    }
-
     selectDatapoint(event : Event){
         if ('element' in event && 'index' in <any>event.element && 'datasetIndex' in <any>event.element && (<any>event.element).datasetIndex == 0){
             this.currentBirdWeight = this.allWeights[<number>(<any>event.element).index];
@@ -376,12 +482,8 @@ export class BirdsWeightTracking {
         if (this.route.snapshot.queryParamMap.has('id')) {
             var targetID = this.route.snapshot.queryParamMap.get('id');
             if (targetID) {
-                var targetBird = this.allBirds.find(x => x.id == targetID)
-                if (targetBird)
-                {
-                    this.currentBird = targetBird;
-                    this.loadWeights();
-                }
+                this.currentBirdId = targetID;
+                this.loadWeights();
             }
         }
     }
@@ -420,7 +522,7 @@ export class BirdsWeightTracking {
             let input = <any>event.target;
             const formData = new FormData();
             formData.append('file', input.files[0]);
-            this.http.post(APIURL + Endpoints.Birds.Weights.Post_ImportWeights + "?BirdID=" + this.currentBird.id, formData).subscribe(r => {
+            this.http.post(APIURL + Endpoints.Birds.Weights.Post_ImportWeights + "?BirdID=" + this.currentBirdId, formData).subscribe(r => {
                 this.isLoading = false;
                 input.value = null
                 this.loadWeights();
