@@ -17,3 +17,4 @@ The tech-stack is:
 * Frontend: Angular 19 project using PrimeNG
 
 Each folder for Database, API and Frontend each have a small readme for more info.
+ 
