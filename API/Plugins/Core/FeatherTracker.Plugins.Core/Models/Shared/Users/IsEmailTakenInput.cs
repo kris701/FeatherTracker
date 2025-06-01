@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace FeatherTracker.Plugins.Core.Models.Shared.Users
 {
-	public class IsUsernameTakenOutput
+	public class IsEmailTakenInput
 	{
-		public bool IsTaken { get; set; }
+		public string Email { get; set; }
 	}
 }

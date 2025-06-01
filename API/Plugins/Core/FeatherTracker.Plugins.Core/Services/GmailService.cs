@@ -32,7 +32,7 @@ namespace FeatherTracker.Plugins.Core.Services
 				mail.Subject = title;
 				mail.ReplyToList.Add(new MailAddress("noreply@gmail.com", "noreply"));
 				mail.Body = body;
-				mail.IsBodyHtml = true;
+				mail.IsBodyHtml = false;
 				using (SmtpClient smtp = new SmtpClient(SMTPAddress, SMTPPort))
 				{
 					smtp.Credentials = new NetworkCredential(SenderEmail, SenderPassword);

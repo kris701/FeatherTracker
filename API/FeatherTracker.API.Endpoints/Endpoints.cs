@@ -17,7 +17,9 @@ public static class Endpoints {
 			public const string Post_AddUser = "endpoints/core/users";
 			public const string Post_VerifyUser = "endpoints/core/users/verify";
 			public const string Post_SignupUser = "endpoints/core/users/signup";
+			public const string Post_ResetPassword = "endpoints/core/users/resetpassword";
 			public const string Get_IsUsernameTaken = "endpoints/core/users/isusernametaken";
+			public const string Get_IsEmailTaken = "endpoints/core/users/isemailtaken";
 			public const string Patch_UpdateUser = "endpoints/core/users";
 			public const string Patch_UpdatePassword = "endpoints/core/users/updatepassword";
 			public const string Get_AllUsers = "endpoints/core/users/all";

@@ -44,8 +44,16 @@
                 "Route": "signup"
               },
               {
+                "Name": "Post_ResetPassword",
+                "Route": "resetpassword"
+              },
+              {
                 "Name": "Get_IsUsernameTaken",
                 "Route": "isusernametaken"
+              },
+              {
+                "Name": "Get_IsEmailTaken",
+                "Route": "isemailtaken"
               },
               {
                 "Name": "Patch_UpdateUser",

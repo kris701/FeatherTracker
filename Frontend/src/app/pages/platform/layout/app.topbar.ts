@@ -83,7 +83,7 @@ import { Endpoints } from '../../../../Endpoints';
                         </p-button>
                         <app-usermenu [style]="{ 'z-index': '9999' }" />
                     </div>
-                    <div class="relative" [hidden]="!CanImpersonate()">
+                    <div class="relative" *ngIf="CanImpersonate()">
                         <button
                             class="layout-topbar-action layout-topbar-action-highlight"
                             pStyleClass="@next"

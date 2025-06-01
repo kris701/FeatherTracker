@@ -119,6 +119,8 @@ export class AppMenu {
 
     public loadBirds(){
         this.http.get<ListBirdModel[]>(APIURL + Endpoints.Birds.Get_AllBirds).subscribe((l) => {
+            if (l.length == 0)
+                return;
             var newest = l.map(x => new Date(<Date>x.updatedAt)).reduce((a,b) => new Date(Math.max(a.getTime(), b.getTime())))
 
             if (newest > this.lastUpdate){
