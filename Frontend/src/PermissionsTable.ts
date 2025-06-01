@@ -12,5 +12,4 @@ export const PermissionsTable = {
 	Birds_Weight_Write: "birds.weight.write",
 	BugReports_Reports_Write: "bugreports.reports.read",
 	BugReports_Reports_Read: "bugreports.reports.write",
-	BugReports_Statistics_Read: "bugreports.statistics.read",
 }

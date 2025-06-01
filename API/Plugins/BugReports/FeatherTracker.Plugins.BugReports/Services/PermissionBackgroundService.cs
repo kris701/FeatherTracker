@@ -27,12 +27,6 @@ namespace FeatherTracker.Plugins.BugReports.Services
 				"Bug Reports Read",
 				"Ability to read bug reports.",
 				true));
-
-			await _model.ExecuteAsync(new PermissionModel(
-				PermissionsTable.BugReports_Statistics_Read,
-				"Bugreports Statistics Read",
-				"Ability to read statistics about bug reports.",
-				true));
 		}
 	}
 }
