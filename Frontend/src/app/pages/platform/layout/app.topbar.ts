@@ -26,7 +26,7 @@ import { Endpoints } from '../../../../Endpoints';
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                 <i class="pi pi-bars"></i>
             </button>
-            <a class="layout-topbar-logo" routerLink="/helform">
+            <a class="layout-topbar-logo" routerLink="/platform">
                 @if (layoutService.isDarkTheme()) {
                     <img src="src/assets/images/logo_small_transparant.png" [style]="{ height: '45px' }" />
                 } @else {
