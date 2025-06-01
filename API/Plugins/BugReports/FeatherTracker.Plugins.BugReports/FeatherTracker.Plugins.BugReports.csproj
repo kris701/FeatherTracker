@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;CS1591</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<NoWarn>1701;1702;CS1591</NoWarn>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="DatabaseSharp" Version="1.3.6" />
+		<PackageReference Include="Uni.API" Version="1.0.15" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\FeatherTracker.Plugins.Core\FeatherTracker.Plugins.Core.csproj" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="dotnet cs2ts --output &quot;../../../../FrontEnd/src/app/models/BugReports&quot; --clear-output-directory --convert-dates-to &quot;Union&quot; --import-generation &quot;Simple&quot; &quot;../../../FeatherTracker.API.Tools/BaseExecIDModel.cs&quot;" ContinueOnError="true" />
+		<Exec Command="dotnet cs2ts --output &quot;../../../../FrontEnd/src/app/models/BugReports&quot; --convert-dates-to &quot;Union&quot; --import-generation &quot;Simple&quot; &quot;./Models/Shared/&quot;" ContinueOnError="true" />
+	</Target>
+
+</Project>

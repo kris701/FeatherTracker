@@ -76,6 +76,11 @@
     <Folder Include="Birds\Programmability\Stored Procedures" />
     <Folder Include="Birds\Programmability\Stored Procedures\Birds" />
     <Folder Include="Birds\Programmability\Stored Procedures\BirdWeights" />
+    <Folder Include="BugReports" />
+    <Folder Include="BugReports\Schemas" />
+    <Folder Include="BugReports\Programmability" />
+    <Folder Include="BugReports\Tables" />
+    <Folder Include="BugReports\Programmability\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Core\Schemas\CoreSchema.sql" />
@@ -114,6 +119,13 @@
     <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_UpdateBirdWeight.sql" />
     <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_GetDateRanges.sql" />
     <Build Include="Birds\Programmability\Stored Procedures\BirdWeights\SP_PurgeBirdWeights.sql" />
+    <Build Include="BugReports\Tables\BugReports.sql" />
+    <Build Include="BugReports\Schemas\BugReporterSchema.sql" />
+    <Build Include="BugReports\Programmability\Stored Procedures\SP_AddBugReport.sql" />
+    <Build Include="BugReports\Programmability\Stored Procedures\SP_DeleteBugReport.sql" />
+    <Build Include="BugReports\Programmability\Stored Procedures\SP_GetAllBugReports.sql" />
+    <Build Include="BugReports\Programmability\Stored Procedures\SP_GetBugReport.sql" />
+    <Build Include="BugReports\Programmability\Stored Procedures\SP_UpdateBugReport.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FeatherTracker.Database.publish.xml" />
