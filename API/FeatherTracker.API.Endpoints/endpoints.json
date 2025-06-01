@@ -36,6 +36,10 @@
                 "Route": ""
               },
               {
+                "Name": "Post_VerifyUser",
+                "Route": "verify"
+              },
+              {
                 "Name": "Post_SignupUser",
                 "Route": "signup"
               },

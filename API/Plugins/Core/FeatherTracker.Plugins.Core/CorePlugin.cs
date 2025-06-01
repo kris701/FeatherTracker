@@ -18,6 +18,10 @@ namespace FeatherTracker.Plugins.Core
 		private string _connectionString = "";
 		private string _jwtSecret = "";
 		private int _jwtLifetime = -1;
+		private string _gmailUser = "";
+		private string _gmailPassword = "";
+		private string _gmailHost = "";
+		private int _gmailPort = -1;
 
 		public CorePlugin() : base(
 			new Guid("1ae27478-9875-4a9e-8df0-ac0cc2448bd4"),
@@ -33,6 +37,10 @@ namespace FeatherTracker.Plugins.Core
 			_connectionString = GetSectionValue(configuration, "DatabaseConnectionString");
 			_jwtSecret = GetSectionValue(configuration, "JWTSecret");
 			_jwtLifetime = int.Parse(GetSectionValue(configuration, "JWTLifetime"));
+			_gmailUser = GetSectionValue(configuration, "GmailUser");
+			_gmailPassword = GetSectionValue(configuration, "GmailPassword");
+			_gmailHost = GetSectionValue(configuration, "GmailHost");
+			_gmailPort = int.Parse(GetSectionValue(configuration, "GmailPort"));
 
 			base.ConfigureConfiguration(configuration);
 		}
@@ -67,6 +75,8 @@ namespace FeatherTracker.Plugins.Core
 
 			services.AddKeyedSingleton<IDBClient>(DBClientKeyName, new DBClient(_connectionString));
 			services.AddHostedService<PermissionBackgroundService>();
+			services.AddSingleton(new GmailService(_gmailUser, _gmailPassword, _gmailHost, _gmailPort));
+			services.AddSingleton<VerificationTokens>();
 
 			base.ConfigureServices(services);
 		}

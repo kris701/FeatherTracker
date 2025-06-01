@@ -4,4 +4,5 @@ export interface SignupUserInput {
     email: string;
     loginName: string;
     password: string;
+    emailToken: string;
 }

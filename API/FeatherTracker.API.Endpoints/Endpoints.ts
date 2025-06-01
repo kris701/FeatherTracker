@@ -15,6 +15,7 @@ export const Endpoints = {
 		Users: {
 			Name: "Users",
 			Post_AddUser: "endpoints/core/users",
+			Post_VerifyUser: "endpoints/core/users/verify",
 			Post_SignupUser: "endpoints/core/users/signup",
 			Get_IsUsernameTaken: "endpoints/core/users/isusernametaken",
 			Patch_UpdateUser: "endpoints/core/users",

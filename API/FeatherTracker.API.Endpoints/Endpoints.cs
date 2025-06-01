@@ -15,6 +15,7 @@ public static class Endpoints {
 		public static class Users {
 			public const string Name = "endpoints/core/users";
 			public const string Post_AddUser = "endpoints/core/users";
+			public const string Post_VerifyUser = "endpoints/core/users/verify";
 			public const string Post_SignupUser = "endpoints/core/users/signup";
 			public const string Get_IsUsernameTaken = "endpoints/core/users/isusernametaken";
 			public const string Patch_UpdateUser = "endpoints/core/users";

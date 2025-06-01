@@ -17,5 +17,7 @@ namespace FeatherTracker.Plugins.Core.Models.Shared.Users
 		public string LoginName { get; set; }
 		[Required]
 		public string Password { get; set; }
+		[Required]
+		public string EmailToken { get; set; }
 	}
 }

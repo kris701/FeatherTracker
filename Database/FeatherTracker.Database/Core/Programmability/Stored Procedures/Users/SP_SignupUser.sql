@@ -6,6 +6,9 @@ CREATE PROCEDURE [COR].[SP_SignupUser]
 	@Password NVARCHAR(MAX)
 AS
 BEGIN TRANSACTION
+	IF ((SELECT COUNT(*) FROM [COR].[Users] WHERE Email = @Email) > 0)
+		THROW 51000, 'Email already registered!', 1;
+
 	DECLARE @ID UNIQUEIDENTIFIER = NEWID()
 	INSERT INTO [COR].[Users] VALUES (@ID, @FirstName, @LastName, @Email, @LoginName, @Password, 1, 0, GETUTCDATE(), NULL);
 	INSERT INTO [COR].[UserPermissions] SELECT NEWID(), @ID, A.PK_ID FROM [COR].[Permissions] AS A WHERE A.IsStaff = 0;

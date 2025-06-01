@@ -7,6 +7,9 @@ using FeatherTracker.API.Tools.Helpers;
 using FeatherTracker.Plugins.Core.DatabaseInterface.Authentication;
 using FeatherTracker.Plugins.Core.DatabaseInterface.Users;
 using FeatherTracker.Plugins.Core.Models.Shared.Users;
+using FeatherTracker.Plugins.Core.Models.Internal.Authentication;
+using FeatherTracker.Plugins.Core.Services;
+using System.Text;
 
 namespace FeatherTracker.Plugins.Core.Controllers
 {
@@ -20,11 +23,15 @@ namespace FeatherTracker.Plugins.Core.Controllers
 	{
 		private readonly IDBClient _dbClient;
 		private readonly UsersInterface _interface;
+		private readonly VerificationTokens _tokens;
+		private readonly GmailService _gmailService;
 
-		public UsersController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient)
+		public UsersController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient, VerificationTokens tokens, GmailService gmailService)
 		{
 			_dbClient = dbClient;
 			_interface = new UsersInterface(dbClient);
+			_tokens = tokens;
+			_gmailService = gmailService;
 		}
 
 		/// <summary>
@@ -39,6 +46,39 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		{
 			User.SetExecID(inputModel);
 			return Ok(await _interface.addModel.ExecuteAsync(inputModel));
+		}
+
+		/// <summary>
+		/// Verify a user by email
+		/// </summary>
+		/// <param name="inputModel"></param>
+		/// <returns></returns>
+		/// <response code="200">Nothing</response>
+		[HttpPost(Endpoints.Core.Users.Post_VerifyUser)]
+		[AllowAnonymous]
+		public async Task<IActionResult> Post_VerifyUser([FromBody] SignupUserInput inputModel)
+		{
+			if (inputModel.LoginName == null || inputModel.LoginName == "" ||
+				inputModel.Password == null || inputModel.Password == "" ||
+				inputModel.FirstName == null || inputModel.FirstName == "" ||
+				inputModel.LastName == null || inputModel.LastName == "" ||
+				inputModel.Email == null || inputModel.Email == "" ||
+				!IsValidEmail(inputModel.Email))
+				return BadRequest("Input data was not valid!!");
+
+			var newToken = new VerificationToken();
+			_tokens.Tokens.Add(inputModel.LoginName, newToken);
+			var sb = new StringBuilder();
+			sb.AppendLine("Here is the verification token for you new Feather Tracker account:");
+			sb.AppendLine(newToken.Token);
+			sb.AppendLine("This token expires in 30 minutes.");
+
+			await _gmailService.SendEmailAsync(
+				inputModel.Email, 
+				"Feather Tracker Verification",
+				sb.ToString());
+
+			return Ok(new EmptyModel());
 		}
 
 		/// <summary>
@@ -59,7 +99,7 @@ namespace FeatherTracker.Plugins.Core.Controllers
 				!IsValidEmail(inputModel.Email))
 				return BadRequest("Input data was not valid!!");
 
-			var model = new SignupUserModel(_dbClient);
+			var model = new SignupUserModel(_dbClient, _tokens);
 			return Ok(await model.ExecuteAsync(inputModel));
 		}
 
