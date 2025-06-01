@@ -45,7 +45,6 @@ import { AppMenu } from "../../layout/app.menu";
             <p-editor [(ngModel)]="currentBird.description" [style]="{ height: '150px' }" [readonly]="!canWrite" />
 
             <p-button label="Save" icon="pi pi-save" (click)="saveBird()" [hidden]="!canWrite" fluid/>
-            <p-confirmdialog />
             <p-button icon="pi pi-times" label="Delete" severity="danger" (click)="deleteBird(currentBird.id)" [hidden]="!canWrite || currentBird.id == ''" fluid></p-button>
         </div>
     `

@@ -117,7 +117,6 @@ import { AddUserInput } from '../../../../../models/Core/addUserInput';
             </div>
             <ng-template #footer>
                 <p-button label="Save" icon="pi pi-save" (click)="saveUser()" [hidden]="!canWrite" />
-                <p-confirmdialog />
                 <p-button icon="pi pi-times" label="Delete" severity="danger" [disabled]="cannotDelete(currentUser.id)" (click)="deleteUser(currentUser.id)" [hidden]="!canWrite"></p-button>
             </ng-template>
         </p-dialog>
