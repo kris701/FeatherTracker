@@ -6,8 +6,8 @@ using FeatherTracker.Plugins.Core.Models.Shared.Users;
 
 namespace FeatherTracker.Plugins.Core.DatabaseInterface.Authentication
 {
-	public class IsUsernameTakenModel(IDBClient client) :
-		BaseSerializableSingleDBModel<IsUsernameTakenInput, IsTakenOutput>(client, "COR.SP_IsUsernameTaken")
+	public class ResetPasswordModel(IDBClient client) :
+		BaseSerializableSingleDBModel<ResetPasswordInput, EmptyModel>(client, "COR.SP_ResetPassword")
 	{
 	}
 }

@@ -1,4 +1,5 @@
-﻿using FeatherTracker.API.Tools;
+﻿using DatabaseSharp.Models;
+using FeatherTracker.API.Tools;
 using System.ComponentModel.DataAnnotations;
 
 namespace FeatherTracker.Plugins.Core.Models.Shared.Users
@@ -17,5 +18,8 @@ namespace FeatherTracker.Plugins.Core.Models.Shared.Users
 		public string LoginName { get; set; }
 		[Required]
 		public string Password { get; set; }
+		[Required]
+		[DatabaseSharpIgnore]
+		public string EmailToken { get; set; }
 	}
 }

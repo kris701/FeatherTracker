@@ -50,6 +50,7 @@ import { FloatPasswordInput } from "../../../../common/floatpasswordinput";
 
                             <p-button label="Sign In" styleClass="w-full" (click)="doLogin()"></p-button>
                             <p-button label="Sign up" severity="secondary" styleClass="w-full" (click)="doSignUp()"></p-button>
+                            <p-button label="Reset Password" severity="secondary" styleClass="w-full" (click)="doResetPassword()"></p-button>
                         </div>
                     </div>
                 </div>
@@ -105,5 +106,9 @@ export class Login {
 
     doSignUp(){
         this.router.navigate(["/platform/auth/signup"]);
+    }
+
+    doResetPassword(){
+        this.router.navigate(["/platform/auth/resetpassword"]);
     }
 }

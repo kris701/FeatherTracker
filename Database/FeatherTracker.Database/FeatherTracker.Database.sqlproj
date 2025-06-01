@@ -126,6 +126,8 @@
     <Build Include="BugReports\Programmability\Stored Procedures\SP_GetAllBugReports.sql" />
     <Build Include="BugReports\Programmability\Stored Procedures\SP_GetBugReport.sql" />
     <Build Include="BugReports\Programmability\Stored Procedures\SP_UpdateBugReport.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_IsEmailTaken.sql" />
+    <Build Include="Core\Programmability\Stored Procedures\Users\SP_ResetPassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FeatherTracker.Database.publish.xml" />

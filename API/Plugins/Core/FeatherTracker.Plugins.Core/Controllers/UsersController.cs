@@ -7,6 +7,10 @@ using FeatherTracker.API.Tools.Helpers;
 using FeatherTracker.Plugins.Core.DatabaseInterface.Authentication;
 using FeatherTracker.Plugins.Core.DatabaseInterface.Users;
 using FeatherTracker.Plugins.Core.Models.Shared.Users;
+using FeatherTracker.Plugins.Core.Models.Internal.Authentication;
+using FeatherTracker.Plugins.Core.Services;
+using System.Text;
+using FeatherTracker.Plugins.Core.Helpers;
 
 namespace FeatherTracker.Plugins.Core.Controllers
 {
@@ -20,11 +24,15 @@ namespace FeatherTracker.Plugins.Core.Controllers
 	{
 		private readonly IDBClient _dbClient;
 		private readonly UsersInterface _interface;
+		private readonly VerificationTokens _tokens;
+		private readonly GmailService _gmailService;
 
-		public UsersController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient)
+		public UsersController([FromKeyedServices(CorePlugin.DBClientKeyName)] IDBClient dbClient, VerificationTokens tokens, GmailService gmailService)
 		{
 			_dbClient = dbClient;
 			_interface = new UsersInterface(dbClient);
+			_tokens = tokens;
+			_gmailService = gmailService;
 		}
 
 		/// <summary>
@@ -42,6 +50,43 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		}
 
 		/// <summary>
+		/// Verify a user by email
+		/// </summary>
+		/// <param name="inputModel"></param>
+		/// <returns></returns>
+		/// <response code="200">Nothing</response>
+		[HttpPost(Endpoints.Core.Users.Post_VerifyUser)]
+		[AllowAnonymous]
+		public async Task<IActionResult> Post_VerifyUser([FromBody] SignupUserInput inputModel)
+		{
+			if (inputModel.LoginName == null || inputModel.LoginName == "" ||
+				inputModel.Password == null || inputModel.Password == "" ||
+				inputModel.FirstName == null || inputModel.FirstName == "" ||
+				inputModel.LastName == null || inputModel.LastName == "" ||
+				inputModel.Email == null || inputModel.Email == "" ||
+				!IsValidEmail(inputModel.Email))
+				return BadRequest("Input data was not valid!");
+
+			var model = new IsEmailTakenModel(_dbClient);
+			if ((await model.ExecuteAsync(new IsEmailTakenInput() { Email = inputModel.Email })).IsTaken)
+				return BadRequest("Email is already taken!");
+
+			var newToken = new VerificationToken();
+			_tokens.Tokens.Add(inputModel.LoginName, newToken);
+			var sb = new StringBuilder();
+			sb.AppendLine("Here is the verification token for you new Feather Tracker account:");
+			sb.AppendLine(newToken.Token);
+			sb.AppendLine("This token expires in 30 minutes.");
+
+			await _gmailService.SendEmailAsync(
+				inputModel.Email, 
+				"Feather Tracker Verification",
+				sb.ToString());
+
+			return Ok(new EmptyModel());
+		}
+
+		/// <summary>
 		/// Signs up a new user
 		/// </summary>
 		/// <param name="inputModel"></param>
@@ -56,10 +101,41 @@ namespace FeatherTracker.Plugins.Core.Controllers
 				inputModel.FirstName == null || inputModel.FirstName == "" ||
 				inputModel.LastName == null || inputModel.LastName == "" ||
 				inputModel.Email == null || inputModel.Email == "" ||
-				!IsValidEmail(inputModel.Email))
+				!IsValidEmail(inputModel.Email) ||
+				inputModel.EmailToken == null || inputModel.EmailToken == "")
 				return BadRequest("Input data was not valid!!");
 
-			var model = new SignupUserModel(_dbClient);
+			var model = new SignupUserModel(_dbClient, _tokens);
+			return Ok(await model.ExecuteAsync(inputModel));
+		}
+
+		/// <summary>
+		/// Reset password for a given email
+		/// </summary>
+		/// <param name="inputModel"></param>
+		/// <returns></returns>
+		/// <response code="200">Returns nothing</response>
+		[HttpPost(Endpoints.Core.Users.Post_ResetPassword)]
+		[AllowAnonymous]
+		public async Task<IActionResult> Post_ResetPassword([FromQuery] ResetPasswordInput inputModel)
+		{
+			if (!IsValidEmail(inputModel.Email))
+				return BadRequest("The email is invalid!");
+
+			var tempPassword = RandomHelpers.RandomString(6);
+			inputModel.TempPassword = HashingHelpers.CreateMD5(tempPassword);
+
+			var sb = new StringBuilder();
+			sb.AppendLine("Here is your temporary password for your Feather Tracker account:");
+			sb.AppendLine(tempPassword);
+			sb.AppendLine("You should change your password as soon as possible.");
+
+			await _gmailService.SendEmailAsync(
+				inputModel.Email,
+				"Feather Tracker Password Reset",
+				sb.ToString());
+
+			var model = new ResetPasswordModel(_dbClient);
 			return Ok(await model.ExecuteAsync(inputModel));
 		}
 
@@ -94,6 +170,20 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		public async Task<IActionResult> Get_IsUsernameTaken([FromQuery] IsUsernameTakenInput inputModel)
 		{
 			var model = new IsUsernameTakenModel(_dbClient);
+			return Ok(await model.ExecuteAsync(inputModel));
+		}
+
+		/// <summary>
+		/// Check if a given email is available
+		/// </summary>
+		/// <param name="inputModel"></param>
+		/// <returns></returns>
+		/// <response code="200">Returns true or false</response>
+		[HttpGet(Endpoints.Core.Users.Get_IsEmailTaken)]
+		[AllowAnonymous]
+		public async Task<IActionResult> Get_IsEmailTaken([FromQuery] IsEmailTakenInput inputModel)
+		{
+			var model = new IsEmailTakenModel(_dbClient);
 			return Ok(await model.ExecuteAsync(inputModel));
 		}
 
