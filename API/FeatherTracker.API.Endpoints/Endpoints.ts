@@ -43,4 +43,12 @@ export const Endpoints = {
 			Post_ImportWeights: "endpoints/birds/weights/import",
 		},
 	},
+	BugReports: {
+		Name: "BugReports",
+		Post_AddReport: "endpoints/bugreports",
+		Patch_UpdateReport: "endpoints/bugreports",
+		Get_AllReports: "endpoints/bugreports/all",
+		Get_Report: "endpoints/bugreports",
+		Delete_Report: "endpoints/bugreports",
+	},
 }

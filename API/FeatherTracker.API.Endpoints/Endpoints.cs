@@ -43,4 +43,12 @@ public static class Endpoints {
 			public const string Post_ImportWeights = "endpoints/birds/weights/import";
 		}
 	}
+	public static class BugReports {
+		public const string Name = "endpoints/bugreports";
+		public const string Post_AddReport = "endpoints/bugreports";
+		public const string Patch_UpdateReport = "endpoints/bugreports";
+		public const string Get_AllReports = "endpoints/bugreports/all";
+		public const string Get_Report = "endpoints/bugreports";
+		public const string Delete_Report = "endpoints/bugreports";
+	}
 }

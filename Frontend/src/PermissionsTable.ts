@@ -10,4 +10,6 @@ export const PermissionsTable = {
 	Birds_Write: "birds.write",
 	Birds_Weight_Read: "birds.weight.read",
 	Birds_Weight_Write: "birds.weight.write",
+	BugReports_Reports_Write: "bugreports.reports.read",
+	BugReports_Reports_Read: "bugreports.reports.write",
 }

@@ -1,0 +1,17 @@
+CREATE PROCEDURE [BUR].[SP_AddBugReport]
+	@ExecID UNIQUEIDENTIFIER,
+	@Title NVARCHAR(MAX),
+	@Description NVARCHAR(MAX)
+AS
+BEGIN TRANSACTION
+	DECLARE @ID UNIQUEIDENTIFIER = NEWID();
+	INSERT INTO [BUR].[BugReports] VALUES (
+		@ID,
+		@Title,
+		@Description,
+		0,
+		@ExecID,
+		GETUTCDATE(),
+		NULL);
+	EXEC [BUR].[SP_GetBugReport] @ExecID, @ID;
+COMMIT

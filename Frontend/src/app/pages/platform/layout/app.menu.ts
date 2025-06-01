@@ -28,6 +28,7 @@ export class AppMenu {
     editBirdAddNode : MenuItem = {} as MenuItem;
     birdWeightNode : MenuItem = {} as MenuItem;
     lastUpdate : Date = new Date(-8640000000000000);
+    backgroundFunc : any;
 
     constructor(
         private http: HttpClient
@@ -83,9 +84,33 @@ export class AppMenu {
                         icon: 'pi pi-user'
                     }
                 ]
-            }
+            },
+            {
+                label: 'Bug Reports',
+                visible: PermissionHelpers.HasPermission(PermissionsTable.BugReports_Reports_Write),
+                items: [
+                    {
+                        label: 'Report a Bug',
+                        routerLink: ['/platform/bugreports/report'],
+                        visible: PermissionHelpers.HasPermission(PermissionsTable.BugReports_Reports_Write),
+                        icon: 'pi pi-file-export'
+                    },
+                    {
+                        label: 'Reports',
+                        routerLink: ['/platform/bugreports/reports'],
+                        visible: PermissionHelpers.HasPermission(PermissionsTable.BugReports_Reports_Read),
+                        icon: 'pi pi-file-check'
+                    }
+                ]
+            },
         ];
-        setInterval(() => {this.loadBirds();}, 5000);
+        this.backgroundFunc = setInterval(() => {
+            if (!localStorage.getItem("jwtToken")){
+                clearInterval(this.backgroundFunc);
+            }
+            else
+                this.loadBirds();
+        }, 5000);
     }
 
     ngOnInit() {
@@ -117,6 +142,8 @@ export class AppMenu {
                 this.model = [...this.model]
                 this.lastUpdate = newest;
             }
+        }, (e) => {
+            clearInterval(this.backgroundFunc);
         });
     }
 }
