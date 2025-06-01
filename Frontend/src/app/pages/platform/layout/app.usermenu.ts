@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { DialogModule } from 'primeng/dialog';
@@ -22,6 +22,7 @@ import { UserModel } from '../../../models/Core/userModel';
 import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
 import { PermissionHelpers } from '../helpers/permissionHelpers';
 import { FieldsetModule } from 'primeng/fieldset';
+import { ConfirmDialogHelpers } from '../helpers/confirmdialoghelpers';
 
 @Component({
     selector: 'app-usermenu',
@@ -77,6 +78,7 @@ import { FieldsetModule } from 'primeng/fieldset';
                 </div>
                 <ng-template #footer>
                     <p-button label="Save" icon="pi pi-save" (click)="updateUser()" [hidden]="!canWriteSelf" />
+                    <p-button label="Delete User" severity="danger" icon="pi pi-trash" (click)="deleteUser()" [hidden]="!canWriteSelf" />
                 </ng-template>
             </p-dialog>
         </div>
@@ -100,7 +102,8 @@ export class UserMenu {
     constructor(
         private router: Router,
         private http: HttpClient,
-        private service: MessageService
+        private service: MessageService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
@@ -143,6 +146,20 @@ export class UserMenu {
         this.http.patch<UserModel>(APIURL + Endpoints.Core.Users.Patch_UpdateUser, this.currentUser).subscribe(() => {
             this.editProfileVisible = false;
             this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Profile updated!' });
+        });
+    }
+
+    deleteUser() {
+        this.confirmationService.confirm({
+            ...ConfirmDialogHelpers.DeleteContent(),
+            message: 'Are you sure you want to delete your user? This will delete your user and all associated data. This cannot be reverted!',
+            accept: () => {
+                this.http.delete(APIURL + Endpoints.Core.Users.Delete_User + '?ID=' + JWTTokenHelpers.GetUserID()).subscribe(() => {
+                    localStorage.removeItem("jwtToken");
+                    localStorage.removeItem("perms");
+                    this.router.navigate(["/"]);
+                });
+            }
         });
     }
 }

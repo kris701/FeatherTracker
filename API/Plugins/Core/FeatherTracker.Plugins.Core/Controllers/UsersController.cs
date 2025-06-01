@@ -170,10 +170,14 @@ namespace FeatherTracker.Plugins.Core.Controllers
 		/// <returns></returns>
 		/// <response code="200">Deletes the target user</response>
 		[HttpDelete(Endpoints.Core.Users.Delete_User)]
-		[Authorize(Roles = PermissionsTable.Core_Users_Write)]
+		[Authorize(Roles = PermissionsTable.Core_Users_Write + "," + PermissionsTable.Core_Users_Own_Write)]
 		public async Task<IActionResult> Delete_User([FromQuery] DeleteModel inputModel)
 		{
 			User.SetExecID(inputModel);
+			if (!User.HasPermission(PermissionsTable.Core_Users_Write) &&
+				User.HasPermission(PermissionsTable.Core_Users_Own_Write) &&
+				User.GetExecID() != inputModel.ExecID)
+				return Unauthorized("You can only delete your own user!");
 			return Ok(await _interface.deleteModel.ExecuteAsync(inputModel));
 		}
 	}

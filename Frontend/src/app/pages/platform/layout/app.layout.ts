@@ -11,11 +11,12 @@ import { TooltipModule } from 'primeng/tooltip';
 import { AppVersion } from './app.version';
 import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
 import { AppMenu } from './app.menu';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, AppFooter, TagModule, TooltipModule, AppVersion],
+    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, AppFooter, TagModule, TooltipModule, AppVersion, ConfirmDialogModule],
     template: `<div class="layout-wrapper" [ngClass]="containerClass">
         <app-topbar></app-topbar>
         <app-sidebar></app-sidebar>
@@ -27,6 +28,7 @@ import { AppMenu } from './app.menu';
         </div>
         <div class="layout-mask animate-fadein"></div>
         <app-version />
+        <p-confirmdialog />
     </div> `
 })
 export class AppLayout {
