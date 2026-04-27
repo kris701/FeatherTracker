@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113
+# Visual Studio Version 18
+VisualStudioVersion = 18.6.11716.218 insiders
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.API", "API\FeatherTracker.API\FeatherTracker.API.csproj", "{F0B6B6EA-F843-4930-9660-6403390A64FF}"
 EndProject
@@ -35,6 +35,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B058B03-9752-4D89-9920-7D4C3664032A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		docker-compose.yaml = docker-compose.yaml
 		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md

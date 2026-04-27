@@ -1,0 +1,8 @@
+CREATE PROCEDURE [COR].[GetBird]
+@ID UNIQUEIDENTIFIER
+AS
+BEGIN
+    SELECT *
+    FROM   [COR].[Birds]
+    WHERE  ID = @ID;
+END
