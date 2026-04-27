@@ -70,7 +70,7 @@ jobs:
       - name: Compress API build files
         uses: vimtor/action-zip@v1.2
         with:
-          files: Output/API/net9.0/publish/
+          files: Output/API/net10.0/publish/
           dest: Output/api.zip
 
       - name: Compress Database build files

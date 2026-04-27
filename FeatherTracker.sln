@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.6.11716.218 insiders
+VisualStudioVersion = 18.6.11716.218
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.API", "API\FeatherTracker.API\FeatherTracker.API.csproj", "{F0B6B6EA-F843-4930-9660-6403390A64FF}"
 EndProject
@@ -24,9 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{A6
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FeatherTracker.Database", "Database\FeatherTracker.Database\FeatherTracker.Database.sqlproj", "{DD9EC741-711C-4F91-92E1-C21154C9A77A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.Plugins.Core", "API\Plugins\Core\FeatherTracker.Plugins.Core\FeatherTracker.Plugins.Core.csproj", "{A4389E70-186B-4354-BD98-D0AF0268A9D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.Plugins.COR", "API\Plugins\COR\FeatherTracker.Plugins.COR\FeatherTracker.Plugins.COR.csproj", "{A4389E70-186B-4354-BD98-D0AF0268A9D8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5F032695-6ACA-4EF5-9B15-F4C9E876C789}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "COR", "COR", "{5F032695-6ACA-4EF5-9B15-F4C9E876C789}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.API.Endpoints", "API\FeatherTracker.API.Endpoints\FeatherTracker.API.Endpoints.csproj", "{C58D282E-DADA-40BA-9DC6-CE5A0882B8B3}"
 EndProject
@@ -41,13 +41,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Birds", "Birds", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WGT", "WGT", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.Plugins.Birds", "API\Plugins\Birds\FeatherTracker.Plugins.Birds\FeatherTracker.Plugins.Birds.csproj", "{3C94CAE0-6D4C-46E7-838F-5356719ECA97}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BugReports", "BugReports", "{6FDF525E-0EBD-4EB6-AE08-E5CF66FE6289}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.Plugins.BugReports", "API\Plugins\BugReports\FeatherTracker.Plugins.BugReports\FeatherTracker.Plugins.BugReports.csproj", "{2A4D1DE5-ABFF-E530-4CC4-34BEEC134412}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.Plugins.WGT", "API\Plugins\WGT\FeatherTracker.Plugins.WGT\FeatherTracker.Plugins.WGT.csproj", "{3C94CAE0-6D4C-46E7-838F-5356719ECA97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,10 +77,6 @@ Global
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A4D1DE5-ABFF-E530-4CC4-34BEEC134412}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A4D1DE5-ABFF-E530-4CC4-34BEEC134412}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A4D1DE5-ABFF-E530-4CC4-34BEEC134412}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A4D1DE5-ABFF-E530-4CC4-34BEEC134412}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,8 +91,6 @@ Global
 		{352B878C-E55C-43C5-BF6F-1EC605E38759} = {97699228-AE2B-419F-B266-4C420080CE80}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {AB5EC79D-EF66-4E20-A870-53790EC9D348}
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{6FDF525E-0EBD-4EB6-AE08-E5CF66FE6289} = {AB5EC79D-EF66-4E20-A870-53790EC9D348}
-		{2A4D1DE5-ABFF-E530-4CC4-34BEEC134412} = {6FDF525E-0EBD-4EB6-AE08-E5CF66FE6289}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E40F5D4-F940-48BA-B7A0-28744AA87C19}

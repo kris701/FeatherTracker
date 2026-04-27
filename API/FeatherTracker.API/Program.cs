@@ -6,12 +6,7 @@ namespace FeatherTracker.API
 	{
 		public static void Main(string[] args)
 		{
-			UniAPIBuilder.CreateUniAPIBuilder<Startup>(
-				args
-#if DEBUG
-				, "configuration-debug.json"
-#endif
-				).Build().Run();
+			UniAPIBuilder.CreateUniAPIBuilder<Startup>(args).Build().Run();
 		}
 	}
 }
