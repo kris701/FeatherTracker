@@ -86,7 +86,8 @@
                     },
                     "defaultConfiguration": "development",
                     "options": {
-                        "port": 6923
+                        "port": 6923,
+                        "proxyConfig": "src/proxy.conf.json"
                     }
                 },
                 "extract-i18n": {

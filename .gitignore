@@ -363,5 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Output
-/API/FeatherTracker.API/.secret
+/API/FeatherTracker.API/.secrets
 /Docker/Database
