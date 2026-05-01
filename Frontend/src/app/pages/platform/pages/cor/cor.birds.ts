@@ -6,7 +6,6 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { EditorModule } from 'primeng/editor';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -36,7 +35,6 @@ import { BirdsService } from '../../services/birdsService';
     MultiSelectModule,
     PasswordModule,
     TableModule,
-    EditorModule,
     TagModule,
     SplitterModule,
     TextareaModule,

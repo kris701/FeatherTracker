@@ -10,7 +10,6 @@ import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { DialogModule } from 'primeng/dialog';
-import { EditorModule } from 'primeng/editor';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
@@ -48,7 +47,6 @@ Chart.register(zoomPlugin);
     MultiSelectModule,
     PasswordModule,
     TableModule,
-    EditorModule,
     TagModule,
     SplitterModule,
     TextareaModule,
