@@ -1,11 +1,7 @@
-﻿using FeatherTracker.Plugins.COR.Models.Internal;
-using FeatherTracker.Plugins.COR.Models.Shared.Authentication;
+﻿using FeatherTracker.Plugins.COR.Models.Shared.Authentication;
 using FeatherTracker.Plugins.COR.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FeatherTracker.Plugins.COR.Controllers
 {

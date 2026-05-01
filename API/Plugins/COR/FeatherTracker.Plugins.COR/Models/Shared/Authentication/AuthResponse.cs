@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FeatherTracker.Plugins.COR.Models.Shared.Authentication
+﻿namespace FeatherTracker.Plugins.COR.Models.Shared.Authentication
 {
 	public class AuthResponse
 	{

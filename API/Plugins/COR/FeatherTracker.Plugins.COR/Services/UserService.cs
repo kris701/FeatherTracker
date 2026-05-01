@@ -1,10 +1,7 @@
 ﻿using FeatherTracker.Plugins.COR.Models.Internal;
 using FeatherTracker.Plugins.COR.Models.Shared.Authentication;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using ToolsSharp;
@@ -13,7 +10,7 @@ namespace FeatherTracker.Plugins.COR.Services
 {
 	public class UserService
 	{
-		private static string _authFile = ".secrets/auth.json";
+		private static readonly string _authFile = ".secrets/auth.json";
 
 		private readonly JWTSettings _settings;
 
@@ -47,7 +44,8 @@ namespace FeatherTracker.Plugins.COR.Services
 			if (File.Exists(_authFile))
 				throw new Exception("Admin user already exists!");
 
-			var authUser = new AuthUser() {
+			var authUser = new AuthUser()
+			{
 				Username = req.Username,
 				PasswordHash = HashingHelpers.HashString(req.Password, System.Security.Cryptography.HashAlgorithmName.SHA1)
 			};

@@ -1,16 +1,13 @@
 ﻿using DatabaseSharp;
 using FeatherTracker.API.Tools;
-using FeatherTracker.Plugins.Birds.DatabaseInterfaces.BirdWeights;
-using FeatherTracker.Plugins.Birds.Models.Shared.BirdWeights;
+using FeatherTracker.Plugins.WGT.DatabaseInterfaces.BirdWeights;
+using FeatherTracker.Plugins.WGT.Models.Shared.Weights;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
-namespace FeatherTracker.Plugins.Birds.Controllers
+namespace FeatherTracker.Plugins.WGT.Controllers
 {
 	/// <summary>
 	/// Controller endpoints for bird weights
@@ -99,7 +96,7 @@ namespace FeatherTracker.Plugins.Birds.Controllers
 			using (StreamReader str = new StreamReader(file.OpenReadStream()))
 			{
 				var text = str.ReadToEnd();
-				text = text.Replace("\r\n","\n");
+				text = text.Replace("\r\n", "\n");
 				var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 				if (lines.Length > 0)
 				{

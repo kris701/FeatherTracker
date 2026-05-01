@@ -1,9 +1,7 @@
 ﻿using DatabaseSharp.Attributes;
-using DatabaseSharp.Models;
-using FeatherTracker.API.Tools;
 using System.ComponentModel.DataAnnotations;
 
-namespace FeatherTracker.Plugins.Birds.Models.Shared.BirdWeights
+namespace FeatherTracker.Plugins.WGT.Models.Shared.Weights
 {
 	public class AddWeightInput
 	{

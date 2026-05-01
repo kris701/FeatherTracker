@@ -1,10 +1,8 @@
 ﻿using DatabaseSharp.Attributes;
-using DatabaseSharp.Models;
-using FeatherTracker.API.Tools;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace FeatherTracker.Plugins.Birds.Models.Shared.BirdWeights
+namespace FeatherTracker.Plugins.WGT.Models.Shared.Weights
 {
 	public class WeightModel
 	{

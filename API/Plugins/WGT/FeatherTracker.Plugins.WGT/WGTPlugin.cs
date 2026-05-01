@@ -1,9 +1,6 @@
-﻿using DatabaseSharp;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Uni.API.Models;
+﻿using Uni.API.Models;
 
-namespace FeatherTracker.Plugins.Birds
+namespace FeatherTracker.Plugins.WGT
 {
 	public class WGTPlugin : BaseUniAPIPlugin
 	{

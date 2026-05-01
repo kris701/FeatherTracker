@@ -1,7 +1,6 @@
-﻿using FeatherTracker.API.Tools;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace FeatherTracker.Plugins.Birds.Models.Shared.BirdWeights
+namespace FeatherTracker.Plugins.WGT.Models.Shared.Weights
 {
 	public class GetAllBirdWeightsInput
 	{
