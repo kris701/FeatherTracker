@@ -27,7 +27,7 @@ export const Endpoints = {
 		Patch_UpdateWeight: "endpoints/wgt",
 		Get_AllWeights: "endpoints/wgt/all",
 		Get_GetDateRanges: "endpoints/wgt/ranges",
-		Delete_Weight: "endpoints/wgt",
+		Patch_DeleteWeights: "endpoints/wgt/delete",
 		Post_ImportWeights: "endpoints/wgt/import",
 	},
 }

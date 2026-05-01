@@ -28,7 +28,7 @@ import { LayoutService } from '../../../../services/layoutService';
                     <img class="mb-2 w-64 shrink-0 mx-auto" src="src/assets/images/logo_inv.png" />
                 }
                 <h1 style="font-size:100px">Feather Tracker</h1>
-                <h3 style="opacity:0.5;margin-top:0px">Coming Soon</h3>
+                <h3 style="opacity:0.5;margin-top:0px">Keeping track of your featherly friends!</h3>
             </div>
         </div>
     `,

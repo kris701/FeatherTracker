@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { LayoutService } from '../../../services/layoutService';
+import { BirdsService } from '../services/birdsService';
 
 @Component({
     selector: 'app-sidebar',
@@ -62,12 +63,14 @@ export class AppSidebar {
 
     constructor(
         public layoutService: LayoutService,
-        private router: Router
+        private router: Router,
+        private birdsService : BirdsService
     ) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd)
                 this.processMenuState();
         });
+        this.birdsService.onUpdated.subscribe((v) => this.ngOnInit())
     }
 
     processMenuState(){
@@ -75,7 +78,7 @@ export class AppSidebar {
             this.layoutService.SetMenu(false);
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.model = [
             {
                 label: 'Dashboard',
@@ -87,16 +90,32 @@ export class AppSidebar {
             {
                 label: 'Weights',
                 icon: 'pi pi-fw pi-chart-line',
-                routerLink: '/platform/WGT/weights',
                 visible: true,
-                routerLinkActiveOptions: { exact: true }
+                expanded: true,
+                items: this.birdsService.birds.map(x => {return {
+                    label: x.name,
+                    routerLink: '/platform/WGT/weights',
+                    queryParams: {'id':x.id}
+                } as MenuItem})
             },
             {
                 label: 'Birds',
-                icon: 'pi pi-fw pi-objects-column',
-                routerLink: '/platform/COR/birds',
+                icon: 'pi pi-fw pi-id-card',
                 visible: true,
-                routerLinkActiveOptions: { exact: true }
+                expanded: true,
+                items: [
+                    {
+                        icon:'pi pi-plus',
+                        routerLink: '/platform/COR/birds',
+                        queryParams: {'add':''},
+                        label:'Add'
+                    },
+                    ... this.birdsService.birds.map(x => {return {
+                        label: x.name,
+                        routerLink: '/platform/COR/birds',
+                        queryParams: {'id':x.id}
+                    } as MenuItem})
+                ]
             }
         ];
 

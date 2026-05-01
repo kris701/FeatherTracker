@@ -79,8 +79,8 @@ namespace FeatherTracker.Plugins.WGT.Controllers
 		/// <param name="inputModel"></param>
 		/// <returns></returns>
 		/// <response code="200">Deletes the target bird weight</response>
-		[HttpDelete(Endpoints.WGT.Delete_Weight)]
-		public async Task<IActionResult> Delete_Weight([FromQuery] DeleteModel inputModel)
+		[HttpPatch(Endpoints.WGT.Patch_DeleteWeights)]
+		public async Task<IActionResult> Patch_DeleteWeights([FromBody] DeleteRangeModel inputModel)
 		{
 			return Ok(await _interface.DeleteAsync(inputModel));
 		}

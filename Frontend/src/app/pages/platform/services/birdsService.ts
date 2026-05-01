@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { firstValueFrom } from "rxjs";
 import { Endpoints } from "../../../../Endpoints";
 import { APIURL } from "../../../../globals";
@@ -10,7 +10,8 @@ import { ListBirdModel } from "../../../models/COR/listBirdModel";
 export class BirdsService {
     public birds : BirdModel[] = [];
 
-    isLoaded : boolean = false;
+    public onUpdated : EventEmitter<boolean> = new EventEmitter<boolean>();
+
     isLoading : boolean = false;
 
     constructor(
@@ -19,15 +20,15 @@ export class BirdsService {
     }
 
     public async Load(){
-        if (!this.isLoaded && !this.isLoading){
+        if (!this.isLoading){
             this.isLoading = true;
             var groups = []
             var all = await firstValueFrom(this.http.get<ListBirdModel[]>(APIURL + Endpoints.COR.Birds.Get_AllBirds));
             for(var item of all)
                 groups.push(await firstValueFrom(this.http.get<BirdModel>(APIURL + Endpoints.COR.Birds.Get_Bird + "?ID=" + item.id)))
             this.birds = groups;
-            this.isLoaded = true;
             this.isLoading = false;
+            this.onUpdated.emit(true);
         }
     }
 }

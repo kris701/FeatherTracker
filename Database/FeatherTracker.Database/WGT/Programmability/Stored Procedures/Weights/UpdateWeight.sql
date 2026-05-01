@@ -3,12 +3,10 @@ CREATE PROCEDURE [WGT].[UpdateWeight]
 AS
 BEGIN TRANSACTION;
 
-UPDATE  [WGT].[BirdWeights]
+UPDATE  [WGT].[Weights]
     SET Grams     = @Grams,
         FK_BirdID = @BirdID,
         Timestamp = @Timestamp
 WHERE   ID = @ID;
-
-EXECUTE [WGT].[GetWeight] @ID;
 
 COMMIT TRANSACTION;

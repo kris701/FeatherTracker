@@ -27,7 +27,7 @@ public static class Endpoints {
 		public const string Patch_UpdateWeight = "endpoints/wgt";
 		public const string Get_AllWeights = "endpoints/wgt/all";
 		public const string Get_GetDateRanges = "endpoints/wgt/ranges";
-		public const string Delete_Weight = "endpoints/wgt";
+		public const string Patch_DeleteWeights = "endpoints/wgt/delete";
 		public const string Post_ImportWeights = "endpoints/wgt/import";
 	}
 }

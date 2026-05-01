@@ -11,9 +11,9 @@ import { LayoutService } from '../../services/layoutService';
         <div class="flex items-center justify-center min-h-screen overflow-hidden">
             <div class="flex flex-col items-center justify-center">
                 @if (layoutService.state.isDarkMode) {
-                    <img class="mb-8 w-32 shrink-0 mx-auto" src="src/assets/images/logo_small_transparant.png" />
+                    <img class="mb-8 w-32 shrink-0 mx-auto" src="src/assets/images/logo.png" />
                 } @else {
-                    <img class="mb-8 w-32 shrink-0 mx-auto" src="src/assets/images/logo_small_transparant_inv.png" />
+                    <img class="mb-8 w-32 shrink-0 mx-auto" src="src/assets/images/logo_inv.png" />
                 }
                 <div style="border-radius: 15px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 2%, rgba(33, 150, 243, 0) 110%)">
                     <div class="w-full card py-20 px-8 sm:px-20" style="border-radius: 15px">

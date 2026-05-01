@@ -36,6 +36,8 @@ import { InputIconModule } from 'primeng/inputicon';
                     (ngModelChange)="valueChanged()"
                     style="border-radius: var(-p-datepicker-border)"
                     [inputStyle]="{ 'border-radius': 'inherit' }"
+                    [minDate]="min"
+                    [maxDate]="max"
                 />
                 <label for="datepickerlabel">{{ label }}</label>
             </p-floatlabel>
@@ -51,6 +53,9 @@ export class FloatDatePicker implements OnChanges {
     @Input() label: string = '';
     @Input() value: string | Date | null = null;
     @Output() valueChange = new EventEmitter<string | Date | null>();
+
+    @Input() min: Date | null = null;
+    @Input() max: Date | null = null;
 
     isValid: boolean = true;
 

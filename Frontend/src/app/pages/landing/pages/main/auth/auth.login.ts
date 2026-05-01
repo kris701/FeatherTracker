@@ -59,9 +59,9 @@ import { LayoutService } from '../../../../../services/layoutService';
                             <label class="text-center">Username and Password</label>
                             <label class="text-center" *ngIf="loginWasInvalid" [style]="{ color: 'red' }">Username or Password is invalid!</label>
 
-                            <app-floattextinput label="Username" [(value)]="loginName" [autoFocus]="true" />
+                            <app-floattextinput id="username" label="Username" [(value)]="loginName" [autoFocus]="true" />
 
-                            <app-floatpasswordinput label="Password" [(value)]="password" (onEnter)="doDefaultLogin()" />
+                            <app-floatpasswordinput id="password" label="Password" [(value)]="password" (onEnter)="doDefaultLogin()" />
 
                             <p-button label="Sign In" styleClass="w-full" (click)="doDefaultLogin()"></p-button>
                         </div>
