@@ -10,7 +10,7 @@ services:
         ports:
             - 63098:8080
         hostname: docker-feathertracker-api
-        image: docker-feathertracker/api
+        image: kris701/feathertracker-api
         volumes:
             - docker-feathertracker-api:/api/.secrets
         networks:
@@ -21,7 +21,7 @@ services:
         container_name: docker-feathertracker-frontend
         ports:
             - 52905:8080
-        image: docker-feathertracker/frontend
+        image: kris701/feathertracker-frontend
         networks:
           - front-end
 
@@ -32,7 +32,7 @@ services:
             - MSSQL_SA_PASSWORD=yourStrong(!)Password
         container_name: docker-feathertracker-database
         hostname: docker-feathertracker-database
-        image: docker-feathertracker/database
+        image: kris701/feathertracker-database
         volumes:
             - docker-feathertracker-database:/var/opt/mssql
         # A bit of jank to initialize the database

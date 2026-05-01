@@ -10,6 +10,11 @@ You can use it to keep track of your birds weights.
 <img width="1678" height="995" alt="image" src="https://github.com/user-attachments/assets/fc706c7b-a4a0-4f17-84d7-6902713a3065" />
 <img width="1669" height="994" alt="image" src="https://github.com/user-attachments/assets/77055dc7-d0c8-4bd3-96f6-77304e2553a2" />
 
+## Docker
+You can quickly run this application with Docker, and explore if its something for you.
+Simply run the `docker-compose.yaml` file under the `Docker/` folder, and it will
+create the services needed.
+
 ## Implementation Details
 
 The tech-stack is:
