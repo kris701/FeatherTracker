@@ -1,24 +1,24 @@
-import { Component } from '@angular/core';
-import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
-import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 @Component({
     standalone: true,
-    imports: [TagModule, CommonModule],
+    imports: [CommonModule],
     selector: 'app-footer',
     template: `<div class="layout-footer">
-        Kristian Skov © 2025
-        <p-tag severity="success" value="Staff Mode" *ngIf="isStaff" />
-        <p-tag severity="warn" value="Impersonating user" *ngIf="isImpersonating" />
-    </div>`
+        Feather Tracker © 2026
+    </div>`,
+    styles: `
+        .layout-footer {
+            display: flex;
+            align-items: center;
+            height:4rem;
+            justify-content: center;
+            padding: 1rem 0 1rem 0;
+            gap: 0.5rem;
+            border-top: 1px solid var(--surface-border);
+        }
+    `
 })
 export class AppFooter {
-    isStaff: boolean = false;
-    isImpersonating: boolean = false;
-
-    ngOnInit() {
-        this.isStaff = JWTTokenHelpers.IsStaff();
-        if (localStorage.getItem('impersonating')) this.isImpersonating = true;
-    }
 }

@@ -1,24 +1,19 @@
-import { Routes } from '@angular/router';
-import { AppLayout } from './layout/app.layout';
-import { Dashboard } from './pages/dashboard/dashboard';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { Routes } from '@angular/router';
 import { authInterceptor } from './auth-interceptor.interceptor';
+import { AppLayout } from './layout/app.layout';
+import { Dashboard } from './pages/dsh/dsh';
+import { BirdsService } from './services/birdsService';
 
 export default [
     {
-        path: 'auth',
-        loadChildren: () => import('./pages/auth/auth.routes'),
-        providers: [provideHttpClient()]
-    },
-    {
         path: '',
         component: AppLayout,
-        providers: [provideHttpClient(withInterceptors([authInterceptor]))],
+        providers: [provideHttpClient(withInterceptors([authInterceptor])), BirdsService],
         children: [
             { path: '', component: Dashboard },
-            { path: 'core', loadChildren: () => import('./pages/core/core.routes') },
-            { path: 'birds', loadChildren: () => import('./pages/birds/birds.routes') },
-            { path: 'bugreports', loadChildren: () => import('./pages/bugreports/bugreports.routes') },
+            { path: 'COR', loadChildren: () => import('./pages/cor/cor.routes') },
+            { path: 'WGT', loadChildren: () => import('./pages/wgt/wgt.routes') },
         ]
     }
 ] as Routes;

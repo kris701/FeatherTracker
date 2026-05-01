@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:application",
                     "options": {
-                        "outputPath": "../Output/Frontend",
+                        "outputPath": "../../Output/Clients/Web",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
                         "polyfills": [
@@ -35,12 +35,16 @@
                                 "input": "."
                             },
                             {
-                                "glob": "src/assets/showcaseimages/**",
+                                "glob": "src/assets/videos/**",
+                                "input": "."
+                            },
+                            {
+                                "glob": "src/assets/other/**",
                                 "input": "."
                             }
                         ],
                         "styles": [
-                            "src/styles.scss"
+                            "src/assets/styles.scss"
                         ],
                         "scripts": []
                     },
@@ -92,7 +96,7 @@
                     },
                     "defaultConfiguration": "development",
                     "options": {
-                        "port": 4220
+                        "port": 6923
                     }
                 },
                 "extract-i18n": {

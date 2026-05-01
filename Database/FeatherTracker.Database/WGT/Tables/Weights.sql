@@ -1,0 +1,6 @@
+CREATE TABLE [WGT].[Weights] (
+    [ID]        UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    [Grams]     INT              NOT NULL,
+    [FK_BirdID] UNIQUEIDENTIFIER NOT NULL,
+    [Timestamp] DATETIME         NOT NULL CONSTRAINT [FK_Weights_Birds] FOREIGN KEY ([FK_BirdID]) REFERENCES [COR].[Birds] ([ID]) ON DELETE CASCADE
+);

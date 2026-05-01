@@ -4,75 +4,51 @@
     "Name": "Endpoints",
     "Nodes": [
       {
-        "Name": "Core",
+        "Name": "COR",
         "Nodes": [
           {
-            "Name": "Authentication",
+            "Name": "Setup",
             "Nodes": [
               {
-                "Name": "Post_Authenticate",
+                "Name": "Post_Setup",
                 "Route": ""
               },
               {
-                "Name": "Post_Impersonate",
-                "Route": "impersonate"
-              }
-            ]
-          },
-          {
-            "Name": "Permissions",
-            "Nodes": [
-              {
-                "Name": "Get_AllPermissions",
+                "Name": "Get_IsSetup",
                 "Route": ""
               }
             ]
           },
           {
-            "Name": "Users",
+            "Name": "Auth",
             "Nodes": [
               {
-                "Name": "Post_AddUser",
+                "Name": "Post_LogIn",
+                "Route": ""
+              }
+            ]
+          },
+          {
+            "Name": "Birds",
+            "Nodes": [
+              {
+                "Name": "Post_AddBird",
                 "Route": ""
               },
               {
-                "Name": "Post_VerifyUser",
-                "Route": "verify"
-              },
-              {
-                "Name": "Post_SignupUser",
-                "Route": "signup"
-              },
-              {
-                "Name": "Post_ResetPassword",
-                "Route": "resetpassword"
-              },
-              {
-                "Name": "Get_IsUsernameTaken",
-                "Route": "isusernametaken"
-              },
-              {
-                "Name": "Get_IsEmailTaken",
-                "Route": "isemailtaken"
-              },
-              {
-                "Name": "Patch_UpdateUser",
+                "Name": "Patch_UpdateBird",
                 "Route": ""
               },
               {
-                "Name": "Patch_UpdatePassword",
-                "Route": "updatepassword"
-              },
-              {
-                "Name": "Get_AllUsers",
+                "Name": "Get_AllBirds",
                 "Route": "all"
               },
               {
-                "Name": "Get_User",
+                "Name": "Get_Bird",
                 "Route": ""
               },
               {
-                "Name": "Delete_User",
+                "Name": "Delete_Bird",
                 "Route": ""
               }
             ]
@@ -80,89 +56,31 @@
         ]
       },
       {
-        "Name": "Birds",
+        "Name": "WGT",
         "Nodes": [
           {
-            "Name": "Post_AddBird",
+            "Name": "Post_AddWeight",
             "Route": ""
           },
           {
-            "Name": "Patch_UpdateBird",
+            "Name": "Patch_UpdateWeight",
             "Route": ""
           },
           {
-            "Name": "Get_AllBirds",
+            "Name": "Get_AllWeights",
             "Route": "all"
           },
           {
-            "Name": "Get_Bird",
-            "Route": ""
+            "Name": "Get_GetDateRanges",
+            "Route": "ranges"
           },
           {
-            "Name": "Delete_Bird",
-            "Route": ""
+            "Name": "Patch_DeleteWeights",
+            "Route": "delete"
           },
           {
-            "Name": "Weights",
-            "Nodes": [
-              {
-                "Name": "Post_AddBirdWeight",
-                "Route": ""
-              },
-              {
-                "Name": "Patch_UpdateBirdWeight",
-                "Route": ""
-              },
-              {
-                "Name": "Get_AllBirdWeights",
-                "Route": "all"
-              },
-              {
-                "Name": "Get_GetDateRanges",
-                "Route": "ranges"
-              },
-              {
-                "Name": "Get_BirdWeight",
-                "Route": ""
-              },
-              {
-                "Name": "Delete_BirdWeight",
-                "Route": ""
-              },
-              {
-                "Name": "Patch_PurgeBirdWeights",
-                "Route": "purge"
-              },
-              {
-                "Name": "Post_ImportWeights",
-                "Route": "import"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "Name": "BugReports",
-        "Nodes": [
-          {
-            "Name": "Post_AddReport",
-            "Route": ""
-          },
-          {
-            "Name": "Patch_UpdateReport",
-            "Route": ""
-          },
-          {
-            "Name": "Get_AllReports",
-            "Route": "all"
-          },
-          {
-            "Name": "Get_Report",
-            "Route": ""
-          },
-          {
-            "Name": "Delete_Report",
-            "Route": ""
+            "Name": "Post_ImportWeights",
+            "Route": "import"
           }
         ]
       }

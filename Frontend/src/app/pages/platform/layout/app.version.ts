@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
-import { TooltipModule } from 'primeng/tooltip';
 import { TextareaModule } from 'primeng/textarea';
-import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'primeng/tooltip';
 import { VersionTag } from '../../../../globals';
 
 @Component({
@@ -11,7 +11,7 @@ import { VersionTag } from '../../../../globals';
     standalone: true,
     imports: [FormsModule, DialogModule, TagModule, TooltipModule, TextareaModule],
     template: `
-        <p-tag [style]="{ position: 'fixed', left: '0px', bottom: '0px', 'z-index': '9999' }"> Version {{ versionTag }} </p-tag>
+        <p-tag [style]="{ position: 'fixed', left: '5px', bottom: '5px', 'z-index': '9999' }"> Version {{ versionTag }} </p-tag>
     `
 })
 export class AppVersion {

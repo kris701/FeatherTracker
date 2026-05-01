@@ -1,0 +1,10 @@
+CREATE PROCEDURE [WGT].[DeleteWeight]
+@IDs [GLB].[GuidListType] READONLY
+AS
+BEGIN TRANSACTION;
+
+DELETE [WGT].[Weights]
+WHERE  ID IN (SELECT *
+              FROM   @IDs);
+
+COMMIT TRANSACTION;
