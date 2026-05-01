@@ -9,7 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="DatabaseSharp" Version="1.6.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
     <PackageReference Include="Uni.API" Version="1.2.2" />
+	  <PackageReference Include="ToolsSharp" Version="1.1.6" />
   </ItemGroup>
 
   <ItemGroup>

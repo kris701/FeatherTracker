@@ -7,24 +7,51 @@
         "Name": "COR",
         "Nodes": [
           {
-            "Name": "Post_AddBird",
-            "Route": ""
+            "Name": "Setup",
+            "Nodes": [
+              {
+                "Name": "Post_Setup",
+                "Route": ""
+              },
+              {
+                "Name": "Get_IsSetup",
+                "Route": ""
+              }
+            ]
           },
           {
-            "Name": "Patch_UpdateBird",
-            "Route": ""
+            "Name": "Auth",
+            "Nodes": [
+              {
+                "Name": "Post_LogIn",
+                "Route": ""
+              }
+            ]
           },
           {
-            "Name": "Get_AllBirds",
-            "Route": "all"
-          },
-          {
-            "Name": "Get_Bird",
-            "Route": ""
-          },
-          {
-            "Name": "Delete_Bird",
-            "Route": ""
+            "Name": "Birds",
+            "Nodes": [
+              {
+                "Name": "Post_AddBird",
+                "Route": ""
+              },
+              {
+                "Name": "Patch_UpdateBird",
+                "Route": ""
+              },
+              {
+                "Name": "Get_AllBirds",
+                "Route": "all"
+              },
+              {
+                "Name": "Get_Bird",
+                "Route": ""
+              },
+              {
+                "Name": "Delete_Bird",
+                "Route": ""
+              }
+            ]
           }
         ]
       },

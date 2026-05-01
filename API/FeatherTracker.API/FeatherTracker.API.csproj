@@ -31,8 +31,4 @@
 		</Content>
 	</ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="autoconst -m -o ../../FrontEnd/src -p TypeScriptProducer -t ../Plugins/Core/FeatherTracker.Plugins.Core/PermissionsTable.cs ../Plugins/Birds/FeatherTracker.Plugins.Birds/PermissionsTable.cs ../Plugins/BugReports/FeatherTracker.Plugins.BugReports/PermissionsTable.cs" ContinueOnError="true" />
-	</Target>
-
 </Project>

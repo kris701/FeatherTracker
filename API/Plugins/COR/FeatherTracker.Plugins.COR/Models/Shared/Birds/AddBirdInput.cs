@@ -1,5 +1,4 @@
-﻿using FeatherTracker.API.Tools;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FeatherTracker.Plugins.COR.Models.Shared.Birds
 {

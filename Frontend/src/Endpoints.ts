@@ -3,11 +3,23 @@ export const Endpoints = {
 	Name: "Endpoints",
 	COR: {
 		Name: "COR",
-		Post_AddBird: "endpoints/cor",
-		Patch_UpdateBird: "endpoints/cor",
-		Get_AllBirds: "endpoints/cor/all",
-		Get_Bird: "endpoints/cor",
-		Delete_Bird: "endpoints/cor",
+		Setup: {
+			Name: "Setup",
+			Post_Setup: "endpoints/cor/setup",
+			Get_IsSetup: "endpoints/cor/setup",
+		},
+		Auth: {
+			Name: "Auth",
+			Post_LogIn: "endpoints/cor/auth",
+		},
+		Birds: {
+			Name: "Birds",
+			Post_AddBird: "endpoints/cor/birds",
+			Patch_UpdateBird: "endpoints/cor/birds",
+			Get_AllBirds: "endpoints/cor/birds/all",
+			Get_Bird: "endpoints/cor/birds",
+			Delete_Bird: "endpoints/cor/birds",
+		},
 	},
 	WGT: {
 		Name: "WGT",
