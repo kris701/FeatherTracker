@@ -13,8 +13,4 @@ To automatically update shared API endpoint reference:
 
 `dotnet tool install --global AutoPoint`
 
-To automatically update shared const name reference:
-
-`dotnet tool install --global AutoConst`
-
 These tools are not nesessary for a general build, but are very usefull when it comes to development.

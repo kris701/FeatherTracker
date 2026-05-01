@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{D8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{A67D6F9B-BE7B-4304-9E24-07CE99B895FD}"
 	ProjectSection(SolutionItems) = preProject
+		Frontend\src\globals-release.ts = Frontend\src\globals-release.ts
 		Frontend\readme.md = Frontend\readme.md
 	EndProjectSection
 EndProject
