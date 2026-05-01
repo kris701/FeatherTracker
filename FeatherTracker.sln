@@ -35,8 +35,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.API.Tools", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B058B03-9752-4D89-9920-7D4C3664032A}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.gitignore = .gitignore
-		docker-compose.yaml = docker-compose.yaml
+		dockerbuild.ps1 = dockerbuild.ps1
 		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
@@ -45,6 +46,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WGT", "WGT", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.Plugins.WGT", "API\Plugins\WGT\FeatherTracker.Plugins.WGT\FeatherTracker.Plugins.WGT.csproj", "{3C94CAE0-6D4C-46E7-838F-5356719ECA97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{0B51EB9B-9F59-4CCF-BCF4-FFB550EEF0CF}"
+	ProjectSection(SolutionItems) = preProject
+		Docker\api.Dockerfile = Docker\api.Dockerfile
+		Docker\database.Dockerfile = Docker\database.Dockerfile
+		Docker\docker-compose.yaml = Docker\docker-compose.yaml
+		Docker\frontend.Dockerfile = Docker\frontend.Dockerfile
+		Docker\nginx.conf = Docker\nginx.conf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

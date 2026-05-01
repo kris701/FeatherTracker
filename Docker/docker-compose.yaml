@@ -1,0 +1,39 @@
+# https://www.composerize.com/
+name: feathertracker
+services:
+    feathertracker-api:
+        container_name: feathertracker-api
+        environment:
+            - JWT_SECRET=SOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRET
+            - JWT_LIFETIME=120
+            - DB_PASSWORD=yourStrong(!)Password
+            - DB_PORT=56028
+        ports:
+            - 63098:8080
+        image: feathertracker/api
+        volumes:
+            - feathertracker-api:/api/.secrets
+
+    feathertracker-frontend:
+        container_name: feathertracker-frontend
+        ports:
+            - 52905:8080
+        image: feathertracker/frontend
+
+    azure-sql-edge:
+        cap_add:
+            - SYS_PTRACE
+        environment:
+            - ACCEPT_EULA=1
+            - MSSQL_SA_PASSWORD=yourStrong(!)Password
+        ports:
+            - 56028:1433
+        container_name: feathertracker-sql-server
+        image: mcr.microsoft.com/azure-sql-edge
+        volumes:
+            - feathertracker-azure-sql:/var/opt/mssql
+volumes:
+    feathertracker-azure-sql:
+        name: feathertracker-azure-sql
+    feathertracker-api:
+        name: feathertracker-api

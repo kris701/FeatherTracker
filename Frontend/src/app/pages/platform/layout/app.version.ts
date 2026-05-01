@@ -4,7 +4,7 @@ import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { TooltipModule } from 'primeng/tooltip';
-import { VersionTag } from '../../../../globals';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'app-version',
@@ -15,5 +15,5 @@ import { VersionTag } from '../../../../globals';
     `
 })
 export class AppVersion {
-    versionTag: string = VersionTag;
+    versionTag: string = environment.VersionTag;
 }

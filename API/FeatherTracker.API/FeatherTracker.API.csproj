@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="DatabaseSharp" Version="1.6.4" />
     <PackageReference Include="Uni.API" Version="1.2.2" />
   </ItemGroup>
@@ -16,13 +17,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Plugins\COR\FeatherTracker.Plugins.COR\FeatherTracker.Plugins.COR.csproj" />
 		<ProjectReference Include="..\Plugins\WGT\FeatherTracker.Plugins.WGT\FeatherTracker.Plugins.WGT.csproj" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-		<Content Update="configuration.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
 	</ItemGroup>
 
 </Project>
