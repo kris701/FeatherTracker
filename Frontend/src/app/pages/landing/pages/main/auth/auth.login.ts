@@ -14,7 +14,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RippleModule } from 'primeng/ripple';
 import { TagModule } from 'primeng/tag';
 import { Endpoints } from '../../../../../../Endpoints';
-import { environment } from '../../../../../../environments/environment';
 import { FloatPasswordInput } from '../../../../../common/components/floatpasswordinput';
 import { FloatTextInput } from '../../../../../common/components/floattextinput';
 import { AuthRequest } from '../../../../../models/COR/authRequest';
@@ -110,7 +109,7 @@ export class Login {
             username: this.loginName,
             password: this.password
         } as AuthRequest;
-        this.http.post<AuthResponse>(environment.APIURL + Endpoints.COR.Auth.Post_LogIn, input).subscribe(
+        this.http.post<AuthResponse>(Endpoints.COR.Auth.Post_LogIn, input).subscribe(
             (c) => this.processAuthResult(c),
             (e) => {
                 this.isLoggingIn = false;

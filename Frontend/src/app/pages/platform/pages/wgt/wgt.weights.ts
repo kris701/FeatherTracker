@@ -24,7 +24,6 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from '../../../../../Endpoints';
-import { environment } from '../../../../../environments/environment';
 import { FloatDatePicker } from "../../../../common/components/floatdatepicker";
 import { FloatNumberInput } from "../../../../common/components/floatnumberinput";
 import { BirdModel } from '../../../../models/COR/birdModel';
@@ -266,7 +265,7 @@ export class WGTWeights {
 
     async loadWeights(){
         this.isLoading = true;
-        var r = await firstValueFrom(this.http.get<GetDateRangesOutput>(environment.APIURL + Endpoints.WGT.Get_GetDateRanges + "?ID=" + this.currentBirdId))
+        var r = await firstValueFrom(this.http.get<GetDateRangesOutput>(Endpoints.WGT.Get_GetDateRanges + "?ID=" + this.currentBirdId))
         if (r.newest == null || r.newest == '')
             return;
         r.newest = new Date(<Date>r.newest);
@@ -290,7 +289,7 @@ export class WGTWeights {
     async loadWeightsWithin(){
         this.isLoading = true;
         this.allWeights = []
-        var r = await firstValueFrom(this.http.get<WeightModel[]>(environment.APIURL + Endpoints.WGT.Get_AllWeights + "?BirdID=" + this.currentBirdId + "&From=" + this.currentMinDate.toISOString() + "&To=" + this.currentMaxDate.toISOString()))
+        var r = await firstValueFrom(this.http.get<WeightModel[]>(Endpoints.WGT.Get_AllWeights + "?BirdID=" + this.currentBirdId + "&From=" + this.currentMinDate.toISOString() + "&To=" + this.currentMaxDate.toISOString()))
         r.forEach(b => b.timestamp = new Date(<Date>b.timestamp))
         this.allWeights = r;
         this.processGraph();
@@ -495,12 +494,12 @@ export class WGTWeights {
 
     async saveBirdWeight() {
         if (this.currentBirdWeight.id == '') {
-            await firstValueFrom(this.http.post<BirdModel>(environment.APIURL + Endpoints.WGT.Post_AddWeight, this.currentBirdWeight))
+            await firstValueFrom(this.http.post<BirdModel>(Endpoints.WGT.Post_AddWeight, this.currentBirdWeight))
             this.showBirdWeightDialog = false;
             this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Weight log created!' });
             await this.loadWeights();
         } else {
-            await firstValueFrom(this.http.patch<BirdModel>(environment.APIURL + Endpoints.WGT.Patch_UpdateWeight, this.currentBirdWeight))
+            await firstValueFrom(this.http.patch<BirdModel>(Endpoints.WGT.Patch_UpdateWeight, this.currentBirdWeight))
             this.showBirdWeightDialog = false;
             this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Weight log updated!' });
             await this.loadWeights();
@@ -515,7 +514,7 @@ export class WGTWeights {
                 var input = {
                     iDs: [weightId]
                 } as DeleteRangeModel
-                await firstValueFrom(this.http.patch(environment.APIURL + Endpoints.WGT.Patch_DeleteWeights, input))
+                await firstValueFrom(this.http.patch(Endpoints.WGT.Patch_DeleteWeights, input))
                 this.service.add({ severity: 'info', summary: 'Info Message', detail: 'Weight log deleted!' });
                 this.showBirdWeightDialog = false;
                 await this.loadWeights();
@@ -564,7 +563,7 @@ export class WGTWeights {
             let input = <any>event.target;
             const formData = new FormData();
             formData.append('file', input.files[0]);
-            await firstValueFrom(this.http.post(environment.APIURL + Endpoints.WGT.Post_ImportWeights + "?BirdID=" + this.currentBirdId, formData))
+            await firstValueFrom(this.http.post(Endpoints.WGT.Post_ImportWeights + "?BirdID=" + this.currentBirdId, formData))
             this.isLoading = false;
             input.value = null
             await this.loadWeights();
@@ -580,7 +579,7 @@ export class WGTWeights {
                 var input = {
                     iDs: this.allWeights.map(x => x.id)
                 } as DeleteRangeModel
-                await firstValueFrom(this.http.patch(environment.APIURL + Endpoints.WGT.Patch_DeleteWeights, input));
+                await firstValueFrom(this.http.patch(Endpoints.WGT.Patch_DeleteWeights, input));
                 this.isLoading = false;
                 await this.loadWeights();
             }

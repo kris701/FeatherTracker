@@ -12,7 +12,6 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { TagModule } from 'primeng/tag';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from '../../../../../Endpoints';
-import { environment } from '../../../../../environments/environment';
 import { FloatPasswordInput } from "../../../../common/components/floatpasswordinput";
 import { FloatTextInput } from "../../../../common/components/floattextinput";
 import { AuthRequest } from '../../../../models/COR/authRequest';
@@ -65,7 +64,7 @@ export class LandingPage {
     ) {}
 
     async submit(){
-        await firstValueFrom(this.http.post(environment.APIURL + Endpoints.COR.Setup.Post_Setup, this.model));
+        await firstValueFrom(this.http.post(Endpoints.COR.Setup.Post_Setup, this.model));
         window.location.replace('/');
     }
 }

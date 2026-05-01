@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Directive } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { ConfirmDialogHelpers } from '../../pages/platform/helpers/confirmdialoghelpers';
 
 @Directive()
@@ -47,7 +46,7 @@ export class BaseCRUDInterface {
         if (!this.canRead) throw new Error('You do not have read permissions!');
         this.isLoading = true;
         try {
-            this.allItems = await firstValueFrom(this.http.get<any[]>(environment.APIURL + this.getAllEndpoint));
+            this.allItems = await firstValueFrom(this.http.get<any[]>(this.getAllEndpoint));
         } catch {
             this.service.add({ severity: 'error', summary: 'Load Error', detail: 'Failed to load all items!' });
         }
@@ -74,10 +73,10 @@ export class BaseCRUDInterface {
         this.isLoading = true;
         try {
             if (this.currentItem.id != '') {
-                await firstValueFrom(this.http.patch(environment.APIURL + this.patchEndpoint, this.currentItem));
+                await firstValueFrom(this.http.patch(this.patchEndpoint, this.currentItem));
                 this.service.add({ severity: 'success', summary: 'Item Updated!', detail: 'The item was updated with the new values' });
             } else {
-                await firstValueFrom(this.http.post(environment.APIURL + this.postEndpoint, this.currentItem));
+                await firstValueFrom(this.http.post(this.postEndpoint, this.currentItem));
                 this.service.add({ severity: 'success', summary: 'Item Created!', detail: 'A new items was created' });
             }
             this.showDialog = false;
@@ -107,7 +106,7 @@ export class BaseCRUDInterface {
     async deleteItemInner() {
         this.isLoading = true;
         try {
-            await firstValueFrom(this.http.delete(environment.APIURL + this.deleteEndpoint + '?ID=' + this.currentItem.id));
+            await firstValueFrom(this.http.delete(this.deleteEndpoint + '?ID=' + this.currentItem.id));
             this.service.add({ severity: 'info', summary: 'Item deleted!', detail: 'The item was successfully deleted' });
             this.showDialog = false;
             await this.loadItems();
@@ -121,7 +120,7 @@ export class BaseCRUDInterface {
         if (!this.canRead) throw new Error('You do not have read permissions!');
         this.isLoading = true;
         try {
-            this.currentItem = await firstValueFrom(this.http.get<any>(environment.APIURL + this.getEndpoint + '?ID=' + id));
+            this.currentItem = await firstValueFrom(this.http.get<any>(this.getEndpoint + '?ID=' + id));
             this.showDialog = true;
         } catch {
             this.service.add({ severity: 'error', summary: 'Load Error', detail: 'Loading failed!' });

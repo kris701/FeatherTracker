@@ -12,7 +12,6 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { TagModule } from 'primeng/tag';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from '../../../../../Endpoints';
-import { environment } from '../../../../../environments/environment';
 import { LayoutService } from '../../../../services/layoutService';
 
 @Component({
@@ -43,7 +42,7 @@ export class LandingPage {
     ) {}
 
     async ngOnInit(){
-        var isSetup = await firstValueFrom(this.http.get<boolean>(environment.APIURL + Endpoints.COR.Setup.Get_IsSetup));
+        var isSetup = await firstValueFrom(this.http.get<boolean>(Endpoints.COR.Setup.Get_IsSetup));
         if (isSetup === false)
             window.location.replace('/setup');
     }

@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{D8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{A67D6F9B-BE7B-4304-9E24-07CE99B895FD}"
 	ProjectSection(SolutionItems) = preProject
-		Frontend\src\globals-release.ts = Frontend\src\globals-release.ts
+		Frontend\src\environments\environment.production.ts = Frontend\src\environments\environment.production.ts
 		Frontend\readme.md = Frontend\readme.md
 	EndProjectSection
 EndProject
@@ -54,6 +54,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{0B51EB
 		Docker\docker-compose.yaml = Docker\docker-compose.yaml
 		Docker\frontend.Dockerfile = Docker\frontend.Dockerfile
 		Docker\nginx.conf = Docker\nginx.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{116C90EC-7D40-4E8E-95AC-45A1E7BE588E}"
+	ProjectSection(SolutionItems) = preProject
+		Docker\Database\FeatherTracker.Database_Create.sql = Docker\Database\FeatherTracker.Database_Create.sql
 	EndProjectSection
 EndProject
 Global
@@ -102,6 +107,7 @@ Global
 		{352B878C-E55C-43C5-BF6F-1EC605E38759} = {97699228-AE2B-419F-B266-4C420080CE80}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {AB5EC79D-EF66-4E20-A870-53790EC9D348}
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{116C90EC-7D40-4E8E-95AC-45A1E7BE588E} = {0B51EB9B-9F59-4CCF-BCF4-FFB550EEF0CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E40F5D4-F940-48BA-B7A0-28744AA87C19}
