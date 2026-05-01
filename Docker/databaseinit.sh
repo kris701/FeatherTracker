@@ -15,7 +15,7 @@ do
     elif [[ $CODE -eq 0 ]] && [[ $RESULT == "" ]]
     then
         echo "Initializing database!"
-	/opt/mssql-tools/bin/sqlcmd -l 5 -S docker-feathertracker-database -U sa -P 'yourStrong(!)Password' -d master -i /docker-entrypoint-initdb.d/FeatherTracker.Database_Create.sql;
+	/opt/mssql-tools/bin/sqlcmd -l 5 -S docker-feathertracker-database -U sa -P 'yourStrong(!)Password' -d master -i /databaseinit/FeatherTracker.Database_Create.sql;
         break;
     else
         echo "Database not ready yet..."
