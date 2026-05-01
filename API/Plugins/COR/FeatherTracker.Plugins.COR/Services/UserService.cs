@@ -10,23 +10,26 @@ namespace FeatherTracker.Plugins.COR.Services
 {
 	public class UserService
 	{
-		private static readonly string _authFile = ".secrets/auth.json";
+		private static readonly string _authPath = ".secrets";
+		private static readonly string _authFile = "auth.json";
 
 		private readonly JWTSettings _settings;
 
 		public UserService(JWTSettings settings)
 		{
 			_settings = settings;
+			if (!Directory.Exists(_authPath))
+				Directory.CreateDirectory(_authPath);
 		}
 
-		public bool UserExists() => File.Exists(_authFile);
+		public bool UserExists() => File.Exists(Path.Combine(_authPath, _authFile));
 
 		public AuthResponse Authenticate(AuthRequest req)
 		{
-			if (!File.Exists(_authFile))
+			if (!File.Exists(Path.Combine(_authPath, _authFile)))
 				throw new Exception("You must create the admin user first!");
 
-			var user = JsonSerializer.Deserialize<AuthUser>(File.ReadAllText(_authFile));
+			var user = JsonSerializer.Deserialize<AuthUser>(File.ReadAllText(Path.Combine(_authPath, _authFile)));
 			if (user == null)
 				throw new Exception("Could not read auth file!");
 			if (user.Username != req.Username)
@@ -41,7 +44,7 @@ namespace FeatherTracker.Plugins.COR.Services
 
 		public AuthResponse CreateAdminUser(AuthRequest req)
 		{
-			if (File.Exists(_authFile))
+			if (File.Exists(Path.Combine(_authPath, _authFile)))
 				throw new Exception("Admin user already exists!");
 
 			var authUser = new AuthUser()
@@ -49,7 +52,7 @@ namespace FeatherTracker.Plugins.COR.Services
 				Username = req.Username,
 				PasswordHash = HashingHelpers.HashString(req.Password, System.Security.Cryptography.HashAlgorithmName.SHA1)
 			};
-			File.WriteAllText(_authFile, JsonSerializer.Serialize(authUser));
+			File.WriteAllText(Path.Combine(_authPath, _authFile), JsonSerializer.Serialize(authUser));
 			return new AuthResponse(
 				req.Username,
 				CreateToken(req.Username, _settings.Secret, _settings.LifetimeMin));

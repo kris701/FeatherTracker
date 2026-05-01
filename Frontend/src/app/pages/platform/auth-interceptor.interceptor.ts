@@ -9,6 +9,7 @@ import { JWTTokenHelpers } from './helpers/jwtTokenHelpers';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const messageService = inject(MessageService);
     const router = inject(Router);
+
     var authToken = localStorage.getItem('jwtToken');
     if (authToken) {
         req = req.clone({
@@ -21,9 +22,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         catchError((error) => {
             if (error instanceof HttpErrorResponse && error.status === 401) {
                 if (JWTTokenHelpers.IsExpired()) localStorage.removeItem('jwtToken');
-                if (localStorage.getItem('impersonating')) localStorage.removeItem('impersonating');
-                router.navigate(['/platform/auth']);
-            } else messageService.add({ severity: 'error', summary: 'Error duing HTTP request!', detail: '[' + error.error.status + '] Error: ' + error.error.message, life: 10000 });
+                sessionStorage.setItem('redirectTo', router.routerState.snapshot.url);
+                router.navigate(['/auth']);
+            } else {
+                if (error.error.details && error.error.message)
+                {
+                    if (error.error.details && error.error.details.length < 256) messageService.add({ severity: 'error', summary: error.error.message, detail: error.error.details, life: 10000 });
+                    else messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message, life: 10000 });
+                }
+                else if (error.statusText){
+                    messageService.add({ severity: 'error', summary: 'Error', detail: error.statusText, life: 10000 });
+                }
+            }
             return throwError(() => error);
         })
     );

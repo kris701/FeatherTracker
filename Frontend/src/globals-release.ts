@@ -1,2 +1,2 @@
-export const APIURL = 'https://api.feathertracker.dk/';
-export const VersionTag = "0.0.3"
+export const APIURL = 'WEBSITE';
+export const VersionTag = "0.1.0"

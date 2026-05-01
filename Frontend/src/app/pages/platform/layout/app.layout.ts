@@ -1,123 +1,70 @@
-import { Component, Renderer2, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
-import { AppTopbar } from './app.topbar';
-import { AppSidebar } from './app.sidebar';
-import { AppFooter } from './app.footer';
-import { LayoutService } from '../../../layout/services/layout.service';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { ConfirmDialog } from "primeng/confirmdialog";
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { BirdsService } from '../services/birdsService';
+import { AppFooter } from './app.footer';
+import { AppSidebar } from './app.sidebar';
+import { AppTopbar } from './app.topbar';
 import { AppVersion } from './app.version';
-import { JWTTokenHelpers } from '../helpers/jwtTokenHelpers';
-import { AppMenu } from './app.menu';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, AppFooter, TagModule, TooltipModule, AppVersion, ConfirmDialogModule],
-    template: `<div class="layout-wrapper" [ngClass]="containerClass">
-        <app-topbar></app-topbar>
-        <app-sidebar></app-sidebar>
-        <div class="layout-main-container">
-            <div class="layout-main">
-                <router-outlet></router-outlet>
+    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, AppFooter, TagModule, TooltipModule, AppVersion, ConfirmDialog],
+    template: `
+    <div class="layout-wrapper">
+        <div class="flex flex-col w-full h-full">
+            <app-topbar></app-topbar>
+            <div class="flex flex-row w-full h-full" style="overflow:hidden">
+                <app-sidebar></app-sidebar>
+                <div class="layout-main-container">
+                    <div class="layout-main">
+                        <router-outlet></router-outlet>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
             </div>
-            <app-footer></app-footer>
         </div>
-        <div class="layout-mask animate-fadein"></div>
         <app-version />
         <p-confirmdialog />
-    </div> `
+    </div>
+    `,
+    styles: `
+    .layout-wrapper {
+        display: flex;
+        flex-direction: column;
+        height:100vh;
+        min-height: 100vh;
+        max-height: 100vh;
+    }
+
+    .layout-main-container {
+        display: flex;
+        flex-direction: column;
+        min-height: inherit;
+        max-height: inherit;
+        overflow:auto;
+        width:100%;
+        justify-content: space-between;
+        padding: 2rem 2rem 0 2rem;
+    }
+
+    .layout-main {
+        flex: 1 1 auto;
+        padding-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+    }
+    `
 })
 export class AppLayout {
-    overlayMenuOpenSubscription: Subscription;
-
-    menuOutsideClickListener: any;
-
-    @ViewChild(AppSidebar) appSidebar!: AppSidebar;
-
-    @ViewChild(AppTopbar) appTopBar!: AppTopbar;
-
-    constructor(
-        public layoutService: LayoutService,
-        public renderer: Renderer2,
-        public router: Router
-    ) {
-        this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
-            if (!this.menuOutsideClickListener) {
-                this.menuOutsideClickListener = this.renderer.listen('document', 'click', (event) => {
-                    if (this.isOutsideClicked(event)) {
-                        this.hideMenu();
-                    }
-                });
-            }
-
-            if (this.layoutService.layoutState().staticMenuMobileActive) {
-                this.blockBodyScroll();
-            }
-        });
-
-        this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-            this.hideMenu();
-        });
+    constructor(public birdsService : BirdsService){
     }
 
-    ngOnInit() {
-        if (JWTTokenHelpers.IsTokenSet() && JWTTokenHelpers.IsExpired()) JWTTokenHelpers.ClearToken();
-    }
-
-    isOutsideClicked(event: MouseEvent) {
-        const sidebarEl = document.querySelector('.layout-sidebar');
-        const topbarEl = document.querySelector('.layout-menu-button');
-        const eventTarget = event.target as Node;
-
-        return !(sidebarEl?.isSameNode(eventTarget) || sidebarEl?.contains(eventTarget) || topbarEl?.isSameNode(eventTarget) || topbarEl?.contains(eventTarget));
-    }
-
-    hideMenu() {
-        this.layoutService.layoutState.update((prev) => ({ ...prev, overlayMenuActive: false, staticMenuMobileActive: false, menuHoverActive: false }));
-        if (this.menuOutsideClickListener) {
-            this.menuOutsideClickListener();
-            this.menuOutsideClickListener = null;
-        }
-        this.unblockBodyScroll();
-    }
-
-    blockBodyScroll(): void {
-        if (document.body.classList) {
-            document.body.classList.add('blocked-scroll');
-        } else {
-            document.body.className += ' blocked-scroll';
-        }
-    }
-
-    unblockBodyScroll(): void {
-        if (document.body.classList) {
-            document.body.classList.remove('blocked-scroll');
-        } else {
-            document.body.className = document.body.className.replace(new RegExp('(^|\\b)' + 'blocked-scroll'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-        }
-    }
-
-    get containerClass() {
-        return {
-            'layout-overlay': this.layoutService.layoutConfig().menuMode === 'overlay',
-            'layout-static': this.layoutService.layoutConfig().menuMode === 'static',
-            'layout-static-inactive': this.layoutService.layoutState().staticMenuDesktopInactive && this.layoutService.layoutConfig().menuMode === 'static',
-            'layout-overlay-active': this.layoutService.layoutState().overlayMenuActive,
-            'layout-mobile-active': this.layoutService.layoutState().staticMenuMobileActive
-        };
-    }
-
-    ngOnDestroy() {
-        if (this.overlayMenuOpenSubscription) {
-            this.overlayMenuOpenSubscription.unsubscribe();
-        }
-
-        if (this.menuOutsideClickListener) {
-            this.menuOutsideClickListener();
-        }
+    async ngOnInit(){
+        await this.birdsService.Load();
     }
 }

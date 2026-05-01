@@ -1,5 +1,5 @@
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { JWTTokenModel } from "../../../models/Core/jWTTokenModel";
+import { JWTTokenModel } from "../../../models/COR/jWTTokenModel";
 
 export class JWTTokenHelpers
 {
@@ -12,27 +12,6 @@ export class JWTTokenHelpers
 
     public static ClearToken() {
         localStorage.removeItem('jwtToken');
-    }
-
-    public static GetUserID() : string{
-        var token = localStorage.getItem("jwtToken");
-        if (token){
-            const helper = new JwtHelperService();
-            var result = helper.decodeToken<JWTTokenModel>(token);
-            if (result)
-                return result.nameid;
-        }
-        return "";
-    }
-
-    public static IsStaff(): boolean {
-        var token = localStorage.getItem('jwtToken');
-        if (token) {
-            const helper = new JwtHelperService();
-            var result = helper.decodeToken<JWTTokenModel>(token);
-            if (result && result.isstaff == 'True') return true;
-        }
-        return false;
     }
 
     public static IsExpired() : boolean{

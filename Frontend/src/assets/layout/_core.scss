@@ -1,10 +1,14 @@
+:root {
+    scroll-behavior: smooth;
+}
+
 html {
     height: 100%;
     font-size: 14px;
 }
 
 body {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Inter', sans-serif;
     color: var(--text-color);
     background-color: var(--surface-ground);
     margin: 0;
@@ -17,15 +21,4 @@ body {
 
 a {
     text-decoration: none;
-}
-
-.layout-wrapper {
-    min-height: 100vh;
-}
-
-.rowclickable {
-    cursor: pointer;
-}
-.rowclickable:hover {
-    background: var(--p-datatable-row-hover-background) !important;
 }

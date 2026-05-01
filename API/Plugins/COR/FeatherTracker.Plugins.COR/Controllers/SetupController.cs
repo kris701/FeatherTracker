@@ -26,7 +26,8 @@ namespace FeatherTracker.Plugins.COR.Controllers
 		[HttpPost(Endpoints.COR.Setup.Post_Setup)]
 		public async Task<IActionResult> Post_Setup([FromBody] SetupInput inputModel)
 		{
-			return Ok(_userService.CreateAdminUser(inputModel.User));
+			_userService.CreateAdminUser(inputModel.User);
+			return Ok();
 		}
 
 		/// <summary>

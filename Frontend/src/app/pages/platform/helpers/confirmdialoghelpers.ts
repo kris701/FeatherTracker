@@ -15,4 +15,21 @@ export class ConfirmDialogHelpers {
             }
         };
     }
+
+    public static SaveContent() {
+        return {
+            header: 'Danger Zone',
+            icon: 'pi pi-info-circle',
+            rejectLabel: 'Cancel',
+            rejectButtonProps: {
+                label: 'Cancel',
+                severity: 'secondary',
+                outlined: true
+            },
+            acceptButtonProps: {
+                label: 'Save',
+                severity: 'success'
+            }
+        };
+    }
 }

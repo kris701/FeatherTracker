@@ -1,0 +1,61 @@
+{
+    "semantic": {
+        "primary": {
+            "50": "#1e6473",
+            "100": "#1d6e80",
+            "200": "#1E7587",
+            "300": "#1c7d91",
+            "400": "#1697a1",
+            "500": "#11abb7",
+            "600": "##10bac7",
+            "700": "#0fc3d1",
+            "800": "#0fc3d1",
+            "900": "#0fc3d1",
+            "950": "#0fc3d1"
+        },
+        "colorScheme": {
+            "light": {
+                "primary": {
+                    "color": "{primary.500}",
+                    "contrastColor": "#ffffff",
+                    "hoverColor": "{primary.600}",
+                    "activeColor": "{primary.700}"
+                },
+                "highlight": {
+                    "background": "{primary.50}",
+                    "focusBackground": "{primary.100}",
+                    "color": "{primary.700}",
+                    "focusColor": "{primary.800}"
+                }
+            },
+            "dark": {
+                "primary": {
+                    "color": "{primary.400}",
+                    "contrastColor": "{surface.900}",
+                    "hoverColor": "{primary.300}",
+                    "activeColor": "{primary.200}"
+                },
+                "surface":{
+                    "0": "#ffffff",
+                    "50": "#fbfcfc",
+                    "100": "#F7F9F8",
+                    "200": "#EFF3F2",
+                    "300": "#DADEDD",
+                    "400": "#B1B7B6",
+                    "500": "#828787",
+                    "600": "#5F7274",
+                    "700": "#415B61",
+                    "800": "#29444E",
+                    "900": "#183240",
+                    "950": "#0c1920"
+                },
+                "highlight": {
+                    "background": "color-mix(in srgb, {primary.400}, transparent 84%)",
+                    "focusBackground": "color-mix(in srgb, {primary.400}, transparent 76%)",
+                    "color": "rgba(255,255,255,.87)",
+                    "focusColor": "rgba(255,255,255,.87)"
+                }
+            }
+        }
+    }
+}
