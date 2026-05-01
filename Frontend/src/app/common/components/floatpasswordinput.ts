@@ -8,6 +8,7 @@ import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { getRandomInt } from '../helpers/randomhelper';
 
 @Component({
     selector: 'app-floatpasswordinput',
@@ -51,7 +52,7 @@ export class FloatPasswordInput implements OnChanges {
     @Output() valueChange = new EventEmitter<string | null | undefined>();
     @Output() onEnter = new EventEmitter<null>();
 
-    @Input() id: string = crypto.randomUUID();
+    @Input() id: string = getRandomInt(14);
 
     isValid: boolean = true;
 

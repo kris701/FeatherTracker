@@ -8,6 +8,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { getRandomInt } from '../helpers/randomhelper';
 
 @Component({
     selector: 'app-floattextinput',
@@ -71,7 +72,7 @@ export class FloatTextInput implements OnChanges {
 
     isValid: boolean = true;
 
-    @Input() id: string = crypto.randomUUID();
+    @Input() id: string = getRandomInt(14);
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['value']) {

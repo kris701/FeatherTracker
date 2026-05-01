@@ -12,6 +12,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { getRandomInt } from '../helpers/randomhelper';
 
 @Component({
     selector: 'app-floatmultiselect',
@@ -72,7 +73,7 @@ export class FloatMultiSelect implements OnChanges {
     @Input() selected: any[] | null | undefined = undefined;
     @Output() selectedChange = new EventEmitter<any[] | null | undefined>();
 
-    @Input() id: string = crypto.randomUUID();
+    @Input() id: string = getRandomInt(14);
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['selected'] && changes['selected'].currentValue != changes['selected'].previousValue) {

@@ -8,6 +8,7 @@ import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { getRandomInt } from '../helpers/randomhelper';
 
 @Component({
     selector: 'app-floatnumberinput',
@@ -53,7 +54,7 @@ export class FloatNumberInput implements OnChanges {
     @Input() value: number | null | undefined = undefined;
     @Output() valueChange = new EventEmitter<number | null | undefined>();
 
-    @Input() id: string = crypto.randomUUID();
+    @Input() id: string = getRandomInt(14);
 
     isValid: boolean = true;
 

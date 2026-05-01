@@ -8,7 +8,6 @@ import { ButtonModule } from 'primeng/button';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { Table, TableModule, TableService } from 'primeng/table';
 import { firstValueFrom } from 'rxjs';
-import { APIURL } from '../../../globals';
 import { BaseCRUDInterface } from '../interfaces/baseCRUDInterface';
 import { TableEmptyMessage } from './tables/emptymessage';
 
@@ -165,7 +164,7 @@ export class FloatTable {
     public contextMenuItems: MenuItem[] = [
         { label: 'Clone', icon: 'pi pi-copy', command: async () => {
                 if (this.contextMenuSelection && this.interface){
-                    var newCloned = await firstValueFrom(this.http.get<any>(APIURL + this.interface.getEndpoint + '?ID=' + this.contextMenuSelection.id));
+                    var newCloned = await firstValueFrom(this.http.get<any>(this.interface.getEndpoint + '?ID=' + this.contextMenuSelection.id));
                     newCloned.id = '';
                     this.interface.currentItem = newCloned
                     this.interface.showDialog = true;
@@ -174,7 +173,7 @@ export class FloatTable {
         },
         { label: 'Export', icon: 'pi pi-file-export', command: async () => {
                 if (this.contextMenuSelection && this.interface){
-                    var itemToExport = await firstValueFrom(this.http.get<any>(APIURL + this.interface.getEndpoint + '?ID=' + this.contextMenuSelection.id));
+                    var itemToExport = await firstValueFrom(this.http.get<any>(this.interface.getEndpoint + '?ID=' + this.contextMenuSelection.id));
                     var itemToExportBlob = new Blob([JSON.stringify(itemToExport)], {
                         type: 'text/plain'
                     });
