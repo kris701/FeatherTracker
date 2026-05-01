@@ -51,6 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{0B51EB
 	ProjectSection(SolutionItems) = preProject
 		Docker\api.Dockerfile = Docker\api.Dockerfile
 		Docker\database.Dockerfile = Docker\database.Dockerfile
+		Docker\databaseinit.sh = Docker\databaseinit.sh
 		Docker\docker-compose.yaml = Docker\docker-compose.yaml
 		Docker\frontend.Dockerfile = Docker\frontend.Dockerfile
 		Docker\nginx.conf = Docker\nginx.conf
