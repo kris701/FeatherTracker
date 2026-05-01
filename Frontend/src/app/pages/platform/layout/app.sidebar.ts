@@ -78,17 +78,25 @@ export class AppSidebar {
     ngOnInit() {
         this.model = [
             {
-                label: 'Home',
-                expanded: true,
-                items: [
-                    {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-objects-column',
-                        routerLink: '/platform',
-                        visible: true,
-                        routerLinkActiveOptions: { exact: true }
-                    }
-                ]
+                label: 'Dashboard',
+                icon: 'pi pi-fw pi-objects-column',
+                routerLink: '/platform',
+                visible: true,
+                routerLinkActiveOptions: { exact: true }
+            },
+            {
+                label: 'Weights',
+                icon: 'pi pi-fw pi-chart-line',
+                routerLink: '/platform/WGT/weights',
+                visible: true,
+                routerLinkActiveOptions: { exact: true }
+            },
+            {
+                label: 'Birds',
+                icon: 'pi pi-fw pi-objects-column',
+                routerLink: '/platform/COR/birds',
+                visible: true,
+                routerLinkActiveOptions: { exact: true }
             }
         ];
 

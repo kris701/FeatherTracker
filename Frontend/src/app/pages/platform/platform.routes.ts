@@ -13,6 +13,7 @@ export default [
         children: [
             { path: '', component: Dashboard },
             { path: 'COR', loadChildren: () => import('./pages/cor/cor.routes') },
+            { path: 'WGT', loadChildren: () => import('./pages/wgt/wgt.routes') },
         ]
     }
 ] as Routes;

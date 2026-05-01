@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { marked } from 'marked';
 import { MenuItem } from 'primeng/api';
 import { Divider } from "primeng/divider";
-import { EditorModule } from 'primeng/editor';
 import { MenubarModule } from 'primeng/menubar';
 import { SplitterModule } from 'primeng/splitter';
 import { TextareaModule } from 'primeng/textarea';
@@ -12,7 +11,7 @@ import { compressImage } from '../helpers/compressImage';
 
 @Component({
     selector: 'app-floatmarkdowneditor',
-    imports: [FormsModule, CommonModule, EditorModule, SplitterModule, MenubarModule, TextareaModule, Divider],
+    imports: [FormsModule, CommonModule, SplitterModule, MenubarModule, TextareaModule, Divider],
     template: `
         @if(disabled){
             <div class="markdowneditor-preview" #preview></div>
