@@ -1,4 +1,3 @@
-# https://www.composerize.com/
 name: docker-feathertracker
 services:
     docker-feathertracker-api:
@@ -16,6 +15,7 @@ services:
         networks:
           - back-end
           - front-end
+        restart: unless-stopped
 
     docker-feathertracker-frontend:
         container_name: docker-feathertracker-frontend
@@ -24,6 +24,7 @@ services:
         image: kris701/feathertracker-frontend
         networks:
           - front-end
+        restart: unless-stopped
 
     docker-feathertracker-database:
         cap_add:
@@ -50,6 +51,7 @@ services:
           sleep infinity;"
         networks:
           - back-end
+        restart: unless-stopped
 volumes:
     docker-feathertracker-database:
         name: docker-feathertracker-database
