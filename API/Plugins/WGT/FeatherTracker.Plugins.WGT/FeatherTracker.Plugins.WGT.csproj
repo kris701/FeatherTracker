@@ -19,7 +19,6 @@
 	</ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="dotnet cs2ts --output &quot;../../../../FrontEnd/src/app/models/WGT&quot; --clear-output-directory --convert-dates-to &quot;Union&quot; --import-generation &quot;Simple&quot; &quot;../../../FeatherTracker.API.Tools/BaseExecIDModel.cs&quot;" ContinueOnError="true" />
 		<Exec Command="dotnet cs2ts --output &quot;../../../../FrontEnd/src/app/models/WGT&quot; --convert-dates-to &quot;Union&quot; --import-generation &quot;Simple&quot; &quot;./Models/Shared/&quot;" ContinueOnError="true" />
 	</Target>
 

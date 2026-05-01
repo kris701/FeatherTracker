@@ -1,0 +1,61 @@
+# https://www.composerize.com/
+name: docker-feathertracker
+services:
+    docker-feathertracker-api:
+        container_name: docker-feathertracker-api
+        environment:
+            - JWT_SECRET=SOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRET
+            - JWT_LIFETIME=120
+            - DB_PASSWORD=yourStrong(!)Password
+        ports:
+            - 63098:8080
+        hostname: docker-feathertracker-api
+        image: kris701/feathertracker-api
+        volumes:
+            - docker-feathertracker-api:/api/.secrets
+        networks:
+          - back-end
+          - front-end
+
+    docker-feathertracker-frontend:
+        container_name: docker-feathertracker-frontend
+        ports:
+            - 52905:8080
+        image: kris701/feathertracker-frontend
+        networks:
+          - front-end
+
+    docker-feathertracker-database:
+        cap_add:
+            - SYS_PTRACE
+        environment:
+            - MSSQL_SA_PASSWORD=yourStrong(!)Password
+        container_name: docker-feathertracker-database
+        hostname: docker-feathertracker-database
+        image: kris701/feathertracker-database
+        volumes:
+            - docker-feathertracker-database:/var/opt/mssql
+        # A bit of jank to initialize the database
+        command: >
+          /bin/bash -c "
+          /opt/mssql/bin/sqlservr &
+
+          until /opt/mssql-tools/bin/sqlcmd -l 1 -S docker-feathertracker-database -U sa -P 'yourStrong(!)Password' -Q 'SELECT 1' &> /dev/null; do
+            >&2 echo '>>>>>>>>>> SQL Server is unavailable - sleeping <<<<<<<<<<';
+            sleep 5;
+          done;
+          echo '>>>>>>>>>> SQL Server is ready - executing init script <<<<<<<<<<';
+          /opt/mssql-tools/bin/sqlcmd -l 5 -S docker-feathertracker-database -U sa -P 'yourStrong(!)Password' -d master -i /docker-entrypoint-initdb.d/FeatherTracker.Database_Create.sql;
+
+          sleep infinity;"
+        networks:
+          - back-end
+volumes:
+    docker-feathertracker-database:
+        name: docker-feathertracker-database
+    docker-feathertracker-api:
+        name: docker-feathertracker-api
+
+networks:
+  front-end:
+  back-end:

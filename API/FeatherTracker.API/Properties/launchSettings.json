@@ -2,20 +2,21 @@
   "profiles": {
     "api": {
       "commandName": "Project",
+      "commandLineArgs": "--jwtsecret \"nM@arG0N4d7^zMHiK7c3AA9Oj$WOUS@Pr&i6yemW\" --jwtlifetime 120 --dbconnectionstring \"Server=tcp:localhost,6028;Initial Catalog=FeatherTracker.Database;Persist Security Info=False;User ID=sa;Password=yourStrong(!)Password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;\"",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:63098;http://localhost:63099"
+      "applicationUrl": "https://localhost:63094;http://localhost:63095"
     },
     "api-nobrowser": {
       "commandName": "Project",
-      "launchBrowser": false,
+      "commandLineArgs": "--jwtsecret \"nM@arG0N4d7^zMHiK7c3AA9Oj$WOUS@Pr&i6yemW\" --jwtlifetime 120 --dbconnectionstring \"Server=tcp:localhost,56028;Initial Catalog=FeatherTracker.Database;Persist Security Info=False;User ID=sa;Password=yourStrong(!)Password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;\"",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:63098;http://localhost:63099"
+      "applicationUrl": "https://localhost:63094;http://localhost:63095"
     }
   }
 }

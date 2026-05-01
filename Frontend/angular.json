@@ -37,10 +37,6 @@
                             {
                                 "glob": "src/assets/videos/**",
                                 "input": "."
-                            },
-                            {
-                                "glob": "src/assets/other/**",
-                                "input": "."
                             }
                         ],
                         "styles": [
@@ -64,22 +60,16 @@
                             ],
                             "outputHashing": "all",
                             "fileReplacements": [
-                                {
-                                    "replace": "src/globals.ts",
-                                    "with": "src/globals-release.ts"
-                                }
+                              {
+                                "replace": "src/environments/environment.ts",
+                                "with": "src/environments/environment.production.ts"
+                              }
                             ]
                         },
                         "development": {
                             "optimization": false,
                             "extractLicenses": false,
-                            "sourceMap": true,
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/globals.ts",
-                                    "with": "src/globals-test.ts"
-                                }
-                            ]
+                            "sourceMap": true
                         }
                     },
                     "defaultConfiguration": "development"
@@ -96,7 +86,8 @@
                     },
                     "defaultConfiguration": "development",
                     "options": {
-                        "port": 6923
+                        "port": 6923,
+                        "proxyConfig": "src/proxy.conf.json"
                     }
                 },
                 "extract-i18n": {
