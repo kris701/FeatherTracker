@@ -11,10 +11,6 @@ jobs:
     outputs: 
         releaseExists: ${{ steps.check-tag.outputs.exists }}
     steps:
-      - uses: actions/setup-dotnet@v4
-        with:
-            dotnet-version: '9.0'
-
       - uses: actions/checkout@v4
 
       - name: Get Client Project version
@@ -35,10 +31,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
-        with:
-            dotnet-version: '9.0'
 
       - name: Install Node
         uses: actions/setup-node@v1
@@ -104,10 +96,6 @@ jobs:
     if: needs.check-tag.outputs.releaseExists == 'true'
     runs-on: windows-latest
     steps:
-      - uses: actions/setup-dotnet@v4
-        with:
-            dotnet-version: '9.0'
-
       - name: Install Node
         uses: actions/setup-node@v1
         with:
