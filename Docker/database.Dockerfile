@@ -29,7 +29,7 @@ RUN dotnet tool install -g microsoft.sqlpackage
 
 EXPOSE 1433/tcp
 
-COPY ./Docker/Database/FeatherTracker.Database.dacpac /databaseinit/
 COPY ./Docker/databaseinit.sh /databaseinit/
+COPY ./Docker/Database/FeatherTracker.Database.dacpac /databaseinit/
 
 CMD MSSQL_SA_PASSWORD=$MSSQL_SA_PASSWORD /databaseinit/databaseinit.sh

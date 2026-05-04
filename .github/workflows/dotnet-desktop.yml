@@ -128,8 +128,6 @@ jobs:
         with:
           name: FeatherTracker.Database.dacpac
           path: ./Docker/Database/
-      - name: Display structure of downloaded files
-        run: ls -R ./Docker/Database/
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
