@@ -1,0 +1,8 @@
+CREATE PROCEDURE [FOD].[GetRecipie]
+@ID UNIQUEIDENTIFIER
+AS
+BEGIN
+    SELECT *
+    FROM   [FOD].[Recipies]
+    WHERE  ID = @ID;
+END

@@ -73,6 +73,12 @@
     <Folder Include="WGT\Programmability\Stored Procedures" />
     <Folder Include="WGT\Programmability\Stored Procedures\Weights" />
     <Folder Include="WGT\Tables" />
+    <Folder Include="FOD" />
+    <Folder Include="FOD\Schemas" />
+    <Folder Include="FOD\Tables" />
+    <Folder Include="FOD\Programmability" />
+    <Folder Include="FOD\Programmability\Stored Procedures" />
+    <Folder Include="FOD\Programmability\Stored Procedures\Recipies" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="GLB\Programmability\Types\GuidListType.sql" />
@@ -92,6 +98,14 @@
     <Build Include="WGT\Programmability\Stored Procedures\Weights\GetDateRanges.sql" />
     <Build Include="WGT\Programmability\Stored Procedures\Weights\UpdateWeight.sql" />
     <Build Include="WGT\Tables\Weights.sql" />
+    <Build Include="FOD\Schemas\FODSchema.sql" />
+    <Build Include="FOD\Tables\Recipies.sql" />
+    <Build Include="FOD\Programmability\Stored Procedures\Recipies\AddRecipie.sql" />
+    <Build Include="FOD\Programmability\Stored Procedures\Recipies\DeleteRecipie.sql" />
+    <Build Include="FOD\Programmability\Stored Procedures\Recipies\GetAllRecipies.sql" />
+    <Build Include="FOD\Programmability\Stored Procedures\Recipies\GetRecipie.sql" />
+    <Build Include="FOD\Programmability\Stored Procedures\Recipies\UpdateRecipie.sql" />
+    <Build Include="FOD\Tables\RecipieBirds.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FeatherTracker.Database-test.publish.xml" />

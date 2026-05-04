@@ -20,7 +20,7 @@ namespace FeatherTracker.Plugins.COR
 
 		public CORPlugin() : base(
 			new Guid("1ae27478-9875-4a9e-8df0-ac0cc2448bd4"),
-			"FeatherTracker COR",
+			"FeatherTracker Core",
 			new List<Guid>()
 			{
 			})
