@@ -143,6 +143,8 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-database:${{ steps.get-version.outputs.package-version }}
             ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-database:latest
             ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-database:${{ steps.get-version.outputs.package-version }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-database:latest
+          cache-to: type=inline
 
       - name: Build and push (API)
         uses: docker/build-push-action@v7
@@ -155,6 +157,8 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-api:${{ steps.get-version.outputs.package-version }}
             ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-api:latest
             ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-api:${{ steps.get-version.outputs.package-version }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-api:latest
+          cache-to: type=inline
 
       - name: Build and push (Frontend)
         uses: docker/build-push-action@v7
@@ -167,6 +171,8 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-frontend:${{ steps.get-version.outputs.package-version }}
             ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-frontend:latest
             ghcr.io/${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-frontend:${{ steps.get-version.outputs.package-version }}
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/feathertracker-frontend:latest
+          cache-to: type=inline
 
   testBuild:
     name: Build and Test
