@@ -93,7 +93,7 @@ jobs:
       - name: Add Database artifact for Docker build
         uses: actions/upload-artifact@v7
         with:
-          name: database-build
+          name: FeatherTracker.Database.dacpac
           archive: false
           path: .\Output\Database\FeatherTracker.Database.dacpac
 
@@ -119,7 +119,7 @@ jobs:
       - name: Get Database artifact
         uses: actions/download-artifact@v8
         with:
-          name: database-build
+          name: FeatherTracker.Database.dacpac
           path: ./Docker/Database/FeatherTracker.Database.dacpac
 
       - name: Set up Docker Buildx
