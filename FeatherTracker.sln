@@ -59,7 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{0B51EB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{116C90EC-7D40-4E8E-95AC-45A1E7BE588E}"
 	ProjectSection(SolutionItems) = preProject
-		Docker\Database\FeatherTracker.Database_Create.sql = Docker\Database\FeatherTracker.Database_Create.sql
+		Docker\Database\FeatherTracker.Database.dacpac = Docker\Database\FeatherTracker.Database.dacpac
 	EndProjectSection
 EndProject
 Global

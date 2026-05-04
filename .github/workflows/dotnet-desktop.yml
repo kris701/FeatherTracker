@@ -48,7 +48,7 @@ jobs:
             cd ..
 
       - name: Compile API project as publish files
-        run: dotnet publish .\API\FeatherTracker.API\FeatherTracker.API.csproj /p:PublishProfile="PackagePublish.pubxml"
+        run: dotnet publish .\API\FeatherTracker.API\FeatherTracker.API.csproj /p:RuntimeIdentifier=linux-x64 /p:PublishProvider=FileSystem
 
       - name: Compile Database project as publish files
         run: msbuild .\Database\FeatherTracker.Database\ /p:OutputPath=../../Output/Database /P:Configuration=Release
@@ -62,7 +62,7 @@ jobs:
       - name: Compress API build files
         uses: vimtor/action-zip@v1.2
         with:
-          files: Output/API/net10.0/publish/
+          files: Output/API/net10.0/linux-x64/publish/
           dest: Output/api.zip
 
       - name: Compress Database build files

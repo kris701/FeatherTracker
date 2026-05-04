@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <Version>0.1.0</Version>
+	  <OutputPath>../../Output/API/</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
