@@ -91,7 +91,7 @@ jobs:
       #     generateReleaseNotes: true
 
       - name: Add Database artifact for Docker build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: database-build
           archive: false
