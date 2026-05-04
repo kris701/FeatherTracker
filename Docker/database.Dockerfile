@@ -31,5 +31,6 @@ EXPOSE 1433/tcp
 
 COPY ./Docker/Database/FeatherTracker.Database.dacpac /databaseinit/
 COPY ./Docker/databaseinit.sh /databaseinit/
+RUN ["chmod", "+x", "/databaseinit/databaseinit.sh"]
 
 CMD MSSQL_SA_PASSWORD=$MSSQL_SA_PASSWORD /databaseinit/databaseinit.sh
