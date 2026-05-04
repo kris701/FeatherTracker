@@ -27,7 +27,7 @@ jobs:
   createRelease:
     name: Build and Create Release
     needs: check-tag
-    if: needs.check-tag.outputs.releaseExists == 'false' && 'false' == 'true'
+    if: needs.check-tag.outputs.releaseExists == 'false'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -90,11 +90,16 @@ jobs:
           tag: "v${{ steps.get-version.outputs.package-version }}"
           generateReleaseNotes: true
 
+      - name: Add Database artifact for Docker build
+        uses: actions/upload-artifact@v4
+        with:
+          name: database-build
+          path: .\Output\Database
+
   createReleaseDocker:
     name: Build and Create Release (Docker)
-    needs: check-tag
-    if: needs.check-tag.outputs.releaseExists == 'false'
-    runs-on: windows-latest
+    needs: createRelease
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -110,11 +115,11 @@ jobs:
         with:
           proj-path: .\API\FeatherTracker.API\FeatherTracker.API.csproj
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-
-      - name: Compile Database project as publish files
-        run: msbuild /t:Build .\Database\FeatherTracker.Database /p:Configuration=Release /p:OutputPath=./../../Docker/Database
+      - name: Get Database artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: database-build
+          path: .\Docker\Database
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
