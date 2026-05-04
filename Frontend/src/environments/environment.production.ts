@@ -1,3 +1,3 @@
 export const environment = {
-    VersionTag: "0.1.0"
+    VersionTag: "0.1.1"
 };
