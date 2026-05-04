@@ -94,6 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: database-build
+          archive: false
           path: .\Output\Database\FeatherTracker.Database.dacpac
 
   createReleaseDocker:
@@ -116,10 +117,10 @@ jobs:
           proj-path: ./API/FeatherTracker.API/FeatherTracker.API.csproj
 
       - name: Get Database artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: database-build
-          path: ./Docker/Database
+          path: ./Docker/Database/FeatherTracker.Database.dacpac
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
