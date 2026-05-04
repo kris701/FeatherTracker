@@ -13,7 +13,7 @@ FROM nginx:alpine
 
 COPY Docker/nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=build /usr/Output/Frontend/browser/ /usr/share/nginx/html
+COPY --from=build /usr/src/Output/Frontend/browser/ /usr/share/nginx/html
 
 EXPOSE 8080
 
