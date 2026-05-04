@@ -116,12 +116,6 @@ jobs:
       - name: Compile Database project as publish files
         run: msbuild /t:Build .\Database\FeatherTracker.Database /p:Configuration=Release /p:OutputPath=./../../Docker/Database
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
       - name: Build and push (Database)
         uses: docker/build-push-action@v7
         with:
