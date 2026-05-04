@@ -94,7 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: database-build
-          path: .\Output\Database
+          path: .\Output\Database\FeatherTracker.Database.dacpac
 
   createReleaseDocker:
     name: Update Docker Images
