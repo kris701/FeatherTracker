@@ -135,6 +135,7 @@ jobs:
       - name: Build and push (Database)
         uses: docker/build-push-action@v7
         with:
+          context: .
           file: ./Docker/database.Dockerfile
           push: true
           tags: |
@@ -146,6 +147,7 @@ jobs:
       - name: Build and push (API)
         uses: docker/build-push-action@v7
         with:
+          context: .
           file: ./Docker/api.Dockerfile
           push: true
           tags: |
@@ -157,6 +159,7 @@ jobs:
       - name: Build and push (Frontend)
         uses: docker/build-push-action@v7
         with:
+          context: .
           file: ./Docker/frontend.Dockerfile
           push: true
           tags: |
