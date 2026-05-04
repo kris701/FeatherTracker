@@ -53,11 +53,11 @@ jobs:
       - name: Compile Database project as publish files
         run: msbuild .\Database\FeatherTracker.Database\ /p:OutputPath=../../Output/Database /P:Configuration=Release
 
-      # - name: Compress Client build files
+      # - name: Compress Frontend build files
       #   uses: vimtor/action-zip@v1.2
       #   with:
       #     files: Output/Frontend/browser/
-      #     dest: Output/client.zip
+      #     dest: Output/frontend.zip
 
       # - name: Compress API build files
       #   uses: vimtor/action-zip@v1.2
