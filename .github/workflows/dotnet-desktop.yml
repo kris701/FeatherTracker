@@ -27,7 +27,7 @@ jobs:
   createRelease:
     name: Build and Create Release
     needs: check-tag
-    if: needs.check-tag.outputs.releaseExists == 'false'
+    if: needs.check-tag.outputs.releaseExists == 'false' && 'false' == 'true'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
