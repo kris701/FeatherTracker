@@ -2,11 +2,11 @@ import { HttpClient } from "@angular/common/http";
 import { EventEmitter, Injectable } from "@angular/core";
 import { firstValueFrom } from "rxjs";
 import { Endpoints } from "../../../../Endpoints";
-import { ListBirdModel } from "../../../models/COR/listBirdModel";
+import { ListRecipieModel } from "../../../models/FOD/listRecipieModel";
 
 @Injectable()
-export class BirdsService {
-    public birds : ListBirdModel[] = [];
+export class RecipiesService {
+    public recipies : ListRecipieModel[] = [];
 
     public onUpdated : EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -20,7 +20,7 @@ export class BirdsService {
     public async Load(){
         if (!this.isLoading){
             this.isLoading = true;
-            this.birds = await firstValueFrom(this.http.get<ListBirdModel[]>(Endpoints.COR.Birds.Get_AllBirds));
+            this.recipies = await firstValueFrom(this.http.get<ListRecipieModel[]>(Endpoints.FOD.Get_AllRecipies));
             this.isLoading = false;
             this.onUpdated.emit(true);
         }

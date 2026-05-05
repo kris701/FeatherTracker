@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
-		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
+		docker-compose.yaml = docker-compose.yaml
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
@@ -51,15 +51,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{0B51EB
 		Docker\api.Dockerfile = Docker\api.Dockerfile
 		Docker\database.Dockerfile = Docker\database.Dockerfile
 		Docker\databaseinit.sh = Docker\databaseinit.sh
-		Docker\docker-compose.yaml = Docker\docker-compose.yaml
 		Docker\frontend.Dockerfile = Docker\frontend.Dockerfile
 		Docker\nginx.conf = Docker\nginx.conf
+		Docker\README.md = Docker\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{116C90EC-7D40-4E8E-95AC-45A1E7BE588E}"
 	ProjectSection(SolutionItems) = preProject
 		Docker\Database\FeatherTracker.Database.dacpac = Docker\Database\FeatherTracker.Database.dacpac
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{46D4EC90-33DD-490C-8BDF-51E30054D6F6}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FOD", "FOD", "{D9DF61E1-E35B-4EB6-9644-851BE7A0649A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatherTracker.Plugins.FOD", "API\Plugins\FOD\FeatherTracker.Plugins.FOD\FeatherTracker.Plugins.FOD.csproj", "{1DBDC51C-FFAA-46D2-AF15-039CCBD53847}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +102,10 @@ Global
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DBDC51C-FFAA-46D2-AF15-039CCBD53847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DBDC51C-FFAA-46D2-AF15-039CCBD53847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DBDC51C-FFAA-46D2-AF15-039CCBD53847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DBDC51C-FFAA-46D2-AF15-039CCBD53847}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +121,9 @@ Global
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {AB5EC79D-EF66-4E20-A870-53790EC9D348}
 		{3C94CAE0-6D4C-46E7-838F-5356719ECA97} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{116C90EC-7D40-4E8E-95AC-45A1E7BE588E} = {0B51EB9B-9F59-4CCF-BCF4-FFB550EEF0CF}
+		{46D4EC90-33DD-490C-8BDF-51E30054D6F6} = {0B058B03-9752-4D89-9920-7D4C3664032A}
+		{D9DF61E1-E35B-4EB6-9644-851BE7A0649A} = {AB5EC79D-EF66-4E20-A870-53790EC9D348}
+		{1DBDC51C-FFAA-46D2-AF15-039CCBD53847} = {D9DF61E1-E35B-4EB6-9644-851BE7A0649A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7E40F5D4-F940-48BA-B7A0-28744AA87C19}

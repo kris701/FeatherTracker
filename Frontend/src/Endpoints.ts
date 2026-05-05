@@ -30,4 +30,12 @@ export const Endpoints = {
 		Patch_DeleteWeights: "endpoints/wgt/delete",
 		Post_ImportWeights: "endpoints/wgt/import",
 	},
+	FOD: {
+		Name: "FOD",
+		Post_AddRecipie: "endpoints/fod",
+		Patch_UpdateRecipie: "endpoints/fod",
+		Get_AllRecipies: "endpoints/fod/all",
+		Get_Recipie: "endpoints/fod",
+		Delete_Recipie: "endpoints/fod",
+	},
 }

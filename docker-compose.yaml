@@ -19,8 +19,8 @@ services:
 
     docker-feathertracker-frontend:
         container_name: docker-feathertracker-frontend
-        ports:
-            - 52905:8080
+        ports: 
+          - 52905:8080
         image: kris701/feathertracker-frontend
         networks:
           - front-end
@@ -31,6 +31,9 @@ services:
             - SYS_PTRACE
         environment:
             - MSSQL_SA_PASSWORD=yourStrong(!)Password
+        # Uncomment this if you need direct access to the database
+        #ports: 
+        #    - 46034:1433
         container_name: docker-feathertracker-database
         hostname: docker-feathertracker-database
         image: kris701/feathertracker-database

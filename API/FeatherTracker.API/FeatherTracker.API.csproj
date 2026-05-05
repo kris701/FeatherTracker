@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Plugins\COR\FeatherTracker.Plugins.COR\FeatherTracker.Plugins.COR.csproj" />
+		<ProjectReference Include="..\Plugins\FOD\FeatherTracker.Plugins.FOD\FeatherTracker.Plugins.FOD.csproj" />
 		<ProjectReference Include="..\Plugins\WGT\FeatherTracker.Plugins.WGT\FeatherTracker.Plugins.WGT.csproj" />
 	</ItemGroup>
 

@@ -4,6 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { LayoutService } from '../../../services/layoutService';
 import { BirdsService } from '../services/birdsService';
+import { RecipiesService } from '../services/recipiesService';
 
 @Component({
     selector: 'app-sidebar',
@@ -64,13 +65,15 @@ export class AppSidebar {
     constructor(
         public layoutService: LayoutService,
         private router: Router,
-        private birdsService : BirdsService
+        private birdsService : BirdsService,
+        private recipiesService : RecipiesService
     ) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd)
                 this.processMenuState();
         });
         this.birdsService.onUpdated.subscribe((v) => this.ngOnInit())
+        this.recipiesService.onUpdated.subscribe((v) => this.ngOnInit())
     }
 
     processMenuState(){
@@ -113,6 +116,25 @@ export class AppSidebar {
                     ... this.birdsService.birds.map(x => {return {
                         label: x.name,
                         routerLink: '/platform/COR/birds',
+                        queryParams: {'id':x.id}
+                    } as MenuItem})
+                ]
+            },
+            {
+                label: 'Recipies',
+                icon: 'pi pi-fw pi-receipt',
+                visible: true,
+                expanded: true,
+                items: [
+                    {
+                        icon:'pi pi-plus',
+                        routerLink: '/platform/FOD/recipies',
+                        queryParams: {'add':''},
+                        label:'Add'
+                    },
+                    ... this.recipiesService.recipies.map(x => {return {
+                        label: x.name,
+                        routerLink: '/platform/FOD/recipies',
                         queryParams: {'id':x.id}
                     } as MenuItem})
                 ]
