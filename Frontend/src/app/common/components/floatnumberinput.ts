@@ -35,6 +35,7 @@ import { getRandomInt } from '../helpers/randomhelper';
                     (ngModelChange)="valueChanged()"
                     style="border-radius: var(-p-inputnumber-border)"
                     [inputStyle]="{ 'border-radius': 'inherit' }"
+                    [maxFractionDigits]="2"
                 />
                 <label [for]="id">{{ label }}</label>
             </p-floatlabel>

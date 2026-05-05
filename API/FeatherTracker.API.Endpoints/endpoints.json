@@ -83,6 +83,31 @@
             "Route": "import"
           }
         ]
+      },
+      {
+        "Name": "FOD",
+        "Nodes": [
+          {
+            "Name": "Post_AddRecipie",
+            "Route": ""
+          },
+          {
+            "Name": "Patch_UpdateRecipie",
+            "Route": ""
+          },
+          {
+            "Name": "Get_AllRecipies",
+            "Route": "all"
+          },
+          {
+            "Name": "Get_Recipie",
+            "Route": ""
+          },
+          {
+            "Name": "Delete_Recipie",
+            "Route": ""
+          }
+        ]
       }
     ]
   }

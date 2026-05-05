@@ -27,6 +27,8 @@ export class BaseCRUDInterface {
 
     public loadOnInit: boolean = true;
 
+    public loadOnChanges: boolean = true;
+
     public showDeleteDialog: boolean = true;
     public deleteDialogMessage : string = "Are you sure you want to delete this item?";
     public showSaveDialog: boolean = false;
@@ -80,7 +82,8 @@ export class BaseCRUDInterface {
                 this.service.add({ severity: 'success', summary: 'Item Created!', detail: 'A new items was created' });
             }
             this.showDialog = false;
-            await this.loadItems();
+            if (this.loadOnChanges)
+                await this.loadItems();
         } catch {
             this.service.add({ severity: 'error', summary: 'Save Error', detail: 'Save failed!' });
         }
@@ -109,7 +112,8 @@ export class BaseCRUDInterface {
             await firstValueFrom(this.http.delete(this.deleteEndpoint + '?ID=' + this.currentItem.id));
             this.service.add({ severity: 'info', summary: 'Item deleted!', detail: 'The item was successfully deleted' });
             this.showDialog = false;
-            await this.loadItems();
+            if (this.loadOnChanges)
+                await this.loadItems();
         } catch {
             this.service.add({ severity: 'error', summary: 'Delete Error', detail: 'Delete failed!' });
         }

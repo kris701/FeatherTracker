@@ -30,4 +30,12 @@ public static class Endpoints {
 		public const string Patch_DeleteWeights = "endpoints/wgt/delete";
 		public const string Post_ImportWeights = "endpoints/wgt/import";
 	}
+	public static class FOD {
+		public const string Name = "endpoints/fod";
+		public const string Post_AddRecipie = "endpoints/fod";
+		public const string Patch_UpdateRecipie = "endpoints/fod";
+		public const string Get_AllRecipies = "endpoints/fod/all";
+		public const string Get_Recipie = "endpoints/fod";
+		public const string Delete_Recipie = "endpoints/fod";
+	}
 }

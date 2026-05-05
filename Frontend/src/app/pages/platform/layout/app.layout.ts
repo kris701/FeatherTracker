@@ -5,6 +5,7 @@ import { ConfirmDialog } from "primeng/confirmdialog";
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { BirdsService } from '../services/birdsService';
+import { RecipiesService } from '../services/recipiesService';
 import { AppFooter } from './app.footer';
 import { AppSidebar } from './app.sidebar';
 import { AppTopbar } from './app.topbar';
@@ -61,10 +62,11 @@ import { AppVersion } from './app.version';
     `
 })
 export class AppLayout {
-    constructor(public birdsService : BirdsService){
+    constructor(public birdsService : BirdsService, public recipiesService : RecipiesService){
     }
 
     async ngOnInit(){
         await this.birdsService.Load();
+        await this.recipiesService.Load();
     }
 }

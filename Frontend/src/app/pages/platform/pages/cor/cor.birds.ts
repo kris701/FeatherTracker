@@ -50,8 +50,8 @@ import { BirdsService } from '../../services/birdsService';
                 </label>
                 <input type="file" id="imageselect" accept="image/*" style="display:none;" (change)="changeIcon($event)">
                 <div class="flex flex-col gap-2 w-full">
-                    <app-floattextinput [(value)]="currentItem.name" [disabled]="!canWrite" label="Name" icon="pi-pen-to-square" class="w-full"/>
-                    <app-floattextinput [(value)]="currentItem.type" [disabled]="!canWrite" label="Type" icon="pi-sign-in" class="w-full" />
+                    <app-floattextinput [(value)]="currentItem.name" label="Name" icon="pi-pen-to-square" class="w-full"/>
+                    <app-floattextinput [(value)]="currentItem.type" label="Type" icon="pi-sign-in" class="w-full" />
                 </div>
             </div>
             <app-floatdatepicker [(value)]="currentItem.birthDate" label="Birthday" icon="pi-calendar"/>
@@ -115,6 +115,8 @@ export class CORBirds extends BaseCRUDInterface {
         }
     }
 
+    override loadOnInit: boolean = false;
+    override loadOnChanges: boolean = false;
     override getAllEndpoint: string = Endpoints.COR.Birds.Get_AllBirds;
     override getEndpoint: string = Endpoints.COR.Birds.Get_Bird;
     override patchEndpoint: string = Endpoints.COR.Birds.Patch_UpdateBird;
@@ -146,11 +148,8 @@ export class CORBirds extends BaseCRUDInterface {
     }
 
     override async saveItem() {
-        var isNew = this.currentItem.id == '';
         await super.saveItem();
         await this.birdsService.Load();
-        if (isNew)
-            this.router.navigate(['/platform']);
     }
 
     override async deleteItemInner() {

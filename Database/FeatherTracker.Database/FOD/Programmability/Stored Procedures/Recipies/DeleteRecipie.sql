@@ -3,6 +3,9 @@ CREATE PROCEDURE [FOD].[DeleteRecipie]
 AS
 BEGIN TRANSACTION;
 
+DELETE [FOD].[RecipieBirds]
+WHERE  FK_RecipieID = @ID;
+
 DELETE [FOD].[Recipies]
 WHERE  ID = @ID;
 

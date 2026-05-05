@@ -4,7 +4,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>FeatherTracker.Database</TargetDatabaseName>
     <DeployScriptFileName>FeatherTracker.Database.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=localhost,6028;Persist Security Info=True;User ID=sa;Password=yourStrong(!)Password;Pooling=False;Multiple Active Result Sets=False;Connect Timeout=60;Encrypt=True;Trust Server Certificate=True;Command Timeout=0</TargetConnectionString>
+    <TargetConnectionString>Data Source=localhost,56028;Persist Security Info=True;User ID=sa;Password=yourStrong(!)Password;Pooling=False;Multiple Active Result Sets=False;Connect Timeout=60;Encrypt=True;Trust Server Certificate=True;Command Timeout=0</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
   </PropertyGroup>
 </Project>

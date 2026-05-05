@@ -48,6 +48,7 @@ namespace FeatherTracker.API
 				var dict = new Dictionary<string, string>();
 				dict.Add("UsePlugins:[0]", "COR");
 				dict.Add("UsePlugins:[1]", "WGT");
+				dict.Add("UsePlugins:[2]", "FOD");
 				dict.Add("COR:JWTSecret", opt.JWTSecret);
 				dict.Add("COR:JWTLifetime", $"{opt.JWTLifetime}");
 				dict.Add("COR:DatabaseConnectionString", opt.DBConnectionString);
