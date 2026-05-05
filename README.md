@@ -4,7 +4,12 @@
 
 # Feather Tracker
 This is a small project for you to have your own self-hosted bird tracking tool.
-You can use it to keep track of your birds weights.
+You can use it for:
+* Tracking: Keeping track of your birds age, quirks, etc.
+* Weight: Regular weight logs can be saved and reviewed
+* Recipies: Save chop recipies that your birds love!
+
+And more are being made :)
 
 <img width="1677" height="995" alt="image" src="https://github.com/user-attachments/assets/965b808d-aba7-441d-80e2-1371c83bddfe" />
 <img width="1678" height="995" alt="image" src="https://github.com/user-attachments/assets/fc706c7b-a4a0-4f17-84d7-6902713a3065" />
@@ -12,8 +17,10 @@ You can use it to keep track of your birds weights.
 
 ## Docker
 You can quickly run this application with Docker, and explore if its something for you.
-Simply run the `docker-compose.yaml` file under the `Docker/` folder, and it will
-create the services needed.
+You have to have Docker installed and running.
+From the root of the project, simply type `docker compose up -d`, to start all the services
+that is needed.
+You can then open the website on `http://localhost:52905`.
 
 ## Implementation Details
 
