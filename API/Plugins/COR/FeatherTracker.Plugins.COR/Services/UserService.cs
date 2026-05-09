@@ -1,10 +1,10 @@
 ﻿using FeatherTracker.Plugins.COR.Models.Internal;
 using FeatherTracker.Plugins.COR.Models.Shared.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
-using ToolsSharp;
 
 namespace FeatherTracker.Plugins.COR.Services
 {
@@ -34,7 +34,8 @@ namespace FeatherTracker.Plugins.COR.Services
 				throw new Exception("Could not read auth file!");
 			if (user.Username != req.Username)
 				throw new Exception("Invalid username or password!");
-			if (!HashingHelpers.VerifyHash(user.PasswordHash, req.Password, System.Security.Cryptography.HashAlgorithmName.SHA1))
+			var hasher = new PasswordHasher<AuthUser>();
+			if (hasher.VerifyHashedPassword(user, user.PasswordHash, req.Password) != PasswordVerificationResult.Success)
 				throw new Exception("Invalid username or password!");
 
 			return new AuthResponse(
@@ -49,9 +50,10 @@ namespace FeatherTracker.Plugins.COR.Services
 
 			var authUser = new AuthUser()
 			{
-				Username = req.Username,
-				PasswordHash = HashingHelpers.HashString(req.Password, System.Security.Cryptography.HashAlgorithmName.SHA1)
+				Username = req.Username
 			};
+			var hasher = new PasswordHasher<AuthUser>();
+			authUser.PasswordHash = hasher.HashPassword(authUser, req.Password);
 			File.WriteAllText(Path.Combine(_authPath, _authFile), JsonSerializer.Serialize(authUser));
 			return new AuthResponse(
 				req.Username,
