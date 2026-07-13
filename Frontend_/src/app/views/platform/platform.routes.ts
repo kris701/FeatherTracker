@@ -13,7 +13,8 @@ export default [
 			RecipiesService
 		],
 		children: [
-			{ path: '', component: Dashboard }
+			{ path: '', component: Dashboard },
+			{ path: 'COR', loadChildren: () => import('./pages/cor/cor.routes') },
 		]
 	},
 ] as Routes;

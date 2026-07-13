@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TuiButton, TuiDataList, TuiDropdown, TuiGroup } from '@taiga-ui/core';
+import { TuiButton, TuiDataList, TuiDropdown, TuiGroup, TuiScrollbar } from '@taiga-ui/core';
 import { TuiTextarea } from '@taiga-ui/kit';
 import { marked } from 'marked';
 import { compressImage } from '../helpers/compressImage';
 
 @Component({
     selector: 'app-floatmarkdowneditor',
-    imports: [FormsModule, CommonModule, TuiTextarea, TuiGroup, TuiDataList, TuiButton, TuiDropdown],
+    imports: [FormsModule, CommonModule, TuiTextarea, TuiGroup, TuiDataList, TuiButton, TuiDropdown, TuiScrollbar],
     template: `
 		<div class="markdowneditor-editor">
 			@if(!disabled){
-				<div class="flex flex-col gap-2">
+				<div class="editor-container">
 					<div
 						tuiGroup
 						[collapsed]="false"
@@ -47,11 +47,12 @@ import { compressImage } from '../helpers/compressImage';
 						}
 					</div>
 
-					<tui-textfield>
-						<label tuiLabel>Markdown Editor</label>
+					<tui-textfield class="h-full editor">
 						<textarea
 							placeholder="Markdown Content"
 							tuiTextarea
+							[(ngModel)]="value"
+							(input)="valueChanged()"
 						></textarea>
 					</tui-textfield>
 				</div>
@@ -59,24 +60,65 @@ import { compressImage } from '../helpers/compressImage';
 				<input type="file" (change)="onFileSelected($event)" #fileUpload [style]="{ display: 'none' }" accept="image/png, image/jpeg" />
 			}
 
-			<div class="markdowneditor-preview" #preview></div>
+			<div class="preview-container">
+				<tui-scrollbar>
+					<div class="preview" #preview></div>
+				</tui-scrollbar>
+			</div>
 		</div>
     `,
     host: {
-        class: 'h-full'
+        class: 'flex h-full w-full flex-grow'
     },
     styles: `
 		.markdowneditor-editor {
 			display:flex;
 			flex-direction: row;
+			flex: 1;
 
-			::ng-deep .topbar {
+			.topbar {
 				> :first-child {
 					border-bottom-left-radius: 0px !important;
 				}
 
 				> :last-child {
 					border-bottom-right-radius: 0px !important;
+					border-top-right-radius: 0px !important;
+				}
+			}
+
+			.editor-container {
+				display:flex;
+				flex-direction: column;
+				block-size:100%;
+
+				.editor {
+					border-radius: 0px 0px 0px var(--tui-radius-l);
+				}
+			}
+
+			.preview-container {
+				width:100%;
+				border-radius: 0px var(--tui-radius-l) var(--tui-radius-l) 0px;
+				transition-property: box-shadow, background-color, outline-color, border-color, color;
+				transition-duration: calc(var(--tui-duration) / 2);
+				transition-timing-function: var(--tui-curve-productive-standard);
+				--t-shadow: 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.1);
+				background-color: var(--tui-background-base);
+				color: var(--tui-text-tertiary);
+				box-shadow: var(--t-shadow);
+				outline: 1px solid var(--tui-border-normal);
+				outline-offset: -1px;
+				border-width: 0;
+				block-size:100%;
+
+				::ng-deep > .t-content {
+					display:flex;
+					block-size:auto !important;
+				}
+
+				.preview {
+					padding:10px;
 				}
 			}
         }
@@ -167,7 +209,7 @@ export class FloatMarkdownEditor implements OnChanges {
         } as MenuItem,
 
         {
-            icon: 'pi pi-link',
+            icon: 'link',
             command: async () => {
                 if (this.editor){
                     var editor = this.editor.nativeElement;
@@ -181,7 +223,7 @@ export class FloatMarkdownEditor implements OnChanges {
         } as MenuItem,
 
         {
-            icon: 'pi pi-image',
+            icon: 'image',
             command: async () => {
                 if (this.editor){
                     this.fileUpload?.nativeElement.click();
