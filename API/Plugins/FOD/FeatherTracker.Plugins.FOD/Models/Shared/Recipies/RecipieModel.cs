@@ -1,8 +1,5 @@
 ﻿using DatabaseSharp.Attributes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace FeatherTracker.Plugins.FOD.Models.Shared.Recipies
@@ -14,9 +11,9 @@ namespace FeatherTracker.Plugins.FOD.Models.Shared.Recipies
 		public Guid ID { get; set; }
 		[Required]
 		public string Name { get; set; }
-		[Required] 
+		[Required]
 		public string Recipie { get; set; }
-		[Required] 
+		[Required]
 		public double Quantity { get; set; }
 		[Required]
 		public string Unit { get; set; }

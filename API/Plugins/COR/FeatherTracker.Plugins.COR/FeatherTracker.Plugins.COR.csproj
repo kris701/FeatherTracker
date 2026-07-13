@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DatabaseSharp" Version="1.6.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
-    <PackageReference Include="Uni.API" Version="1.2.2" />
-	  <PackageReference Include="ToolsSharp" Version="1.1.9" />
+    <PackageReference Include="DatabaseSharp" Version="1.6.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
+    <PackageReference Include="Uni.API" Version="1.2.17" />
+	  <PackageReference Include="ToolsSharp" Version="1.1.13" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,7 +20,7 @@
   </ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="dotnet cs2ts --output &quot;../../../../FrontEnd/src/app/models/COR&quot; --convert-dates-to &quot;Union&quot; --import-generation &quot;Simple&quot; &quot;./Models/Shared/&quot;" ContinueOnError="true" />
+		<Exec Command="dotnet cs2ts --output &quot;../../../../FrontEnd_/src/app/models/COR&quot; --convert-dates-to &quot;Union&quot; --import-generation &quot;Simple&quot; &quot;./Models/Shared/&quot;" ContinueOnError="true" />
 	</Target>
 
 </Project>

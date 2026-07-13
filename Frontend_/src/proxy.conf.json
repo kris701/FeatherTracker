@@ -1,0 +1,6 @@
+{
+  "/endpoints/**": {
+    "target": "http://localhost:63095",
+    "secure": false
+  }
+}

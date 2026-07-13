@@ -2,13 +2,13 @@
 {
 	public class JWTSettings
 	{
-		public string Secret { get; set; }
 		public int LifetimeMin { get; set; }
+		public string APIURL { get; set; }
 
-		public JWTSettings(string secret, int lifetimeS)
+		public JWTSettings(int lifetimeS, string apiURL)
 		{
-			Secret = secret;
 			LifetimeMin = lifetimeS;
+			APIURL = apiURL;
 		}
 	}
 }

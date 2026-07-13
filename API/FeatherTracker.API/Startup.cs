@@ -7,17 +7,17 @@ namespace FeatherTracker.API
 {
 	public class Startup : UniAPIStartup
 	{
-		public Startup(IConfiguration configuration) : base(
-			configuration,
-			new List<string>()
+		public Startup()
+		{
+			PluginNamespaces = new List<string>()
 			{
 				DefaultPluginNamespace,
+				"Helvion.CargoBI.API.Modules",
 				"FeatherTracker.Plugin"
-			})
-		{
+			};
 		}
 
-		public override void ConfigureServices(IServiceCollection services)
+		public override void ConfigureServices(IServiceCollection services, ConfigurationManager configuration)
 		{
 			services.AddSwaggerGen(c =>
 			{
@@ -38,10 +38,10 @@ namespace FeatherTracker.API
 				});
 				c.OperationFilter<AuthorizeCheckOperationFilter>();
 			});
-			base.ConfigureServices(services);
+			base.ConfigureServices(services, configuration);
 		}
 
-		public override void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+		public override void Configure(WebApplication app, IWebHostEnvironment env)
 		{
 			app.UseCors(o =>
 			{

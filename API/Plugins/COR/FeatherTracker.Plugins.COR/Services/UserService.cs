@@ -3,7 +3,6 @@ using FeatherTracker.Plugins.COR.Models.Shared.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using System.Text.Json;
 
 namespace FeatherTracker.Plugins.COR.Services
@@ -14,12 +13,14 @@ namespace FeatherTracker.Plugins.COR.Services
 		private static readonly string _authFile = "auth.json";
 
 		private readonly JWTSettings _settings;
+		private readonly JWTSigningKeyService _keyService;
 
-		public UserService(JWTSettings settings)
+		public UserService(JWTSettings settings, JWTSigningKeyService keyService)
 		{
 			_settings = settings;
 			if (!Directory.Exists(_authPath))
 				Directory.CreateDirectory(_authPath);
+			_keyService = keyService;
 		}
 
 		public bool UserExists() => File.Exists(Path.Combine(_authPath, _authFile));
@@ -40,7 +41,7 @@ namespace FeatherTracker.Plugins.COR.Services
 
 			return new AuthResponse(
 				req.Username,
-				CreateToken(req.Username, _settings.Secret, _settings.LifetimeMin));
+				CreateToken(req.Username, DateTime.UtcNow, _settings, _keyService));
 		}
 
 		public AuthResponse CreateAdminUser(AuthRequest req)
@@ -57,14 +58,13 @@ namespace FeatherTracker.Plugins.COR.Services
 			File.WriteAllText(Path.Combine(_authPath, _authFile), JsonSerializer.Serialize(authUser));
 			return new AuthResponse(
 				req.Username,
-				CreateToken(req.Username, _settings.Secret, _settings.LifetimeMin));
+				CreateToken(req.Username, DateTime.UtcNow, _settings, _keyService));
 		}
 
-		private static string CreateToken(string username, string secret, double lifetimeMin)
+		private static string CreateToken(string username, DateTime issued, JWTSettings settings, JWTSigningKeyService signingService)
 		{
 			var tokenHandler = new JsonWebTokenHandler();
 			tokenHandler.SetDefaultTimesOnTokenCreation = false;
-			var key = Encoding.ASCII.GetBytes(secret);
 
 			var claims = new Dictionary<string, object>()
 			{
@@ -74,10 +74,12 @@ namespace FeatherTracker.Plugins.COR.Services
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Claims = claims,
-				Expires = DateTime.UtcNow.AddMinutes(lifetimeMin),
-				IssuedAt = DateTime.UtcNow,
-				NotBefore = DateTime.UtcNow,
-				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+				Expires = issued.AddMinutes(settings.LifetimeMin),
+				Issuer = settings.APIURL,
+				IssuedAt = issued,
+				Audience = settings.APIURL,
+				NotBefore = issued,
+				SigningCredentials = new SigningCredentials(signingService.GetKey(), SecurityAlgorithms.HmacSha256Signature)
 			};
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			return token;

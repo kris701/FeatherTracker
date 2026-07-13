@@ -2,7 +2,7 @@
   "profiles": {
     "api": {
       "commandName": "Project",
-      "commandLineArgs": "--jwtsecret \"nM@arG0N4d7^zMHiK7c3AA9Oj$WOUS@Pr&i6yemW\" --jwtlifetime 120 --dbconnectionstring \"Server=tcp:localhost,56028;Initial Catalog=FeatherTracker.Database;Persist Security Info=False;User ID=sa;Password=yourStrong(!)Password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;\"",
+      "commandLineArgs": "--jwtlifetime 120 --dbconnectionstring \"Server=tcp:localhost,56028;Initial Catalog=FeatherTracker.Database;Persist Security Info=False;User ID=sa;Password=yourStrong(!)Password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;\" --apiUrl \"https://locahost:63094\"",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
@@ -12,7 +12,7 @@
     },
     "api-nobrowser": {
       "commandName": "Project",
-      "commandLineArgs": "--jwtsecret \"nM@arG0N4d7^zMHiK7c3AA9Oj$WOUS@Pr&i6yemW\" --jwtlifetime 120 --dbconnectionstring \"Server=tcp:localhost,56028;Initial Catalog=FeatherTracker.Database;Persist Security Info=False;User ID=sa;Password=yourStrong(!)Password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;\"",
+      "commandLineArgs": "--jwtlifetime 120 --dbconnectionstring \"Server=tcp:localhost,56028;Initial Catalog=FeatherTracker.Database;Persist Security Info=False;User ID=sa;Password=yourStrong(!)Password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;\" --apiUrl \"https://locahost:63094\"",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
