@@ -56,7 +56,6 @@ import { AuthResponse } from '../../../../models/COR/authResponse';
 						</tui-textfield>
 
 						<tui-textfield>
-							<label tuiLabel>Click icon to toggle</label>
 							<input
 								placeholder="Password"
 								tuiInput
@@ -116,15 +115,13 @@ export class AuthLogin {
         );
     }
 
-    processAuthResult(c: AuthResponse) {
+    async processAuthResult(c: AuthResponse) {
         if (c.token != '') {
             this.loginWasInvalid.set(false);
             const helper = new JwtHelperService();
             var result = helper.decodeToken<JWTTokenModel>(c.token);
             if (!result) return;
-			console.log(c.token)
             localStorage.setItem('jwtToken', c.token);
-
             if (this.route.snapshot.queryParamMap.has('redirect')) {
                 var redirectTarget = this.route.snapshot.queryParamMap.get('redirect');
                 if (redirectTarget) window.location.replace(redirectTarget);

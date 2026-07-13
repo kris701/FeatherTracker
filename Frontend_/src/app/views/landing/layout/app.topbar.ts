@@ -28,7 +28,8 @@ import { LayoutService } from '../../../common/services/layoutService';
 				flex-direction: row;
 				gap:10px;
 				border-radius: 0 0 0 10px;
-				background: conic-gradient(var(--darkreader-bg--tui-background-neutral-1) 0 0),conic-gradient(var(--darkreader-bg--tui-background-base) 0 0);
+				padding:5px;
+				background: var(--tui-background-elevation-2);
 			}
 		}
 	`

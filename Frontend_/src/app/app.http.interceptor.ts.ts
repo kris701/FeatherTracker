@@ -18,6 +18,7 @@ export const appHttpInterceptor: HttpInterceptorFn = (req, next) => {
             }
         });
     }
+
 	return next(req).pipe(
         catchError((error) => {
 			if (error instanceof HttpErrorResponse && error.status === 401) {

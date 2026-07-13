@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { TuiDropdown } from '@taiga-ui/core';
 import { TuiAsideComponent, TuiAsideGroupComponent, TuiNavigation } from "@taiga-ui/layout";
 import { LayoutService } from '../../../common/services/layoutService';
+import { BirdsService } from '../pages/cor/services/birdsService';
+import { RecipiesService } from '../pages/fod/services/recipiesService';
 
 @Component({
     selector: 'app-sidebar',
@@ -34,6 +36,7 @@ import { LayoutService } from '../../../common/services/layoutService';
 									type="button"
 									[routerLinkActiveOptions]="{ exact:true }"
 									[routerLink]="subitem.routerLink"
+									[queryParams]="subitem.queryParams"
 								>
 									{{subitem.label}}
 								</button>
@@ -46,7 +49,7 @@ import { LayoutService } from '../../../common/services/layoutService';
 			<hr />
 
 			<footer>
-				<a href="https://github.com/kris701/ActFlow" pButton target="_blank" rel="noopener noreferrer">
+				<a href="https://github.com/kris701/FeatherTracker" pButton target="_blank" rel="noopener noreferrer">
 					<button
 						iconStart="github"
 						tuiAsideItem
@@ -60,47 +63,76 @@ import { LayoutService } from '../../../common/services/layoutService';
     `
 })
 export class AppSideBar {
-	menuItems = signal<MenuItem[]>([
-		{
-			label: 'Status',
-			icon: 'info',
-			routerLink: '/'
-		} as MenuItem,
-		{
-			label: 'Workflows',
-			icon: 'chart-no-axes-combined',
-			items: [
-				{
-					label:'Execute',
-					icon:'circle-play',
-					routerLink: 'workflows/run'
-				},
-				{
-					label:'Results',
-					icon:'table',
-					routerLink: 'workflows/results'
-				}
-			]
-		} as MenuItem,
-		{
-			label: 'Files',
-			icon:'file',
-			items: [
-				{
-					label:'Persistent',
-					routerLink: 'files/persistent'
-				},
-				{
-					label:'Temporary',
-					routerLink: 'files/temporary'
-				}
-			]
-		} as MenuItem
-	])
+	menuItems = signal<MenuItem[]>([{
+		label: 'Loading...',
+		icon: 'loader-circle'
+	} as MenuItem])
 
     constructor(
-          public layoutService: LayoutService
-      ){}
+          	public layoutService: LayoutService,
+			private birdsService : BirdsService,
+        	private recipiesService : RecipiesService
+	){
+	}
+
+	async ngOnInit(){
+		var birds = await this.birdsService.List();
+		var recipies = await this.recipiesService.List();
+
+        this.menuItems.set([
+            {
+                label: 'Dashboard',
+                icon: 'info',
+                routerLink: '/platform'
+            } as MenuItem,
+            {
+                label: 'Weights',
+                icon: 'weight',
+                items: birds.map(x => {return {
+					icon: '',
+                    label: x.name,
+                    routerLink: '/platform/WGT/weights',
+                    queryParams: {'id':x.id}
+                } as SubMenuItem})
+            } as MenuItem,
+            {
+                label: 'Birds',
+                icon: 'bird',
+                items: [
+                    {
+                        icon:'plus',
+                        routerLink: '/platform/COR/birds',
+                        queryParams: {'add':''},
+                        label:'Add'
+                    } as SubMenuItem,
+                    ... birds.map(x => {return {
+						icon: '',
+                        label: x.name,
+                        routerLink: '/platform/COR/birds',
+                        queryParams: {'id':x.id}
+                    } as SubMenuItem})
+                ]
+            } as MenuItem,
+            {
+                label: 'Recipies',
+                icon: 'cooking-pot',
+                items: [
+                    {
+                        icon:'plus',
+                        routerLink: '/platform/FOD/recipies',
+                        queryParams: {'add':''},
+                        label:'Add'
+                    } as SubMenuItem,
+                    ... recipies.map(x => {return {
+						icon: '',
+                        label: x.name,
+                        routerLink: '/platform/FOD/recipies',
+                        queryParams: {'id':x.id}
+                    } as SubMenuItem})
+                ] as SubMenuItem[]
+            } as MenuItem
+        ]);
+	}
 }
 
 interface MenuItem {
@@ -114,4 +146,5 @@ interface SubMenuItem {
 	label: string,
 	icon: string | null,
 	routerLink: string | null
+	queryParams: {[id:string]:string}
 }

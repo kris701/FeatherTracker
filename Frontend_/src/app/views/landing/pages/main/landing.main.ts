@@ -14,7 +14,7 @@ import { LayoutService } from '../../../../common/services/layoutService';
     imports: [FormsModule, RouterModule, TuiHeader, TuiTitle, TuiCardLarge],
     template: `
         <div class="flex h-full w-full items-center">
-			<div tuiCardLarge appearance="floating">
+			<div tuiCardLarge>
 				<header tuiHeader>
 					<h1 tuiTitle style="text-align:center">
 						<img class="mb-2 w-64 shrink-0 mx-auto" src="logo.png" />

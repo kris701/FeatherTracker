@@ -83,9 +83,6 @@
 				"port": 6923,
 				"proxyConfig": "src/proxy.conf.json"
 			}
-        },
-        "test": {
-          "builder": "@angular/build:unit-test"
         }
       }
     }
