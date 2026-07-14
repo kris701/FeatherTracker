@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Directive, signal } from "@angular/core";
+import { Directive, EventEmitter, signal } from "@angular/core";
 import { firstValueFrom } from "rxjs";
 
 @Directive()
@@ -11,6 +11,8 @@ export class BaseListService<T,TList extends IIdentifiable> {
 
     isLoaded : boolean = false;
     isLoading : boolean = false;
+
+	public onUpdated : EventEmitter<any> = new EventEmitter();
 
     constructor(
         public http: HttpClient
@@ -25,6 +27,7 @@ export class BaseListService<T,TList extends IIdentifiable> {
             this.items.set(value);
             this.isLoading = false;
             this.isLoaded = true;
+			this.onUpdated.emit();
         }
     }
 

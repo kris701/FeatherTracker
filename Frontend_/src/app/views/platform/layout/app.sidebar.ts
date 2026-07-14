@@ -73,6 +73,8 @@ export class AppSideBar {
 			private birdsService : BirdsService,
         	private recipiesService : RecipiesService
 	){
+        this.birdsService.onUpdated.subscribe((v) => this.ngOnInit())
+        this.recipiesService.onUpdated.subscribe((v) => this.ngOnInit())
 	}
 
 	async ngOnInit(){
