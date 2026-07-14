@@ -78,7 +78,7 @@ import { RecipiesService } from './services/recipiesService';
 		</tui-loader>
     `,
     host: {
-        class: 'card flex flex-col flex-grow'
+        class: 'base-view'
     }
 })
 export class FODRecipies extends BaseCRUDInterface {

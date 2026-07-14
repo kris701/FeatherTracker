@@ -7,6 +7,7 @@ import { TuiResponsiveDialogService } from '@taiga-ui/addon-mobile';
 import { TuiButton, TuiInput, TuiLoader, TuiNotificationService } from '@taiga-ui/core';
 import { TuiInputDate } from '@taiga-ui/kit';
 import { Endpoints } from '../../../../../Endpoints';
+import { FloatDateInput } from "../../../../common/components/floatdateinput";
 import { FloatMarkdownEditor } from "../../../../common/components/floatmarkdowneditor";
 import { compressImage } from '../../../../common/helpers/compressImage';
 import { BaseCRUDInterface } from '../../../../common/interfaces/baseCRUDInterface';
@@ -22,7 +23,8 @@ import { BirdsService } from './services/birdsService';
     FloatMarkdownEditor,
     TuiInput,
     TuiInputDate,
-    TuiLoader
+    TuiLoader,
+    FloatDateInput
 ],
     template: `
 		<tui-loader class="h-full" [overlay]="true" [loading]="isLoading()">
@@ -34,32 +36,17 @@ import { BirdsService } from './services/birdsService';
 					</label>
 					<input type="file" id="imageselect" accept="image/*" style="display:none;" (change)="changeIcon($event)">
 					<div class="flex flex-col gap-2 w-full">
-						<tui-textfield tuiTextfieldSize="m">
+						<tui-textfield tuiTextfieldSize="m" iconStart="square-pen">
 							<label tuiLabel>Name</label>
-							<input
-								tuiInput
-								id="birdname"
-								[(ngModel)]="current.name"
-							/>
+							<input tuiInput id="birdname" [(ngModel)]="current.name"/>
 						</tui-textfield>
-						<tui-textfield tuiTextfieldSize="m">
+						<tui-textfield tuiTextfieldSize="m" iconStart="bird">
 							<label tuiLabel>Type</label>
-							<input
-								tuiInput
-								id="birdtype"
-								[(ngModel)]="current.type"
-							/>
+							<input tuiInput id="birdtype" [(ngModel)]="current.type"/>
 						</tui-textfield>
 					</div>
 				</div>
-				<tui-textfield  tuiTextfieldSize="m">
-					<label tuiLabel>Birthday</label>
-					<input
-						tuiInputDate
-						[(ngModel)]="current.birthDate"
-					/>
-					<tui-calendar *tuiDropdown />
-				</tui-textfield>
+				<app-floatdateinput label="Birthday" icon="cake" size="m" [(value)]="current.birthDate"/>
 				<app-floatmarkdowneditor [(value)]="current.description"/>
 
 				<div class="flex flex-row gap-2 items-center" style="min-height:3rem">
@@ -72,7 +59,7 @@ import { BirdsService } from './services/birdsService';
 		</tui-loader>
     `,
     host: {
-        class: 'card flex flex-col flex-grow'
+        class: 'base-view'
     }
 })
 export class CORBirds extends BaseCRUDInterface {
