@@ -4,7 +4,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TuiResponsiveDialogService } from '@taiga-ui/addon-mobile';
-import { TuiButton, TuiInput, TuiNotificationService } from '@taiga-ui/core';
+import { TuiButton, TuiInput, TuiLoader, TuiNotificationService } from '@taiga-ui/core';
 import { TuiInputDate } from '@taiga-ui/kit';
 import { Endpoints } from '../../../../../Endpoints';
 import { FloatMarkdownEditor } from "../../../../common/components/floatmarkdowneditor";
@@ -20,53 +20,56 @@ import { BirdsService } from './services/birdsService';
     CommonModule,
     TuiButton,
     FloatMarkdownEditor,
-	TuiInput,
-	TuiInputDate
+    TuiInput,
+    TuiInputDate,
+    TuiLoader
 ],
     template: `
-		@let current = currentItem();
-        <div class="flex flex-col gap-2 w-full h-full">
-            <div class="flex flex-row gap-2">
-                <label for="imageselect">
-                    <img [src]="current.icon" style="min-width:81px;min-height:81px;max-width:81px;max-height:81px;border-radius:50%;cursor:pointer"/>
-                </label>
-                <input type="file" id="imageselect" accept="image/*" style="display:none;" (change)="changeIcon($event)">
-                <div class="flex flex-col gap-2 w-full">
-					<tui-textfield>
-						<label tuiLabel>Name</label>
-						<input
-							tuiInput
-							id="birdname"
-							[(ngModel)]="current.name"
-						/>
-					</tui-textfield>
-					<tui-textfield>
-						<label tuiLabel>Type</label>
-						<input
-							tuiInput
-							id="birdtype"
-							[(ngModel)]="current.type"
-						/>
-					</tui-textfield>
-                </div>
-            </div>
-			<tui-textfield>
-				<label tuiLabel>Birthday</label>
-				<input
-					tuiInputDate
-					[(ngModel)]="current.birthDate"
-				/>
-				<tui-calendar *tuiDropdown />
-			</tui-textfield>
-            <app-floatmarkdowneditor [(value)]="current.description"/>
+		<tui-loader class="h-full" [overlay]="true" [loading]="isLoading()">
+			@let current = currentItem();
+			<div class="flex flex-col gap-2 w-full h-full">
+				<div class="flex flex-row gap-2">
+					<label for="imageselect">
+						<img [src]="current.icon" style="min-width:81px;min-height:81px;max-width:81px;max-height:81px;border-radius:50%;cursor:pointer"/>
+					</label>
+					<input type="file" id="imageselect" accept="image/*" style="display:none;" (change)="changeIcon($event)">
+					<div class="flex flex-col gap-2 w-full">
+						<tui-textfield tuiTextfieldSize="m">
+							<label tuiLabel>Name</label>
+							<input
+								tuiInput
+								id="birdname"
+								[(ngModel)]="current.name"
+							/>
+						</tui-textfield>
+						<tui-textfield tuiTextfieldSize="m">
+							<label tuiLabel>Type</label>
+							<input
+								tuiInput
+								id="birdtype"
+								[(ngModel)]="current.type"
+							/>
+						</tui-textfield>
+					</div>
+				</div>
+				<tui-textfield  tuiTextfieldSize="m">
+					<label tuiLabel>Birthday</label>
+					<input
+						tuiInputDate
+						[(ngModel)]="current.birthDate"
+					/>
+					<tui-calendar *tuiDropdown />
+				</tui-textfield>
+				<app-floatmarkdowneditor [(value)]="current.description"/>
 
-            <div class="flex flex-row gap-2 items-center" style="min-height:3rem">
-                <button tuiButton size="s" iconStart="save" (click)="saveItem()">Save</button>
-				@if(current.id != ''){
-					<button tuiButton size="s" iconStart="x" severity="danger" (click)="deleteItem()">Delete</button>
-				}
-            </div>
-        </div>
+				<div class="flex flex-row gap-2 items-center" style="min-height:3rem">
+					<button tuiButton size="s" iconStart="save" (click)="saveItem()">Save</button>
+					@if(current.id != ''){
+						<button tuiButton size="s" iconStart="x" severity="danger" (click)="deleteItem()">Delete</button>
+					}
+				</div>
+			</div>
+		</tui-loader>
     `,
     host: {
         class: 'card flex flex-col flex-grow'
@@ -136,7 +139,7 @@ export class CORBirds extends BaseCRUDInterface {
                 alert("Image is too large! A maximum of 2mb images are supported")
                 return;
             }
-            var compressed = await compressImage(file, 0.5, 300, 300);
+            var compressed = await compressImage(file, 0.5, 100, 100);
             var asBase64 = await this.toBase64(compressed as File);
 			var currentItem = this.currentItem();
             currentItem.icon = asBase64;

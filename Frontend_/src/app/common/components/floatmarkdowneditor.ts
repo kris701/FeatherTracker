@@ -10,15 +10,17 @@ import { compressImage } from '../helpers/compressImage';
     selector: 'app-floatmarkdowneditor',
     imports: [FormsModule, CommonModule, TuiTextarea, TuiGroup, TuiDataList, TuiButton, TuiDropdown, TuiScrollbar],
     template: `
-		<div class="markdowneditor-editor">
-			@if(!disabled){
-				<div class="editor-container">
+		@if(isEditing() && !disabled){
+			<div class="editor-container">
+				<div class="editor">
 					<div
 						tuiGroup
 						[collapsed]="false"
 						[rounded]="true"
-						class="topbar w-full"
+						class="topbar"
 						>
+						<button tuiButton size="s" iconStart="save" (click)="toggleEdit(true)"></button>
+						<button tuiButton size="s" iconStart="x" (click)="toggleEdit(false)"></button>
 						@for(item of items(); track item){
 							@if(item.items){
 								<button
@@ -26,7 +28,8 @@ import { compressImage } from '../helpers/compressImage';
 									tuiChevron
 									tuiDropdownHover
 									type="button"
-									size="m"
+									appearance="secondary"
+									size="s"
 									[iconStart]="item.icon"
 									[tuiDropdown]="content"
 									#parent
@@ -35,93 +38,135 @@ import { compressImage } from '../helpers/compressImage';
 									<ng-template #content>
 										<tui-data-list>
 											@for(subitem of item.items; track subitem){
-												<button tuiOption size="m" class="w-full h-full" [iconStart]="subitem.icon" (click)="subitem.command()">{{subitem.label}}</button>
+												<button tuiOption size="s" appearance="secondary" [iconStart]="subitem.icon" (click)="subitem.command()">{{subitem.label}}</button>
 											}
 										</tui-data-list>
 									</ng-template>
 								</button>
 							}
 							@else {
-								<button tuiButton size="m" class="w-full h-full" [iconStart]="item.icon" (click)="item.command()">{{item.label}}</button>
+								<button tuiButton size="s" appearance="secondary" [iconStart]="item.icon" (click)="item.command()">{{item.label}}</button>
 							}
 						}
 					</div>
 
-					<tui-textfield class="h-full editor">
+					<tui-textfield class="editor-field">
 						<textarea
+							#editor
 							placeholder="Markdown Content"
 							tuiTextarea
-							[(ngModel)]="value"
-							(input)="valueChanged()"
+							[(ngModel)]="unsavedValue"
+							(input)="formatPreview()"
 						></textarea>
 					</tui-textfield>
 				</div>
 
-				<input type="file" (change)="onFileSelected($event)" #fileUpload [style]="{ display: 'none' }" accept="image/png, image/jpeg" />
-			}
+				<div class="preview-container">
+					<tui-scrollbar class="h-full">
+						<div class="preview" #preview>Rendering...</div>
+					</tui-scrollbar>
+				</div>
 
-			<div class="preview-container">
-				<tui-scrollbar>
-					<div class="preview" #preview></div>
+				<input type="file" (change)="onFileSelected($event)" #fileUpload [style]="{ display: 'none' }" accept="image/png, image/jpeg" />
+			</div>
+		}
+		@else {
+			<div class="preview-readonly-container">
+				<button tuiButton class="edit-button" iconStart="edit" appearance="flat" size="s"(click)="toggleEdit(false)"></button>
+				<tui-scrollbar class="h-full">
+					<div class="preview" #preview>Rendering...</div>
 				</tui-scrollbar>
 			</div>
-		</div>
+		}
     `,
     host: {
-        class: 'flex h-full w-full flex-grow'
+        class: 'flex h-full w-full'
     },
     styles: `
-		.markdowneditor-editor {
+		.editor-container {
 			display:flex;
 			flex-direction: row;
-			flex: 1;
+			width: 100%;
+			outline: 0.125rem solid var(--tui-background-accent-1);
+			border-radius: var(--tui-radius-l);
 
-			.topbar {
-				> :first-child {
-					border-bottom-left-radius: 0px !important;
-				}
-
-				> :last-child {
-					border-bottom-right-radius: 0px !important;
-					border-top-right-radius: 0px !important;
-				}
-			}
-
-			.editor-container {
+			.editor {
 				display:flex;
 				flex-direction: column;
-				block-size:100%;
+				width: 100%;
 
-				.editor {
+				.topbar {
+					> :first-child {
+						border-bottom-left-radius: 0px !important;
+					}
+
+					> :last-child {
+						border-bottom-right-radius: 0px !important;
+						border-top-right-radius: 0px !important;
+					}
+				}
+
+				.editor-field {
+					block-size:100%;
 					border-radius: 0px 0px 0px var(--tui-radius-l);
 				}
 			}
-
-			.preview-container {
-				width:100%;
-				border-radius: 0px var(--tui-radius-l) var(--tui-radius-l) 0px;
-				transition-property: box-shadow, background-color, outline-color, border-color, color;
-				transition-duration: calc(var(--tui-duration) / 2);
-				transition-timing-function: var(--tui-curve-productive-standard);
-				--t-shadow: 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.1);
-				background-color: var(--tui-background-base);
-				color: var(--tui-text-tertiary);
-				box-shadow: var(--t-shadow);
-				outline: 1px solid var(--tui-border-normal);
-				outline-offset: -1px;
-				border-width: 0;
-				block-size:100%;
-
-				::ng-deep > .t-content {
-					display:flex;
-					block-size:auto !important;
-				}
-
-				.preview {
-					padding:10px;
-				}
-			}
         }
+
+		.preview-container {
+			width:100%;
+			border-radius: 0px var(--tui-radius-l) var(--tui-radius-l) 0px;
+			transition-property: box-shadow, background-color, outline-color, border-color, color;
+			transition-duration: calc(var(--tui-duration) / 2);
+			transition-timing-function: var(--tui-curve-productive-standard);
+			--t-shadow: 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.1);
+			background-color: var(--tui-background-base);
+			color: var(--tui-text-tertiary);
+			box-shadow: var(--t-shadow);
+			outline: 1px solid var(--tui-border-normal);
+			outline-offset: -1px;
+			border-width: 0;
+			block-size:100%;
+
+			::ng-deep .t-content {
+				display:flex;
+				block-size:auto !important;
+			}
+
+			.preview {
+				padding:10px;
+			}
+		}
+
+		.preview-readonly-container {
+			width:100%;
+			border-radius: var(--tui-radius-l);
+			transition-property: box-shadow, background-color, outline-color, border-color, color;
+			transition-duration: calc(var(--tui-duration) / 2);
+			transition-timing-function: var(--tui-curve-productive-standard);
+			--t-shadow: 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.1);
+			background-color: var(--tui-background-base);
+			color: var(--tui-text-tertiary);
+			box-shadow: var(--t-shadow);
+			outline: 1px solid var(--tui-border-normal);
+			outline-offset: -1px;
+			border-width: 0;
+			block-size:100%;
+
+			.edit-button {
+				position:absolute;
+				z-index: 999;
+			}
+
+			::ng-deep .t-content {
+				display:flex;
+				block-size:auto !important;
+			}
+
+			.preview {
+				padding:10px;
+			}
+		}
     `
 })
 export class FloatMarkdownEditor implements OnChanges {
@@ -134,7 +179,10 @@ export class FloatMarkdownEditor implements OnChanges {
     @Input() value: string | null = null;
     @Output() valueChange = new EventEmitter<string | null>();
 
+	unsavedValue = signal<string>("");
+
     isFirst : boolean = true;
+    isEditing = signal<boolean>(false);
 
     items = signal<MenuItem[]>([
         {
@@ -278,7 +326,7 @@ export class FloatMarkdownEditor implements OnChanges {
         var editor = this.editor!.nativeElement;
         editor.focus();
         document.execCommand("insertText", false, newStr);
-        await this.valueChanged();
+        await this.formatPreview();
         editor.focus();
         editor.setSelectionRange(finalStart, finalFinish);
     }
@@ -297,15 +345,25 @@ export class FloatMarkdownEditor implements OnChanges {
     }
 
     async formatPreview(){
-        if (this.value && this.preview){
-            this.preview.nativeElement.innerHTML = await marked(this.value);
-        }
+		if(this.preview){
+			if(this.isEditing())
+				this.preview.nativeElement.innerHTML = await marked(this.unsavedValue());
+			else if (this.value)
+				this.preview.nativeElement.innerHTML = await marked(this.value);
+		}
     }
 
-    async valueChanged() {
-        await this.formatPreview();
-        this.valueChange.emit(this.value);
-    }
+	async toggleEdit(save : boolean){
+		if (!this.isEditing() && this.value){
+			this.unsavedValue.set(this.value)
+		}
+		if (save && this.isEditing()){
+			this.value = this.unsavedValue();
+			this.valueChange.emit(this.value);
+		}
+		this.isEditing.set(!this.isEditing());
+		setTimeout(async () => await this.formatPreview(), 500);
+	}
 }
 
 interface MenuItem {
