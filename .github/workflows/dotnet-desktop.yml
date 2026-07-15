@@ -44,7 +44,7 @@ jobs:
         run: |
             cd Frontend
             npm i
-            npm run deploy feathertracker
+            npm run deploy FeatherTracker.Web
             cd ..
 
       - name: Compile API project as publish files

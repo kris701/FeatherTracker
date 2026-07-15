@@ -3,7 +3,6 @@ services:
     docker-feathertracker-api:
         container_name: docker-feathertracker-api
         environment:
-            - JWT_SECRET=SOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRETSOMESECRET
             - JWT_LIFETIME=120
             - DB_PASSWORD=yourStrong(!)Password
         ports:
