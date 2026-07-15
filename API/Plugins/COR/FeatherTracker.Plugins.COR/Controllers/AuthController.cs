@@ -24,7 +24,7 @@ namespace FeatherTracker.Plugins.COR.Controllers
 		/// <response code="200">If login was successful.</response>
 		[AllowAnonymous]
 		[HttpPost(Endpoints.COR.Auth.Post_LogIn)]
-		public async Task<IActionResult> Post_LogIn([FromBody] AuthRequest inputModel)
+		public async Task<ActionResult<AuthResponse>> Post_LogIn([FromBody] AuthRequest inputModel)
 		{
 			return Ok(_userService.Authenticate(inputModel));
 		}
