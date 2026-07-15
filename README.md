@@ -27,6 +27,6 @@ You can then open the website on `http://localhost:52905`.
 The tech-stack is:
 * Database: SQL Server 2022 using TSQL
 * API:      ASP.NET Web API using .NET 10
-* Frontend: Angular 21 project using PrimeNG
+* Frontend: Angular 22 project using Taiga UI 5
 
 Each folder for Database, API and Frontend each have a small readme for more info.

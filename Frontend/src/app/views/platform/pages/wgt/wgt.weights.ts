@@ -301,7 +301,8 @@ export class WGTWeights {
     processGraph(){
         var avg = this.getAvgWeight();
         var pointColors : any[] = []
-        this.allWeights().forEach(p => {
+		var weights = this.allWeights();
+        weights.forEach(p => {
             var green = 255;
             var red = 255;
             var percentile = 1 * Math.exp(-((Math.abs(p.grams - avg)^2)/(2 * this.currentStandardDeviation()^2)));
@@ -373,11 +374,12 @@ export class WGTWeights {
             }
         });
         this.chartData.set({
-            labels: this.allWeights().map(x => formatDate(x.timestamp, 'dd-MMM-yyyy','en-US')),
+            labels: weights.map(x => formatDate(x.timestamp, 'dd-MMM-yyyy','en-US')),
             datasets: [
                 {
                     label: "Weight (Grams)",
-                    data: this.allWeights().map(x => x.grams),
+                    data: weights.map(x => x.grams),
+					pointBackgroundColor: pointColors,
                     pointBorderColor: pointColors,
                     tension: 0.4,
                     pointRadius: 10,
@@ -385,13 +387,13 @@ export class WGTWeights {
                 },
                 {
                     label: "Max",
-                    data: Array(this.allWeights().length).fill(this.getMaxWeight()),
+                    data: Array(weights.length).fill(this.getMaxWeight()),
                     pointStyle: false,
                     borderDash: [2,5]
                 },
                 {
                     label: "Min",
-                    data: Array(this.allWeights().length).fill(this.getMinWeight()),
+                    data: Array(weights.length).fill(this.getMinWeight()),
                     pointStyle: false,
                     borderDash: [2,5]
                 }
@@ -400,18 +402,18 @@ export class WGTWeights {
 
         var rangeTargets = 3;
 
-        var maxDatapoint = this.allWeights().find(x => x.grams == this.getMaxWeight());
+        var maxDatapoint = weights.find(x => x.grams == this.getMaxWeight());
         if (maxDatapoint){
-            var highestIndex = this.allWeights().indexOf(maxDatapoint)
+            var highestIndex = weights.indexOf(maxDatapoint)
             if (highestIndex != -1){
                 var minIndex = highestIndex - rangeTargets;
                 if (minIndex < 0)
                     minIndex = 0;
                 var maxIndex = highestIndex + rangeTargets;
-                if (maxIndex > this.allWeights().length - 1)
-                    maxIndex = this.allWeights().length - 1;
+                if (maxIndex > weights.length - 1)
+                    maxIndex = weights.length - 1;
 
-                var subset = this.allWeights().slice(minIndex, maxIndex)
+                var subset = weights.slice(minIndex, maxIndex)
 
                 this.maxChartData.set({
                     labels: subset.map(x => formatDate(x.timestamp, 'dd-MMM-yyyy','en-US')),
@@ -427,18 +429,18 @@ export class WGTWeights {
                 })
             }
         }
-        var minDatapoint = this.allWeights().find(x => x.grams == this.getMinWeight());
+        var minDatapoint = weights.find(x => x.grams == this.getMinWeight());
         if (minDatapoint){
-            var highestIndex = this.allWeights().indexOf(minDatapoint)
+            var highestIndex = weights.indexOf(minDatapoint)
             if (highestIndex != -1){
                 var minIndex = highestIndex - rangeTargets;
                 if (minIndex < 0)
                     minIndex = 0;
                 var maxIndex = highestIndex + rangeTargets;
-                if (maxIndex > this.allWeights.length - 1)
+                if (maxIndex > weights.length - 1)
                     maxIndex = this.allWeights.length - 1;
 
-                var subset = this.allWeights().slice(minIndex, maxIndex)
+                var subset = weights.slice(minIndex, maxIndex)
 
                 this.minChartData.set({
                     labels: subset.map(x => formatDate(x.timestamp, 'dd-MMM-yyyy','en-US')),
@@ -538,7 +540,7 @@ export class WGTWeights {
     getAvgWeight(){
         var sum = 0;
         this.allWeights().forEach(l => sum += l.grams)
-        return Math.round(sum / this.allWeights.length);
+        return Math.round(sum / this.allWeights().length);
     }
 
     exportLogs(){
@@ -572,7 +574,7 @@ export class WGTWeights {
 		this.confirmationService.open<boolean>(
 			TUI_CONFIRM,
 			{
-				label: 'Are you sure you want to delete all ' + this.allWeights.length + ' logs for this period? This action can not be reverted!',
+				label: 'Are you sure you want to delete all ' + this.allWeights().length + ' logs for this period? This action can not be reverted!',
 				size: 's'
 			})
 			.pipe(switchMap(async (response) => {
