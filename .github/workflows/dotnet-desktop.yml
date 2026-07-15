@@ -35,7 +35,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v1
         with:
-          node-version: 23.6.0
+          node-version: 26.4.0
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
