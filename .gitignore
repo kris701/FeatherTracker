@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /Output
 /API/FeatherTracker.API/.secrets
 /Docker/Database
+
+package-lock.json
