@@ -13,7 +13,7 @@ import { firstValueFrom, switchMap } from 'rxjs';
 import { Endpoints } from '../../../../../Endpoints';
 import { FloatDateInput } from "../../../../common/components/floatdateinput";
 import { FloatMenuBar, MenuBarItem } from "../../../../common/components/floatmenubar";
-import { FloatDatePicker } from "../../../../common/components/floatnumberinput";
+import { FloatNumberInput } from '../../../../common/components/floatnumberinput';
 import { BirdModel } from '../../../../models/COR/birdModel';
 import { DeleteRangeModel } from '../../../../models/WGT/deleteRangeModel';
 import { GetDateRangesOutput } from '../../../../models/WGT/getDateRangesOutput';
@@ -31,7 +31,7 @@ import { BirdsService } from '../cor/services/birdsService';
     FloatMenuBar,
     TuiButton,
     FloatDateInput,
-    FloatDatePicker,
+    FloatNumberInput,
     TuiDialog,
     TuiLoader,
     TuiBlockStatusComponent,

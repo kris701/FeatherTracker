@@ -1,54 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TuiButton, TuiDataList, TuiDropdown, TuiGroup, TuiScrollbar } from '@taiga-ui/core';
+import { TuiButton, TuiScrollbar } from '@taiga-ui/core';
 import { TuiTextarea } from '@taiga-ui/kit';
 import { marked } from 'marked';
 import { compressImage } from '../helpers/compressImage';
+import { FloatMenuBar, MenuBarItem } from "./floatmenubar";
 
 @Component({
     selector: 'app-floatmarkdowneditor',
-    imports: [FormsModule, CommonModule, TuiTextarea, TuiGroup, TuiDataList, TuiButton, TuiDropdown, TuiScrollbar],
+    imports: [FormsModule, CommonModule, TuiTextarea, TuiButton, TuiScrollbar, FloatMenuBar],
     template: `
 		@if(isEditing() && !disabled){
 			<div class="editor-container">
 				<div class="editor">
-					<div
-						tuiGroup
-						[collapsed]="false"
-						[rounded]="true"
+					<app-floatmenubar
 						class="topbar"
-						>
-						<button tuiButton size="s" iconStart="save" (click)="toggleEdit(true)"></button>
-						<button tuiButton size="s" iconStart="x" (click)="toggleEdit(false)"></button>
-						@for(item of items(); track item){
-							@if(item.items){
-								<button
-									tuiButton
-									tuiChevron
-									tuiDropdownHover
-									type="button"
-									appearance="secondary"
-									size="s"
-									[iconStart]="item.icon"
-									[tuiDropdown]="content"
-									#parent
-								>
-									{{item.label}}
-									<ng-template #content>
-										<tui-data-list>
-											@for(subitem of item.items; track subitem){
-												<button tuiOption size="s" appearance="secondary" [iconStart]="subitem.icon" (click)="subitem.command()">{{subitem.label}}</button>
-											}
-										</tui-data-list>
-									</ng-template>
-								</button>
-							}
-							@else {
-								<button tuiButton size="s" appearance="secondary" [iconStart]="item.icon" (click)="item.command()">{{item.label}}</button>
-							}
-						}
-					</div>
+						[items]="items()"
+						/>
 
 					<tui-textfield class="editor-field">
 						<textarea
@@ -96,13 +65,15 @@ import { compressImage } from '../helpers/compressImage';
 				width: 100%;
 
 				.topbar {
-					> :first-child {
-						border-bottom-left-radius: 0px !important;
-					}
+					::ng-deep .group {
+						> :first-child {
+							border-bottom-left-radius: 0px !important;
+						}
 
-					> :last-child {
-						border-bottom-right-radius: 0px !important;
-						border-top-right-radius: 0px !important;
+						> :last-child {
+							border-bottom-right-radius: 0px !important;
+							border-top-right-radius: 0px !important;
+						}
 					}
 				}
 
@@ -184,7 +155,15 @@ export class FloatMarkdownEditor implements OnChanges {
     isFirst : boolean = true;
     isEditing = signal<boolean>(false);
 
-    items = signal<MenuItem[]>([
+    items = signal<MenuBarItem[]>([
+		{
+			icon: 'save',
+			command: async () => await this.toggleEdit(true)
+		} as MenuBarItem,
+		{
+			icon: 'x',
+			command: async () => await this.toggleEdit(false)
+		} as MenuBarItem,
         {
             label: 'B',
             command: async () => {
@@ -197,7 +176,7 @@ export class FloatMarkdownEditor implements OnChanges {
                     await this.replaceSection(newStr, start + 2, finish + 2);
                 }
             }
-        } as MenuItem,
+        } as MenuBarItem,
         {
             label: 'I',
             command: async () => {
@@ -210,7 +189,7 @@ export class FloatMarkdownEditor implements OnChanges {
                     await this.replaceSection(newStr, start + 1, finish + 1);
                 }
             }
-        } as MenuItem,
+        } as MenuBarItem,
         {
             label: 'H',
             items: [
@@ -226,7 +205,7 @@ export class FloatMarkdownEditor implements OnChanges {
                             await this.replaceSection(newStr, start + 2, finish + 2);
                         }
                     }
-                } as MenuItem,
+                } as MenuBarItem,
                 {
                     label: 'H2',
                     command: async () => {
@@ -239,7 +218,7 @@ export class FloatMarkdownEditor implements OnChanges {
                             await this.replaceSection(newStr, start + 3, finish + 3);
                         }
                     }
-                } as MenuItem,
+                } as MenuBarItem,
                 {
                     label: 'H3',
                     command: async () => {
@@ -252,9 +231,9 @@ export class FloatMarkdownEditor implements OnChanges {
                             await this.replaceSection(newStr, start + 4, finish + 4);
                         }
                     }
-                } as MenuItem,
+                } as MenuBarItem,
             ]
-        } as MenuItem,
+        } as MenuBarItem,
 
         {
             icon: 'link',
@@ -268,7 +247,7 @@ export class FloatMarkdownEditor implements OnChanges {
                     await this.replaceSection(newStr, start + 1, finish + 1);
                 }
             }
-        } as MenuItem,
+        } as MenuBarItem,
 
         {
             icon: 'image',
@@ -277,7 +256,7 @@ export class FloatMarkdownEditor implements OnChanges {
                     this.fileUpload?.nativeElement.click();
                 }
             }
-        } as MenuItem,
+        } as MenuBarItem,
     ])
 
     async onFileSelected(event: any) {
@@ -364,11 +343,4 @@ export class FloatMarkdownEditor implements OnChanges {
 		this.isEditing.set(!this.isEditing());
 		setTimeout(async () => await this.formatPreview(), 500);
 	}
-}
-
-interface MenuItem {
-	label: string;
-	icon: string | null;
-	items : MenuItem[];
-	command() : Promise<any>;
 }

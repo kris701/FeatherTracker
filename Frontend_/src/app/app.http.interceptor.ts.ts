@@ -4,7 +4,6 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TuiNotificationService } from '@taiga-ui/core';
 import { catchError, throwError } from 'rxjs';
-import { JWTTokenHelpers } from './common/helpers/jwtTokenHelpers';
 
 export const appHttpInterceptor: HttpInterceptorFn = (req, next) => {
     const messageService = inject(TuiNotificationService);
@@ -22,8 +21,8 @@ export const appHttpInterceptor: HttpInterceptorFn = (req, next) => {
 	return next(req).pipe(
         catchError((error) => {
 			if (error instanceof HttpErrorResponse && error.status === 401) {
-                if (JWTTokenHelpers.IsExpired()) localStorage.removeItem('jwtToken');
-                router.navigate(['/auth'], { queryParams: { redirect: router.routerState.snapshot.url } });
+                localStorage.removeItem('jwtToken');
+				window.location.replace('/auth?redirect=' + router.routerState.snapshot.url)
             }
             else if (error.error && error.error.details && error.error.message)
             {

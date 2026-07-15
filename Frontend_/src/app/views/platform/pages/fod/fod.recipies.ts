@@ -9,6 +9,8 @@ import { TuiInputNumber } from '@taiga-ui/kit';
 import { Endpoints } from '../../../../../Endpoints';
 import { FloatMarkdownEditor } from "../../../../common/components/floatmarkdowneditor";
 import { FloatMultiSelect } from "../../../../common/components/floatmultiselect";
+import { FloatNumberInput } from "../../../../common/components/floatnumberinput";
+import { FloatTextInput } from "../../../../common/components/floattextinput";
 import { BaseCRUDInterface } from '../../../../common/interfaces/baseCRUDInterface';
 import { RecipieModel } from '../../../../models/FOD/recipieModel';
 import { BirdsService } from '../cor/services/birdsService';
@@ -24,37 +26,18 @@ import { RecipiesService } from './services/recipiesService';
     TuiInput,
     TuiButton,
     TuiInputNumber,
-    FloatMultiSelect
+    FloatMultiSelect,
+    FloatTextInput,
+    FloatNumberInput
 ],
     template: `
 		<tui-loader class="h-full" [overlay]="true" [loading]="isLoading()">
 			@let current = currentItem();
 			<div class="flex flex-col gap-2 w-full h-full">
-				<tui-textfield tuiTextfieldSize="m" iconStart="square-pen">
-					<label tuiLabel>Name</label>
-					<input
-						tuiInput
-						id="recipiename"
-						[(ngModel)]="current.name"
-					/>
-				</tui-textfield>
+				<app-floattextinput label="Name" [(value)]="current.name" icon="square-pen"/>
 				<div class="flex flex-row gap-2 w-full">
-					<tui-textfield tuiTextfieldSize="m" class="w-full" iconStart="weight-tilde">
-						<label tuiLabel>Quantity</label>
-						<input
-							tuiInputNumber
-							id="recipiequantity"
-							[(ngModel)]="current.quantity"
-						/>
-					</tui-textfield>
-					<tui-textfield tuiTextfieldSize="m" class="w-full" iconStart="ruler">
-						<label tuiLabel>Unit</label>
-						<input
-							tuiInput
-							id="recipieunit"
-							[(ngModel)]="current.unit"
-						/>
-					</tui-textfield>
+					<app-floatnumberinput class="w-full" label="Quantity" [(value)]="current.quantity" icon="weight-tilde"/>
+					<app-floattextinput class="w-full" label="Unit" [(value)]="current.unit" icon="ruler"/>
 				</div>
 
 				<app-floatmultiselect

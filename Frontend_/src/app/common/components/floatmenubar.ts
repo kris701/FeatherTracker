@@ -5,7 +5,7 @@ import { TuiButton, TuiDropdown, TuiGroup, TuiOption } from '@taiga-ui/core';
 import { TuiChevron } from '@taiga-ui/kit';
 
 export interface MenuBarItem {
-	label: string;
+	label: string | null;
 	icon: string | null;
 	items : MenuBarItem[];
 	disabled: boolean;
