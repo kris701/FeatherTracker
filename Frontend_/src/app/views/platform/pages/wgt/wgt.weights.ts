@@ -173,12 +173,7 @@ export class WGTWeights {
                 {
                     label:"Import Logs",
                     icon:"file-down",
-                    command: () => this.inputFile.nativeElement.click(),
-					items: [
-						{
-							label:'test'
-						}
-					] as MenuBarItem[]
+                    command: () => this.inputFile.nativeElement.click()
                 } as MenuBarItem,
                 {
                     label:"Export Logs",

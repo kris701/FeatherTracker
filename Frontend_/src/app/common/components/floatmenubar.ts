@@ -1,98 +1,93 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, TemplateRef, viewChild, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TuiButton, TuiDataList, TuiDropdown, TuiGroup } from '@taiga-ui/core';
-import { TuiChevron, TuiDataListDropdownManager } from '@taiga-ui/kit';
+import { TuiButton, TuiDropdown, TuiGroup, TuiOption } from '@taiga-ui/core';
+import { TuiChevron } from '@taiga-ui/kit';
+
+export interface MenuBarItem {
+	label: string;
+	icon: string | null;
+	items : MenuBarItem[];
+	disabled: boolean;
+	expanded: boolean;
+	command() : Promise<any>;
+}
 
 @Component({
-    selector: '[app-floatmenubar-expandablemenu]',
+    selector: 'tui-data-list[subdatalist]',
+    standalone: true,
     imports: [
-		FormsModule,
-		CommonModule,
-		TuiDataListDropdownManager,
-		TuiDropdown,
-		TuiDataList,
-		TuiChevron
-	],
+        TuiDropdown,
+		TuiOption,
+        TuiChevron
+    ],
     template: `
-		@if(item){
-			{{item.label}}
+		@for(item of subdatalist; track $index){
+			@if(item.items){
+				<button
+					tuiOption
+					tuiChevron
+					[iconStart]="item.icon"
+					[disabled]="item.disabled"
+					[tuiDropdown]="dropdownContent"
+					[(tuiDropdownOpen)]="item.expanded"
+					tuiDropdownLimitWidth="fixed"
+					tuiDropdownSided="true"
+				>
+				{{item.label}}
+				</button>
 
-			<ng-template #content>
-				<tui-data-list tuiDataListDropdownManager>
-					@for(sub of item.items; track $index){
-						@if(sub.items){
-							<button
-								app-floatmenubar-expandablemenu
-								[item]="sub"
-								tuiOption
-								tuiChevron
-								size="s"
-								appearance="outline"
-								type="button"
-								[iconStart]="sub.icon"
-								[disabled]="sub.disabled"
-								tuiDropdown
-								[(tuiDropdownOpen)]="sub.expanded"
-							></button>
-						}
-						@else {
-							<button
-								appearance="outline"
-								size="s"
-								tuiOption
-								[iconStart]="sub.icon"
-								[disabled]="sub.disabled"
-								(click)="sub.command()"
-							>
-								{{sub.label}}
-							</button>
-						}
-					}
-				</tui-data-list>
-			</ng-template>
+				<ng-template #dropdownContent>
+					<tui-data-list
+						class="subdatalist"
+						[subdatalist]="item.items">
+					</tui-data-list>
+				</ng-template>
+			}
+			@else {
+				<button
+					tuiOption
+					[iconStart]="item.icon"
+					[disabled]="item.disabled"
+					(click)="item.command()"
+				>
+					{{item.label}}
+				</button>
+			}
 		}
     `,
-	host: {
-		'[attr.tuiDropdown]': 'templateRef'
-	}
+	styles: `
+		.subdatalist {
+			display:flex;
+			flex-direction: column;
+		}
+
+		button::after {
+
+		}
+	`
 })
-export class FloatMenuBarExpandableMenu implements OnChanges {
-	@ViewChild("content") content : ElementRef<HTMLTemplateElement> | undefined;
-	templateRef = viewChild<TemplateRef<unknown>>("content");
-
-	@Input() item: MenuBarItem | null = null;
-
-	ngOnChanges(changes: SimpleChanges) {
-        if (changes['item'] && changes['item'].currentValue != changes['item'].previousValue) {
-            this.item = changes['item'].currentValue;
-        }
-    }
-
-	ngOnInit(){
-		console.log(this.templateRef)
-	}
+export class FloatMenuBarSubDataList {
+    @Input() subdatalist: MenuBarItem[] = [];
 }
 
 @Component({
     selector: 'app-floatmenubar',
+	standalone: true,
     imports: [
 		FormsModule,
 		CommonModule,
 		TuiGroup,
 		TuiButton,
-		FloatMenuBarExpandableMenu,
-		TuiChevron,
 		TuiDropdown,
-		TuiDataList,
+		TuiChevron,
+		FloatMenuBarSubDataList
 	],
     template: `
 		<div tuiGroup class="group" [collapsed]="true">
 			@for(item of items; track $index){
 				@if(item.items){
 					<button
-						app-floatmenubar-expandablemenu
-						[item]="item"
 						tuiButton
 						tuiChevron
 						size="s"
@@ -100,10 +95,19 @@ export class FloatMenuBarExpandableMenu implements OnChanges {
 						type="button"
 						[iconStart]="item.icon"
 						[disabled]="item.disabled"
-						[tuiDropdown]="$templateRef"
-						[tuiAppearanceState]="item.expanded ? 'hover' : null"
+						[tuiDropdown]="dropdownContent"
 						[(tuiDropdownOpen)]="item.expanded"
-					></button>
+						tuiDropdownLimitWidth="fixed"
+					>
+						{{item.label}}
+					</button>
+
+					<ng-template #dropdownContent>
+						<tui-data-list
+							class="subdatalist"
+							[subdatalist]="item.items">
+						</tui-data-list>
+					</ng-template>
 				}
 				@else {
 					<button
@@ -126,6 +130,11 @@ export class FloatMenuBarExpandableMenu implements OnChanges {
 			width:100%;
 			white-space: nowrap;
 		}
+
+		.subdatalist {
+			display:flex;
+			flex-direction: column;
+		}
     `
 })
 export class FloatMenuBar implements OnChanges {
@@ -136,13 +145,4 @@ export class FloatMenuBar implements OnChanges {
             this.items = changes['items'].currentValue;
         }
     }
-}
-
-export interface MenuBarItem {
-	label: string;
-	icon: string | null;
-	items : MenuBarItem[];
-	disabled: boolean;
-	expanded: boolean;
-	command() : Promise<any>;
 }
