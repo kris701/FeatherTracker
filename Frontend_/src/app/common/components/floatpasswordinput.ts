@@ -1,27 +1,31 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { TuiInput } from '@taiga-ui/core';
+import { TuiIcon, TuiInput } from '@taiga-ui/core';
+import { TuiPassword } from '@taiga-ui/kit';
 
 @Component({
-    selector: 'app-floattextinput',
+    selector: 'app-floatpasswordinput',
     imports: [
 		FormsModule,
 		CommonModule,
-		TuiInput
+		TuiInput,
+		TuiIcon,
+		TuiPassword
 	],
     template: `
 		<tui-textfield [tuiTextfieldSize]="size" [iconStart]="icon">
 			@if(label){
 				<label tuiLabel>{{label}}</label>
 			}
-			<input tuiInput [(ngModel)]="value" (ngModelChange)="valueChange.emit(value)" [disabled]="disabled"/>
+			<input tuiInput type="password" [(ngModel)]="value" (ngModelChange)="valueChange.emit(value)" [disabled]="disabled"/>
+			<tui-icon tuiPassword />
 		</tui-textfield>
     `,
     styles: `
     `
 })
-export class FloatTextInput implements OnChanges {
+export class FloatPasswordInput implements OnChanges {
     @Input() icon: string = '';
     @Input() label: string = '';
 

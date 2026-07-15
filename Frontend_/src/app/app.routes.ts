@@ -10,6 +10,10 @@ export const appRoutes: Routes = [
         path: 'platform',
 		loadChildren: () => import('./views/platform/platform.routes')
     },
+    {
+        path: 'setup',
+		loadChildren: () => import('./views/setup/setup.routes')
+    },
 	{ path: 'notfound', component: Notfound },
     { path: '**', redirectTo: '/notfound' }
 ];

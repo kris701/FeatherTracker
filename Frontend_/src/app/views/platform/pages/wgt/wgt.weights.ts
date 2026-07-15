@@ -7,6 +7,7 @@ import { TuiResponsiveDialogService } from '@taiga-ui/addon-mobile';
 import { TuiButton, TuiDialog, TuiDropdown, TuiIcon, TuiLoader, TuiNotificationService } from '@taiga-ui/core';
 import { TUI_CONFIRM, TuiTiles } from '@taiga-ui/kit';
 import { TuiBlockStatusComponent } from "@taiga-ui/layout";
+import { ChartEvent } from 'chart.js';
 import saveAs from 'file-saver';
 import { BaseChartDirective } from 'ng2-charts';
 import { firstValueFrom, switchMap } from 'rxjs';
@@ -56,8 +57,8 @@ import { BirdsService } from '../cor/services/birdsService';
 				</tui-block-status>
 			}
 			@else {
-				<tui-tiles class="tiles h-full">
-					<tui-tile [width]="1" [height]="1">
+				<div class="dashboardwrapper gap-4">
+					<div>
 						<div class="content">
 							<h2 class="title">General</h2>
 							<div><b>{{allWeights().length}} datapoints</b></div>
@@ -65,10 +66,10 @@ import { BirdsService } from '../cor/services/birdsService';
 							<div>Lowest weight: <b>{{getMinWeight()}}g</b></div>
 							<div>Average weight: <b>{{getAvgWeight()}}g</b></div>
 						</div>
-					</tui-tile>
+					</div>
 
-					<tui-tile [width]="2" [height]="1">
-						<div class="content">
+					<div>
+						<div class="content dashboardwrapper2col">
 							<h2 class="title">Historical Weight</h2>
 							<div class="flex flex-row gap-2">
 								<button
@@ -82,7 +83,7 @@ import { BirdsService } from '../cor/services/birdsService';
 								></button>
 								<p class="content-center">You can click on individual points to edit them.</p>
 							</div>
-							<canvas baseChart [data]="chartData()" [options]="chartOptions()" type="line" (onDataSelect)="selectDatapoint($event)"> </canvas>
+							<canvas baseChart [data]="chartData()" [options]="chartOptions()" type="line" (chartClick)="selectDatapoint($event)"> </canvas>
 
 							<ng-template #chartoptpop>
 								<div class="flex flex-col gap-2 m-4">
@@ -91,37 +92,39 @@ import { BirdsService } from '../cor/services/birdsService';
 								</div>
 							</ng-template>
 						</div>
-					</tui-tile>
+					</div>
 
-					<tui-tile [width]="1" [height]="1">
+					<div>
 						<div class="content">
 							<h2 class="title">Highest Weight Area</h2>
 							<canvas baseChart [data]="maxChartData()" [options]="smallChartOptions()" type="line"> </canvas>
 						</div>
-					</tui-tile>
+					</div>
 
-					<tui-tile [width]="1" [height]="1">
+					<div>
 						<div class="content">
 							<h2 class="title">Lowest Weight Area</h2>
 							<canvas baseChart [data]="minChartData()" [options]="smallChartOptions()" type="line"> </canvas>
 						</div>
-					</tui-tile>
-				</tui-tiles>
+					</div>
+				</div>
 			}
 
 			<ng-template let-id="id" [tuiDialogOptions]="{size: 's', appearance: 'taiga compact'}" [(tuiDialog)]="showBirdWeightDialog">
-				@let current = currentBirdWeight();
-				<header [id]="id">Weight Tracking Log</header>
-				<div class="flex flex-col gap-2 p-2">
-					<app-floatnumberinput label="Grams" icon="weight" size="m" [(value)]="current.grams" [min]="0"/>
-					<app-floatdateinput label="Timestamp" icon="timer" size="m" [(value)]="current.timestamp"/>
-				</div>
-				<footer>
-					<button tuiButton iconStart="save" size="s" (click)="saveBirdWeight()">Save</button>
-					@if(current.id != ''){
-						<button tuiButton iconStart="x" size="s" appearance="negative" (click)="deleteBirdWeight(current.id)">Delete</button>
-					}
-				</footer>
+				<tui-loader class="h-full" [overlay]="true" [loading]="isLoading()">
+					@let current = currentBirdWeight();
+					<header [id]="id">Weight Tracking Log</header>
+					<div class="flex flex-col gap-2 p-2">
+						<app-floatnumberinput label="Grams" icon="weight" size="m" [(value)]="current.grams" [min]="0"/>
+						<app-floatdateinput label="Timestamp" icon="timer" size="m" [(value)]="current.timestamp"/>
+					</div>
+					<footer>
+						<button tuiButton iconStart="save" size="s" (click)="saveBirdWeight()">Save</button>
+						@if(current.id != ''){
+							<button tuiButton iconStart="x" size="s" appearance="negative" (click)="deleteBirdWeight(current.id)">Delete</button>
+						}
+					</footer>
+				</tui-loader>
 			</ng-template>
 		</tui-loader>
     `,
@@ -129,26 +132,44 @@ import { BirdsService } from '../cor/services/birdsService';
         class: 'base-view'
     },
 	styles: `
-		.tiles {
-			gap: 1rem;
-			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-			grid-auto-rows: minmax(6.25rem, auto);
-			grid-auto-flow: dense;
-		}
+        @media (min-width: 900px){
+            .dashboardwrapper2col {
+                grid-column:span 2
+            }
+        }
+        @media (max-width: 900px){
+            .dashboardwrapper {
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-auto-flow: dense;
+            }
+        }
+        @media (min-width: 900px){
+            .dashboardwrapper {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                grid-auto-flow: dense;
+            }
+        }
 
-		.content {
-			block-size: 100%;
-			padding: 1rem;
-			background: var(--tui-background-base);
-			box-sizing: border-box;
-			border-radius: var(--tui-radius-l);
-			border: 1px solid var(--tui-border-normal);
-			overflow: hidden;
-		}
+        .dashboardwrapper > * {
+            display: contents;
+            margin-bottom: 0px !important;
 
-		.title {
-			margin: 0 0 1rem;
-		}
+			.content {
+				block-size: 100%;
+				padding: 1rem;
+				background: var(--tui-background-base);
+				box-sizing: border-box;
+				border-radius: var(--tui-radius-l);
+				border: 1px solid var(--tui-border-normal);
+				overflow: hidden;
+
+				.title {
+					margin-top:0px;
+				}
+			}
+        }
 	`
 })
 export class WGTWeights {
@@ -446,6 +467,7 @@ export class WGTWeights {
     }
 
     async saveBirdWeight() {
+		this.isLoading.set(true);
         if (this.currentBirdWeight().id == '') {
             await firstValueFrom(this.http.post<BirdModel>(Endpoints.WGT.Post_AddWeight, this.currentBirdWeight()))
             this.showBirdWeightDialog.set(false);
@@ -454,6 +476,7 @@ export class WGTWeights {
 				appearance: 'positive',
 				autoClose: 1000
 			}).subscribe();
+			this.isLoading.set(false);
             await this.loadWeights();
         } else {
             await firstValueFrom(this.http.patch<BirdModel>(Endpoints.WGT.Patch_UpdateWeight, this.currentBirdWeight()))
@@ -463,6 +486,7 @@ export class WGTWeights {
 				appearance: 'positive',
 				autoClose: 1000
 			}).subscribe();
+			this.isLoading.set(false);
             await this.loadWeights();
         }
     }
@@ -493,11 +517,14 @@ export class WGTWeights {
 			.subscribe();
     }
 
-    selectDatapoint(event : Event){
-        if ('element' in event && 'index' in <any>event.element && 'datasetIndex' in <any>event.element && (<any>event.element).datasetIndex == 0){
-            this.currentBirdWeight.set(this.allWeights()[<number>(<any>event.element).index]);
-            this.showBirdWeightDialog.set(true);
-        }
+    selectDatapoint(event : { event?: ChartEvent; active?: object[]; }){
+		if (event.active && event.active?.length > 0){
+			var target = event.active.find(x => (<any>x).datasetIndex == 0);
+			if (target){
+				this.currentBirdWeight.set(this.allWeights()[<number>(<any>target).index]);
+				this.showBirdWeightDialog.set(true);
+			}
+		}
     }
 
     getMaxWeight(){
