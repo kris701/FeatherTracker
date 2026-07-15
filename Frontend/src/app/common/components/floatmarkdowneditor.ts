@@ -1,59 +1,143 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TuiButton, TuiScrollbar } from '@taiga-ui/core';
+import { TuiTextarea } from '@taiga-ui/kit';
 import { marked } from 'marked';
-import { MenuItem } from 'primeng/api';
-import { Divider } from "primeng/divider";
-import { MenubarModule } from 'primeng/menubar';
-import { SplitterModule } from 'primeng/splitter';
-import { TextareaModule } from 'primeng/textarea';
 import { compressImage } from '../helpers/compressImage';
+import { FloatMenuBar, MenuBarItem } from "./floatmenubar";
 
 @Component({
     selector: 'app-floatmarkdowneditor',
-    imports: [FormsModule, CommonModule, SplitterModule, MenubarModule, TextareaModule, Divider],
+    imports: [FormsModule, CommonModule, TuiTextarea, TuiButton, TuiScrollbar, FloatMenuBar],
     template: `
-        @if(disabled){
-            <div class="markdowneditor-preview" #preview></div>
-        }
-        @else {
-            <p-splitter class="h-full" [minSizes]="[20, 20]" style="min-height:200px">
-                <ng-template pTemplate="panel">
-                    <div class="p-2 flex flex-col gap-2 h-full">
-                        <p-menubar [model]="items" />
-                        <textarea class="markdowneditor-editor" #editor [autoResize]="true" (paste)="onPaste($event)" fluid pTextarea [(ngModel)]="value" (ngModelChange)="valueChanged()"></textarea>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="panel">
-                    <div class="p-2 flex flex-col gap-2 h-full">
-                        <span class="markdowneditor-preview-label">Preview</span>
-                        <p-divider/>
-                        <div class="markdowneditor-preview" #preview></div>
-                    </div>
-                </ng-template>
-            </p-splitter>
+		@if(isEditing() && !disabled){
+			<div class="editor-container">
+				<div class="editor">
+					<app-floatmenubar
+						class="topbar"
+						[items]="items()"
+						/>
 
-            <input type="file" (change)="onFileSelected($event)" #fileUpload [style]="{ display: 'none' }" accept="image/png, image/jpeg" />
-        }
+					<tui-textfield class="editor-field">
+						<textarea
+							#editor
+							placeholder="Markdown Content"
+							tuiTextarea
+							[(ngModel)]="unsavedValue"
+							(input)="formatPreview()"
+						></textarea>
+					</tui-textfield>
+				</div>
+
+				<div class="preview-container">
+					<tui-scrollbar class="h-full">
+						<div class="preview" #preview>Rendering...</div>
+					</tui-scrollbar>
+				</div>
+
+				<input type="file" (change)="onFileSelected($event)" #fileUpload [style]="{ display: 'none' }" accept="image/png, image/jpeg" />
+			</div>
+		}
+		@else {
+			<div class="preview-readonly-container">
+				<button tuiButton class="edit-button" iconStart="edit" appearance="flat" size="s"(click)="toggleEdit(false)"></button>
+				<tui-scrollbar class="h-full">
+					<div class="preview" #preview>Rendering...</div>
+				</tui-scrollbar>
+			</div>
+		}
     `,
     host: {
-        class: 'h-full'
+        class: 'flex h-full w-full'
     },
     styles: `
-        .markdowneditor-editor {
-            height:100% !important;
-            overflow:auto !important;
-            overflow-wrap: normal;
+		.editor-container {
+			display:flex;
+			flex-direction: row;
+			width: 100%;
+			outline: 0.125rem solid var(--tui-background-accent-1);
+			border-radius: var(--tui-radius-l);
+
+			.editor {
+				display:flex;
+				flex-direction: column;
+				width: 100%;
+
+				.topbar {
+					::ng-deep .group {
+						> :first-child {
+							border-bottom-left-radius: 0px !important;
+						}
+
+						> :last-child {
+							border-bottom-right-radius: 0px !important;
+							border-top-right-radius: 0px !important;
+						}
+					}
+				}
+
+				.editor-field {
+					block-size:100%;
+					border-radius: 0px 0px 0px var(--tui-radius-l);
+				}
+			}
         }
 
-        .markdowneditor-preview {
-            height:100% !important;
-            overflow-wrap: break-word;
-        }
+		.preview-container {
+			width:100%;
+			border-radius: 0px var(--tui-radius-l) var(--tui-radius-l) 0px;
+			transition-property: box-shadow, background-color, outline-color, border-color, color;
+			transition-duration: calc(var(--tui-duration) / 2);
+			transition-timing-function: var(--tui-curve-productive-standard);
+			--t-shadow: 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.1);
+			background-color: var(--tui-background-base);
+			color: var(--tui-text-tertiary);
+			box-shadow: var(--t-shadow);
+			outline: 1px solid var(--tui-border-normal);
+			outline-offset: -1px;
+			border-width: 0;
+			block-size:100%;
 
-        .markdowneditor-preview-label {
-            align-self: center;
-        }
+			::ng-deep .t-content {
+				display:flex;
+				block-size:auto !important;
+			}
+
+			.preview {
+				padding:10px;
+			}
+		}
+
+		.preview-readonly-container {
+			width:100%;
+			border-radius: var(--tui-radius-l);
+			transition-property: box-shadow, background-color, outline-color, border-color, color;
+			transition-duration: calc(var(--tui-duration) / 2);
+			transition-timing-function: var(--tui-curve-productive-standard);
+			--t-shadow: 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.1);
+			background-color: var(--tui-background-base);
+			color: var(--tui-text-tertiary);
+			box-shadow: var(--t-shadow);
+			outline: 1px solid var(--tui-border-normal);
+			outline-offset: -1px;
+			border-width: 0;
+			block-size:100%;
+
+			.edit-button {
+				position:absolute;
+				z-index: 999;
+			}
+
+			::ng-deep .t-content {
+				display:flex;
+				block-size:auto !important;
+			}
+
+			.preview {
+				padding:10px;
+			}
+		}
     `
 })
 export class FloatMarkdownEditor implements OnChanges {
@@ -66,12 +150,22 @@ export class FloatMarkdownEditor implements OnChanges {
     @Input() value: string | null = null;
     @Output() valueChange = new EventEmitter<string | null>();
 
-    isFirst : boolean = true;
+	unsavedValue = signal<string>("");
 
-    items: MenuItem[] = [
+    isFirst : boolean = true;
+    isEditing = signal<boolean>(false);
+
+    items = signal<MenuBarItem[]>([
+		{
+			icon: 'save',
+			command: async () => await this.toggleEdit(true)
+		} as MenuBarItem,
+		{
+			icon: 'x',
+			command: async () => await this.toggleEdit(false)
+		} as MenuBarItem,
         {
             label: 'B',
-            style: { 'font-weight':'bold' },
             command: async () => {
                 if (this.editor){
                     var editor = this.editor.nativeElement;
@@ -82,10 +176,9 @@ export class FloatMarkdownEditor implements OnChanges {
                     await this.replaceSection(newStr, start + 2, finish + 2);
                 }
             }
-        },
+        } as MenuBarItem,
         {
             label: 'I',
-            style: { 'font-style':'italic' },
             command: async () => {
                 if (this.editor){
                     var editor = this.editor.nativeElement;
@@ -96,7 +189,7 @@ export class FloatMarkdownEditor implements OnChanges {
                     await this.replaceSection(newStr, start + 1, finish + 1);
                 }
             }
-        },
+        } as MenuBarItem,
         {
             label: 'H',
             items: [
@@ -112,7 +205,7 @@ export class FloatMarkdownEditor implements OnChanges {
                             await this.replaceSection(newStr, start + 2, finish + 2);
                         }
                     }
-                },
+                } as MenuBarItem,
                 {
                     label: 'H2',
                     command: async () => {
@@ -125,7 +218,7 @@ export class FloatMarkdownEditor implements OnChanges {
                             await this.replaceSection(newStr, start + 3, finish + 3);
                         }
                     }
-                },
+                } as MenuBarItem,
                 {
                     label: 'H3',
                     command: async () => {
@@ -138,12 +231,12 @@ export class FloatMarkdownEditor implements OnChanges {
                             await this.replaceSection(newStr, start + 4, finish + 4);
                         }
                     }
-                },
+                } as MenuBarItem,
             ]
-        },
+        } as MenuBarItem,
 
         {
-            icon: 'pi pi-link',
+            icon: 'link',
             command: async () => {
                 if (this.editor){
                     var editor = this.editor.nativeElement;
@@ -154,17 +247,17 @@ export class FloatMarkdownEditor implements OnChanges {
                     await this.replaceSection(newStr, start + 1, finish + 1);
                 }
             }
-        },
+        } as MenuBarItem,
 
         {
-            icon: 'pi pi-image',
+            icon: 'image',
             command: async () => {
                 if (this.editor){
                     this.fileUpload?.nativeElement.click();
                 }
             }
-        },
-    ]
+        } as MenuBarItem,
+    ])
 
     async onFileSelected(event: any) {
         var files: File[] = Array.from(event.target.files);
@@ -212,7 +305,7 @@ export class FloatMarkdownEditor implements OnChanges {
         var editor = this.editor!.nativeElement;
         editor.focus();
         document.execCommand("insertText", false, newStr);
-        await this.valueChanged();
+        await this.formatPreview();
         editor.focus();
         editor.setSelectionRange(finalStart, finalFinish);
     }
@@ -231,13 +324,23 @@ export class FloatMarkdownEditor implements OnChanges {
     }
 
     async formatPreview(){
-        if (this.value && this.preview){
-            this.preview.nativeElement.innerHTML = await marked(this.value);
-        }
+		if(this.preview){
+			if(this.isEditing())
+				this.preview.nativeElement.innerHTML = await marked(this.unsavedValue());
+			else if (this.value)
+				this.preview.nativeElement.innerHTML = await marked(this.value);
+		}
     }
 
-    async valueChanged() {
-        await this.formatPreview();
-        this.valueChange.emit(this.value);
-    }
+	async toggleEdit(save : boolean){
+		if (!this.isEditing() && this.value){
+			this.unsavedValue.set(this.value)
+		}
+		if (save && this.isEditing()){
+			this.value = this.unsavedValue();
+			this.valueChange.emit(this.value);
+		}
+		this.isEditing.set(!this.isEditing());
+		setTimeout(async () => await this.formatPreview(), 500);
+	}
 }

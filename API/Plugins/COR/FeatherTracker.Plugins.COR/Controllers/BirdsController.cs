@@ -29,7 +29,7 @@ namespace FeatherTracker.Plugins.COR.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the newly created bird</response>
 		[HttpPost(Endpoints.COR.Birds.Post_AddBird)]
-		public async Task<IActionResult> Post_AddBird([FromBody] AddBirdInput inputModel)
+		public async Task<ActionResult<BirdModel>> Post_AddBird([FromBody] AddBirdInput inputModel)
 		{
 			return Ok(await _interface.AddAsync(inputModel));
 		}
@@ -41,7 +41,7 @@ namespace FeatherTracker.Plugins.COR.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the updated bird</response>
 		[HttpPatch(Endpoints.COR.Birds.Patch_UpdateBird)]
-		public async Task<IActionResult> Patch_UpdateBird([FromBody] BirdModel inputModel)
+		public async Task<ActionResult<BirdModel>> Patch_UpdateBird([FromBody] BirdModel inputModel)
 		{
 			return Ok(await _interface.UpdateAsync(inputModel));
 		}
@@ -52,7 +52,7 @@ namespace FeatherTracker.Plugins.COR.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns a list of existing birds in a simplified format</response>
 		[HttpGet(Endpoints.COR.Birds.Get_AllBirds)]
-		public async Task<IActionResult> Get_AllBirds()
+		public async Task<ActionResult<List<ListBirdModel>>> Get_AllBirds()
 		{
 			return Ok(await _interface.GetAllAsync(new EmptyModel()));
 		}
@@ -64,7 +64,7 @@ namespace FeatherTracker.Plugins.COR.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the requested bird</response>
 		[HttpGet(Endpoints.COR.Birds.Get_Bird)]
-		public async Task<IActionResult> Get_Bird([FromQuery] GetModel inputModel)
+		public async Task<ActionResult<BirdModel>> Get_Bird([FromQuery] GetModel inputModel)
 		{
 			return Ok(await _interface.GetAsync(inputModel));
 		}

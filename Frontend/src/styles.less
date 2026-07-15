@@ -1,0 +1,90 @@
+:root {
+	--tui-theme-color: #f3d4f0;
+	--tui-background-elevation-1: #f0edf0;
+	--tui-background-elevation-2: #f0f0f0;
+	--tui-background-elevation-3: #e2e2e2;
+}
+
+:root [tuitheme="dark"] {
+	--tui-theme-color: #5a3f61;
+}
+
+.flex {
+  display:flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.h-full {
+  height:100% !important;
+}
+
+.w-full {
+  width:100% !important;
+}
+
+.gap-2 {
+  gap:10px;
+}
+
+.gap-4 {
+  gap:20px;
+}
+
+.items-center {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.grid {
+  display:grid;
+}
+
+.base-view {
+	display:flex;
+	flex-direction: column;
+	gap:10px;
+	width:100%;
+
+	> :last-child {
+		padding-bottom: 1rem !important;
+	}
+}
+
+.m-2 {
+  margin:5px;
+}
+
+.mb-2 {
+  margin-bottom:5px;
+}
+
+.p-2 {
+  padding:5px;
+}
+
+.m-4 {
+  margin:10px;
+}
+
+.p-4 {
+  padding:10px;
+}
+
+.text-center {
+	text-align: center;
+}

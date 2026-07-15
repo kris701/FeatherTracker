@@ -33,7 +33,7 @@ namespace FeatherTracker.Plugins.WGT.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the newly created bird weights</response>
 		[HttpPost(Endpoints.WGT.Post_AddWeight)]
-		public async Task<IActionResult> Post_AddWeight([FromBody] AddWeightInput inputModel)
+		public async Task<ActionResult<WeightModel>> Post_AddWeight([FromBody] AddWeightInput inputModel)
 		{
 			return Ok(await _interface.AddAsync(inputModel));
 		}
@@ -45,7 +45,7 @@ namespace FeatherTracker.Plugins.WGT.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the updated bird weights</response>
 		[HttpPatch(Endpoints.WGT.Patch_UpdateWeight)]
-		public async Task<IActionResult> Patch_UpdateWeight([FromBody] WeightModel inputModel)
+		public async Task<ActionResult<WeightModel>> Patch_UpdateWeight([FromBody] WeightModel inputModel)
 		{
 			return Ok(await _interface.UpdateAsync(inputModel));
 		}
@@ -56,7 +56,7 @@ namespace FeatherTracker.Plugins.WGT.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns a list of weights for a given bird</response>
 		[HttpGet(Endpoints.WGT.Get_AllWeights)]
-		public async Task<IActionResult> Get_AllWeights([FromQuery] GetAllBirdWeightsInput inputModel)
+		public async Task<ActionResult<List<WeightModel>>> Get_AllWeights([FromQuery] GetAllBirdWeightsInput inputModel)
 		{
 			return Ok(await _interface.GetAllAsync(inputModel));
 		}
@@ -67,7 +67,7 @@ namespace FeatherTracker.Plugins.WGT.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the min and max dates</response>
 		[HttpGet(Endpoints.WGT.Get_GetDateRanges)]
-		public async Task<IActionResult> Get_GetDateRanges([FromQuery] GetModel inputModel)
+		public async Task<ActionResult<GetDateRangesOutput>> Get_GetDateRanges([FromQuery] GetModel inputModel)
 		{
 			var model = new GetDateRangesModel(_dbClient);
 			return Ok(await model.ExecuteAsync(inputModel));

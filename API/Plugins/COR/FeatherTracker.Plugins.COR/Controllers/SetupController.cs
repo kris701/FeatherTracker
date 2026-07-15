@@ -37,7 +37,7 @@ namespace FeatherTracker.Plugins.COR.Controllers
 		/// <response code="200">If the system already is setup.</response>
 		[AllowAnonymous]
 		[HttpGet(Endpoints.COR.Setup.Get_IsSetup)]
-		public async Task<IActionResult> Get_IsSetup()
+		public async Task<ActionResult<bool>> Get_IsSetup()
 		{
 			return Ok(_userService.UserExists());
 		}

@@ -1,7 +1,6 @@
 using CommandLine;
 using CommandLine.Text;
 using FeatherTracker.API.Models;
-using System.Text;
 using Uni.API;
 
 namespace FeatherTracker.API
@@ -18,7 +17,7 @@ namespace FeatherTracker.API
 
 		public static void Run(Options opts)
 		{
-			CreateUniAPIBuilder<Startup>(opts).Build().Run();
+			CreateUniAPIBuilder<Startup>(opts).Run();
 		}
 
 		private static void DisplayHelp<T>(ParserResult<T> result, IEnumerable<Error> errs)
@@ -40,25 +39,29 @@ namespace FeatherTracker.API
 					Console.WriteLine(sentenceBuilder.FormatError(error));
 		}
 
-		private static IHostBuilder CreateUniAPIBuilder<T>(Options opt) where T : UniAPIStartup
+		private static WebApplication CreateUniAPIBuilder<T>(Options opt) where T : UniAPIStartup
 		{
-			IHostBuilder hostBuilder = Host.CreateDefaultBuilder();
-			hostBuilder.ConfigureAppConfiguration(delegate (HostBuilderContext context, IConfigurationBuilder config)
-			{
-				var dict = new Dictionary<string, string>();
-				dict.Add("UsePlugins:[0]", "COR");
-				dict.Add("UsePlugins:[1]", "WGT");
-				dict.Add("UsePlugins:[2]", "FOD");
-				dict.Add("COR:JWTSecret", opt.JWTSecret);
-				dict.Add("COR:JWTLifetime", $"{opt.JWTLifetime}");
-				dict.Add("COR:DatabaseConnectionString", opt.DBConnectionString);
-				config.AddInMemoryCollection(dict);
-			});
-			hostBuilder.ConfigureWebHostDefaults(delegate (IWebHostBuilder webBuilder)
-			{
-				webBuilder.UseStartup<T>();
-			});
-			return hostBuilder;
+			var builder = WebApplication.CreateBuilder();
+			var dict = new Dictionary<string, string>();
+			dict.Add("UsePlugins:[0]", "COR");
+			dict.Add("UsePlugins:[1]", "WGT");
+			dict.Add("UsePlugins:[2]", "FOD");
+			dict.Add("COR:JWTLifetime", $"{opt.JWTLifetime}");
+			dict.Add("COR:APIURL", $"{opt.APIUrl}");
+			dict.Add("COR:DatabaseConnectionString", opt.DBConnectionString);
+			builder.Configuration.AddInMemoryCollection(dict);
+
+			var startup = Activator.CreateInstance<T>();
+
+			startup.LoadPlugins(builder.Configuration);
+
+			startup.ConfigureServices(builder.Services, builder.Configuration);
+
+			var app = builder.Build();
+
+			startup.Configure(app, app.Environment);
+
+			return app;
 		}
 	}
 }

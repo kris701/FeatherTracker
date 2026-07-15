@@ -29,7 +29,7 @@ namespace FeatherTracker.Plugins.FOD.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the newly created Recipie</response>
 		[HttpPost(Endpoints.FOD.Post_AddRecipie)]
-		public async Task<IActionResult> Post_AddRecipie([FromBody] AddRecipieInput inputModel)
+		public async Task<ActionResult<RecipieModel>> Post_AddRecipie([FromBody] AddRecipieInput inputModel)
 		{
 			return Ok(await _interface.AddAsync(inputModel));
 		}
@@ -41,7 +41,7 @@ namespace FeatherTracker.Plugins.FOD.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the updated Recipie</response>
 		[HttpPatch(Endpoints.FOD.Patch_UpdateRecipie)]
-		public async Task<IActionResult> Patch_UpdateRecipie([FromBody] RecipieModel inputModel)
+		public async Task<ActionResult<RecipieModel>> Patch_UpdateRecipie([FromBody] RecipieModel inputModel)
 		{
 			return Ok(await _interface.UpdateAsync(inputModel));
 		}
@@ -52,7 +52,7 @@ namespace FeatherTracker.Plugins.FOD.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns a list of existing Recipies in a simplified format</response>
 		[HttpGet(Endpoints.FOD.Get_AllRecipies)]
-		public async Task<IActionResult> Get_AllRecipies()
+		public async Task<ActionResult<List<ListRecipieModel>>> Get_AllRecipies()
 		{
 			return Ok(await _interface.GetAllAsync(new EmptyModel()));
 		}
@@ -64,7 +64,7 @@ namespace FeatherTracker.Plugins.FOD.Controllers
 		/// <returns></returns>
 		/// <response code="200">Returns the requested Recipie</response>
 		[HttpGet(Endpoints.FOD.Get_Recipie)]
-		public async Task<IActionResult> Get_Recipie([FromQuery] GetModel inputModel)
+		public async Task<ActionResult<RecipieModel>> Get_Recipie([FromQuery] GetModel inputModel)
 		{
 			return Ok(await _interface.GetAsync(inputModel));
 		}

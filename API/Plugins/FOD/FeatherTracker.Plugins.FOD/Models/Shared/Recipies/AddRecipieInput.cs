@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FeatherTracker.Plugins.FOD.Models.Shared.Recipies
 {
@@ -9,13 +6,13 @@ namespace FeatherTracker.Plugins.FOD.Models.Shared.Recipies
 	{
 		[Required]
 		public string Name { get; set; }
-		[Required] 
+		[Required]
 		public string Recipie { get; set; }
-		[Required] 
+		[Required]
 		public double Quantity { get; set; }
 		[Required]
 		public string Unit { get; set; }
-		[Required] 
+		[Required]
 		public List<Guid> Birds { get; set; }
 	}
 }

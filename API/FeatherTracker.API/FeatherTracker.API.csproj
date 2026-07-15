@@ -11,8 +11,8 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="DatabaseSharp" Version="1.6.4" />
-    <PackageReference Include="Uni.API" Version="1.2.2" />
+    <PackageReference Include="DatabaseSharp" Version="1.6.11" />
+    <PackageReference Include="Uni.API" Version="1.2.17" />
   </ItemGroup>
 
 	<ItemGroup>
