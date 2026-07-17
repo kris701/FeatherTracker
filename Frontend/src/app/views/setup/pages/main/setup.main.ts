@@ -2,12 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { EzUIPasswordInput, EzUITextInput } from "@kris701/ez-ui";
 import { TuiButton, TuiLoader, TuiTitle } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from '../../../../../Endpoints';
-import { FloatPasswordInput } from "../../../../common/components/floatpasswordinput";
-import { FloatTextInput } from "../../../../common/components/floattextinput";
 import { LayoutService } from '../../../../common/services/layoutService';
 import { AuthRequest } from '../../../../models/COR/authRequest';
 import { SetupInput } from '../../../../models/COR/setupInput';
@@ -15,7 +14,7 @@ import { SetupInput } from '../../../../models/COR/setupInput';
 @Component({
     selector: 'app-landing',
     standalone: true,
-    imports: [FormsModule, RouterModule, TuiHeader, TuiTitle, TuiCardLarge, FloatTextInput, FloatPasswordInput, TuiLoader, TuiButton],
+    imports: [FormsModule, RouterModule, TuiHeader, TuiTitle, TuiCardLarge, TuiLoader, TuiButton, EzUITextInput, EzUIPasswordInput],
     template: `
         <div class="flex h-full w-full items-center">
 			<tui-loader [overlay]="true" [loading]="isLoading()">
@@ -31,9 +30,9 @@ import { SetupInput } from '../../../../models/COR/setupInput';
 						<span>Some small setup is required before you can start using Feather Tracker</span>
 						<span>Input the username and password you would like to log in with:</span>
 
-						<app-floattextinput label="Username" [(value)]="model.user.username"/>
+						<ezui-textinput label="Username" [(value)]="model.user.username"/>
 
-						<app-floatpasswordinput label="Password" [(value)]="model.user.password" />
+						<ezui-passwordinput label="Password" [(value)]="model.user.password" />
 					</section>
 
 					<footer>

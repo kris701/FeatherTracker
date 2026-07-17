@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { EzUIDateInput, EzUIMenuBar, EzUINumberInput, MenuBarItem } from "@kris701/ez-ui";
 import { TuiResponsiveDialogService } from '@taiga-ui/addon-mobile';
 import { TuiButton, TuiDialog, TuiDropdown, TuiIcon, TuiLoader, TuiNotificationService } from '@taiga-ui/core';
 import { TUI_CONFIRM, TuiTiles } from '@taiga-ui/kit';
@@ -12,9 +13,6 @@ import saveAs from 'file-saver';
 import { BaseChartDirective } from 'ng2-charts';
 import { firstValueFrom, switchMap } from 'rxjs';
 import { Endpoints } from '../../../../../Endpoints';
-import { FloatDateInput } from "../../../../common/components/floatdateinput";
-import { FloatMenuBar, MenuBarItem } from "../../../../common/components/floatmenubar";
-import { FloatNumberInput } from '../../../../common/components/floatnumberinput';
 import { BirdModel } from '../../../../models/COR/birdModel';
 import { DeleteRangeModel } from '../../../../models/WGT/deleteRangeModel';
 import { GetDateRangesOutput } from '../../../../models/WGT/getDateRangesOutput';
@@ -29,23 +27,23 @@ import { BirdsService } from '../cor/services/birdsService';
     BaseChartDirective,
     TuiTiles,
     TuiDropdown,
-    FloatMenuBar,
     TuiButton,
-    FloatDateInput,
-    FloatNumberInput,
     TuiDialog,
     TuiLoader,
     TuiBlockStatusComponent,
-    TuiIcon
+    TuiIcon,
+    EzUIDateInput,
+    EzUIMenuBar,
+    EzUINumberInput
 ],
     template: `
 		<tui-loader class="h-full" [overlay]="true" [loading]="isLoading()">
 			<div class="card flex flex-col gap-2 mb-2">
-				<app-floatmenubar [items]="menuItems" />
+				<ezui-menubar [items]="menuItems" />
 				<input #importinput type='file' accept='.csv' multiple (change)='importLogs($event)' style="display:none;">
 				<div class="flex flex-row gap-2">
-					<app-floatdateinput class="w-full" label="From Date" icon="timer" size="m" [(value)]="currentMinDate" [min]="minDate()" [max]="currentMaxDate()" (ngModelChange)="loadWeightsWithin()"/>
-					<app-floatdateinput class="w-full" label="To Date" icon="timer" size="m" [(value)]="currentMaxDate" [min]="currentMinDate()" [max]="maxDate()" (ngModelChange)="loadWeightsWithin()"/>
+					<ezui-dateinput class="w-full" label="From Date" icon="timer" size="m" [(value)]="currentMinDate" [min]="minDate()" [max]="currentMaxDate()" (ngModelChange)="loadWeightsWithin()"/>
+					<ezui-dateinput class="w-full" label="To Date" icon="timer" size="m" [(value)]="currentMaxDate" [min]="currentMinDate()" [max]="maxDate()" (ngModelChange)="loadWeightsWithin()"/>
 				</div>
 			</div>
 
@@ -87,8 +85,8 @@ import { BirdsService } from '../cor/services/birdsService';
 
 							<ng-template #chartoptpop>
 								<div class="flex flex-col gap-2 m-4">
-									<app-floatnumberinput label="Standard deviation" icon="weight" size="m" [(value)]="currentStandardDeviation" (valueChange)="processGraph()" [min]="0.1"/>
-									<app-floatnumberinput label="Min/Max padding" icon="weight" size="m" [(value)]="padding" (valueChange)="processGraph()" [min]="0"/>
+									<ezui-numberinput label="Standard deviation" icon="weight" size="m" [(value)]="currentStandardDeviation" (valueChange)="processGraph()" [min]="0.1"/>
+									<ezui-numberinput label="Min/Max padding" icon="weight" size="m" [(value)]="padding" (valueChange)="processGraph()" [min]="0"/>
 								</div>
 							</ng-template>
 						</div>
@@ -115,8 +113,8 @@ import { BirdsService } from '../cor/services/birdsService';
 					@let current = currentBirdWeight();
 					<header [id]="id">Weight Tracking Log</header>
 					<div class="flex flex-col gap-2 p-2">
-						<app-floatnumberinput label="Grams" icon="weight" size="m" [(value)]="current.grams" [min]="0"/>
-						<app-floatdateinput label="Timestamp" icon="timer" size="m" [(value)]="current.timestamp"/>
+						<ezui-numberinput label="Grams" icon="weight" size="m" [(value)]="current.grams" [min]="0"/>
+						<ezui-dateinput label="Timestamp" icon="timer" size="m" [(value)]="current.timestamp"/>
 					</div>
 					<footer>
 						<button tuiButton iconStart="save" size="s" (click)="saveBirdWeight()">Save</button>

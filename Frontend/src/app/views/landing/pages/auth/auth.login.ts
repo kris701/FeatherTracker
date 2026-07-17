@@ -4,11 +4,10 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { EzUIPasswordInput, EzUITextInput } from '@kris701/ez-ui';
 import { TuiButton, TuiInput, TuiLoader, TuiTitle } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { Endpoints } from '../../../../../Endpoints';
-import { FloatPasswordInput } from "../../../../common/components/floatpasswordinput";
-import { FloatTextInput } from "../../../../common/components/floattextinput";
 import { JWTTokenModel } from '../../../../common/helpers/jwtTokenHelpers';
 import { AuthRequest } from '../../../../models/COR/authRequest';
 import { AuthResponse } from '../../../../models/COR/authResponse';
@@ -26,8 +25,8 @@ import { AuthResponse } from '../../../../models/COR/authResponse';
     TuiCardLarge,
     TuiHeader,
     TuiTitle,
-    FloatTextInput,
-    FloatPasswordInput
+    EzUITextInput,
+    EzUIPasswordInput
 ],
     template: `
 		<div class="flex h-full w-full items-center">
@@ -46,9 +45,8 @@ import { AuthResponse } from '../../../../models/COR/authResponse';
 							<label class="text-center" [style]="{ color: 'red' }">Username or Password is invalid!</label>
 						}
 
-						<app-floattextinput id="username" label="Username" [(value)]="loginName"/>
-
-						<app-floatpasswordinput id="password" label="Password" [(value)]="password" (key.enter)="doDefaultLogin()"/>
+						<ezui-textinput label="Username" [(value)]="loginName"/>
+						<ezui-passwordinput label="Password" [(value)]="password"/>
 					</section>
 
 					<footer>

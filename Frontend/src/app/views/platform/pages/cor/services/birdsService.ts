@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
+import { BaseListService } from "@kris701/ez-ui";
 import { Endpoints } from "../../../../../../Endpoints";
-import { BaseListService } from "../../../../../common/interfaces/baseListService";
 import { BirdModel } from "../../../../../models/COR/birdModel";
 import { ListBirdModel } from "../../../../../models/COR/listBirdModel";
 

@@ -3,15 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BaseCRUDInterface, EzUIMarkdownEditor, EzUIMultiSelect, EzUINumberInput, EzUITextInput } from "@kris701/ez-ui";
 import { TuiResponsiveDialogService } from '@taiga-ui/addon-mobile';
 import { TuiButton, TuiInput, TuiLoader, TuiNotificationService } from '@taiga-ui/core';
 import { TuiInputNumber } from '@taiga-ui/kit';
 import { Endpoints } from '../../../../../Endpoints';
-import { FloatMarkdownEditor } from "../../../../common/components/floatmarkdowneditor";
-import { FloatMultiSelect } from "../../../../common/components/floatmultiselect";
-import { FloatNumberInput } from "../../../../common/components/floatnumberinput";
-import { FloatTextInput } from "../../../../common/components/floattextinput";
-import { BaseCRUDInterface } from '../../../../common/interfaces/baseCRUDInterface';
 import { RecipieModel } from '../../../../models/FOD/recipieModel';
 import { BirdsService } from '../cor/services/birdsService';
 import { RecipiesService } from './services/recipiesService';
@@ -21,26 +17,26 @@ import { RecipiesService } from './services/recipiesService';
     imports: [
     FormsModule,
     CommonModule,
-    FloatMarkdownEditor,
     TuiLoader,
     TuiInput,
     TuiButton,
     TuiInputNumber,
-    FloatMultiSelect,
-    FloatTextInput,
-    FloatNumberInput
+    EzUITextInput,
+    EzUINumberInput,
+    EzUIMultiSelect,
+    EzUIMarkdownEditor
 ],
     template: `
 		<tui-loader class="h-full" [overlay]="true" [loading]="isLoading()">
 			@let current = currentItem();
 			<div class="flex flex-col gap-2 w-full h-full">
-				<app-floattextinput label="Name" [(value)]="current.name" icon="square-pen"/>
+				<ezui-textinput label="Name" [(value)]="current.name" icon="square-pen"/>
 				<div class="flex flex-row gap-2 w-full">
-					<app-floatnumberinput class="w-full" label="Quantity" [(value)]="current.quantity" icon="weight-tilde"/>
-					<app-floattextinput class="w-full" label="Unit" [(value)]="current.unit" icon="ruler"/>
+					<ezui-numberinput class="w-full" label="Quantity" [(value)]="current.quantity" icon="weight-tilde"/>
+					<ezui-textinput class="w-full" label="Unit" [(value)]="current.unit" icon="ruler"/>
 				</div>
 
-				<app-floatmultiselect
+				<ezui-multiselect
 					[options]="birdsService.items()"
 					[(selected)]="current.birds"
 					label="For Birds"
@@ -49,7 +45,7 @@ import { RecipiesService } from './services/recipiesService';
 					icon="bird"
 				/>
 
-				<app-floatmarkdowneditor [(value)]="current.recipie"/>
+				<ezui-markdowneditor [(value)]="current.recipie"/>
 
 				<div class="flex flex-row gap-2 items-center" style="min-height:3rem">
 					<button tuiButton size="s" iconStart="save" (click)="saveItem()">Save</button>
