@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="dotnet cs2ts --output &quot;../../../../FrontEnd_/src/app/models/FOD&quot; --convert-dates-to &quot;Union&quot; --import-generation &quot;Simple&quot; &quot;./Models/Shared/&quot;" ContinueOnError="true" />
+	  <Exec Command="dotnet cs2ts --output &quot;../../../../FrontEnd/src/app/models/FOD&quot; --convert-dates-to &quot;Union&quot; --import-generation &quot;Simple&quot; &quot;./Models/Shared/&quot;" ContinueOnError="true" />
   </Target>
 
 </Project>

@@ -8,7 +8,7 @@
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="autopoint -t Endpoints.json -p CSharpProducer TypeScriptProducer" ContinueOnError="true" />
-	<Exec Command="copy Endpoints.ts ..\..\Frontend_\src\Endpoints.ts /Y" ContinueOnError="true" />
+	<Exec Command="copy Endpoints.ts ..\..\Frontend\src\Endpoints.ts /Y" ContinueOnError="true" />
   </Target>
 
   <ItemGroup>
