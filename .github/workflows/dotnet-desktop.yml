@@ -29,6 +29,8 @@ jobs:
     needs: check-tag
     if: needs.check-tag.outputs.releaseExists == 'false'
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -101,6 +103,10 @@ jobs:
     name: Update Docker Images
     needs: createRelease
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -115,7 +121,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.API_KEY_GITHUB }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get API Project version
         id: get-version
@@ -179,6 +185,8 @@ jobs:
     needs: check-tag
     if: needs.check-tag.outputs.releaseExists == 'true'
     runs-on: windows-latest
+    permissions:
+      contents: read
     steps:
       - name: Install Node
         uses: actions/setup-node@v1
