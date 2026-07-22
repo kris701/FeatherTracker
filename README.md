@@ -11,9 +11,9 @@ You can use it for:
 
 And more are being made :)
 
-<img width="1677" height="995" alt="image" src="https://github.com/user-attachments/assets/965b808d-aba7-441d-80e2-1371c83bddfe" />
-<img width="1678" height="995" alt="image" src="https://github.com/user-attachments/assets/fc706c7b-a4a0-4f17-84d7-6902713a3065" />
-<img width="1669" height="994" alt="image" src="https://github.com/user-attachments/assets/77055dc7-d0c8-4bd3-96f6-77304e2553a2" />
+<img width="1677" height="995" alt="image" src="https://github.com/user-attachments/assets/200f75b0-3946-416a-af82-5316bec5a068" />
+<img width="1678" height="995" alt="image" src="https://github.com/user-attachments/assets/57842b96-8291-40d1-aaf8-3f5894591254" />
+<img width="1669" height="994" alt="image" src="https://github.com/user-attachments/assets/e72cf2c3-22b6-4b93-8a27-1b1beeca6fcd" />
 
 ## Docker
 You can quickly run this application with Docker, and explore if its something for you.

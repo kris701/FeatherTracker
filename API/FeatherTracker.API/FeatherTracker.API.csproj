@@ -5,14 +5,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
-	  <Version>0.3.2</Version>
+	  <Version>0.3.3</Version>
 	  <OutputPath>../../Output/API/</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="DatabaseSharp" Version="1.6.11" />
-    <PackageReference Include="Uni.API" Version="1.2.17" />
+    <PackageReference Include="Uni.API" Version="1.2.19" />
   </ItemGroup>
 
 	<ItemGroup>
