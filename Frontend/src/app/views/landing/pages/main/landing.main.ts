@@ -6,7 +6,6 @@ import { TuiTitle } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from '../../../../../Endpoints';
-import { LayoutService } from '../../../../common/services/layoutService';
 
 @Component({
     selector: 'app-landing',
@@ -31,7 +30,6 @@ import { LayoutService } from '../../../../common/services/layoutService';
 })
 export class LandingPage {
     constructor(
-        public layoutService: LayoutService,
         public http : HttpClient
     ) {}
 

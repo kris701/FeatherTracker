@@ -7,7 +7,6 @@ import { TuiButton, TuiLoader, TuiTitle } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { firstValueFrom } from 'rxjs';
 import { Endpoints } from '../../../../../Endpoints';
-import { LayoutService } from '../../../../common/services/layoutService';
 import { AuthRequest } from '../../../../models/COR/authRequest';
 import { SetupInput } from '../../../../models/COR/setupInput';
 
@@ -51,7 +50,6 @@ export class SetupPage {
 	isLoading = signal<boolean>(false);
 
     constructor(
-        public layoutService: LayoutService,
         private http: HttpClient
     ) {}
 

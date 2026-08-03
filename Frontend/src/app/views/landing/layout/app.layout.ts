@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutService } from '../../../common/services/layoutService';
 import { AppTopbar } from './app.topbar';
 
 @Component({
@@ -42,10 +41,6 @@ import { AppTopbar } from './app.topbar';
 })
 export class AppLayout {
     @ViewChild('backgroundvideo') backgroundvideo!: ElementRef<HTMLVideoElement>;
-
-    constructor(
-        public layoutService: LayoutService
-    ) {}
 
     ngAfterViewChecked(){
         this.backgroundvideo.nativeElement.muted = true;

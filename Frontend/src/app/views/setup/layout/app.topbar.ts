@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { EzUILayoutService } from '@kris701/ez-ui';
 import { TuiButton } from '@taiga-ui/core';
-import { LayoutService } from '../../../common/services/layoutService';
 
 @Component({
     selector: 'app-topbar',
@@ -36,7 +36,7 @@ export class AppTopbar {
     localStorage = localStorage;
 
     constructor(
-        public layoutService: LayoutService,
+        public layoutService: EzUILayoutService,
         public router: Router
     ) {}
 
