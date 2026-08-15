@@ -16,7 +16,7 @@ import { Endpoints } from '../../../../../Endpoints';
 			<div tuiCardLarge>
 				<header tuiHeader>
 					<h1 tuiTitle style="text-align:center">
-						<img class="mb-2 w-64 shrink-0 mx-auto" src="logo.png" />
+						<img src="logo.png" />
 						Feather Tracker!
 						<span tuiSubtitle>Keeping track of your featherly friends!</span>
 					</h1>

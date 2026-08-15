@@ -13,8 +13,8 @@ import { JWTTokenHelpers } from '../../../common/helpers/jwtTokenHelpers';
 	<div class="app-topbar-container">
 		<div class="flex flex-grow"></div>
 		<div class="button-container">
-			<button tuiButton size="m" appearance="flat" (click)="toggleDarkMode()" [iconStart]="layoutService.isDarkMode() ? 'moon' : 'sun'"></button>
-			<button tuiButton size="m" appearance="flat" [iconStart]="getLoginIcon()" (click)="doLoginAction()">{{getLoginText()}}</button>
+			<button tuiButton size="s" appearance="flat-grayscale" (click)="toggleDarkMode()" [iconStart]="layoutService.isDarkMode() ? 'moon' : 'sun'"></button>
+			<button tuiButton size="s" appearance="flat-grayscale" [iconStart]="getLoginIcon()" (click)="doLoginAction()">{{getLoginText()}}</button>
 		</div>
 	</div>
 	`,

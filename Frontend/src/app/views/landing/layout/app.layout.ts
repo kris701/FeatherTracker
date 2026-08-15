@@ -33,7 +33,6 @@ import { AppTopbar } from './app.topbar';
             position: fixed;
             min-width: 100%;
             min-height: 100%;
-            opacity: 0.3;
             z-index:-999;
             object-fit: cover;
         }
