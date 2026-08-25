@@ -34,8 +34,8 @@ import { AuthResponse } from '../../../../models/COR/authResponse';
 				<div appearance="floating" tuiCardLarge>
 					<header tuiHeader>
 						<h2 tuiTitle>
-							<img src="logo.png" />
-							Welcome to Feather Tracker!
+							<img class="logo" src="logo.png" />
+							<span class="title">Welcome to Feather Tracker!</span>
 						</h2>
 					</header>
 
@@ -58,7 +58,19 @@ import { AuthResponse } from '../../../../models/COR/authResponse';
     `,
     host:{
         class:"h-full"
-    }
+    },
+	styles: `
+		.logo {
+			max-width:70vw;
+			max-height: 30vh;
+			align-self: center;
+		}
+
+		.title {
+			max-width:70vw;
+			text-align: center;
+		}
+	`
 })
 export class AuthLogin {
     route = inject(ActivatedRoute);

@@ -16,9 +16,8 @@ import { Endpoints } from '../../../../../Endpoints';
 			<div tuiCardLarge>
 				<header tuiHeader>
 					<h1 tuiTitle style="text-align:center">
-						<img src="logo.png" />
-						Feather Tracker!
-						<span tuiSubtitle>Keeping track of your featherly friends!</span>
+						<img class="logo" src="logo.png" />
+						<span tuiSubtitle>Feather Tracker!</span>
 					</h1>
 				</header>
 			</div>
@@ -26,7 +25,13 @@ import { Endpoints } from '../../../../../Endpoints';
     `,
 	host:{
 		class:"h-full"
-	}
+	},
+	styles: `
+		.logo {
+			max-width:70vw;
+			align-self: center;
+		}
+	`
 })
 export class LandingPage {
     constructor(
