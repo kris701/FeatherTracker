@@ -2,7 +2,7 @@
 
 echo " -- Setting up Database -- "
 
-MSSQL_PID='developer' /opt/mssql/bin/mssql-conf -n setup accept-eula
+MSSQL_PID='express' /opt/mssql/bin/mssql-conf -n setup accept-eula
 
 echo " -- Starting SQL server -- "
 
