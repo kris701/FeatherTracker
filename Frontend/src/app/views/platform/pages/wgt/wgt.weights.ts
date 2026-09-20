@@ -42,8 +42,8 @@ import { BirdsService } from '../cor/services/birdsService';
 				<ezui-menubar [items]="menuItems" />
 				<input #importinput type='file' accept='.csv' multiple (change)='importLogs($event)' style="display:none;">
 				<div class="flex flex-row gap-2">
-					<ezui-dateinput class="w-full" label="From Date" icon="timer" size="m" [(value)]="currentMinDate" [min]="minDate()" [max]="currentMaxDate()" (ngModelChange)="loadWeightsWithin()"/>
-					<ezui-dateinput class="w-full" label="To Date" icon="timer" size="m" [(value)]="currentMaxDate" [min]="currentMinDate()" [max]="maxDate()" (ngModelChange)="loadWeightsWithin()"/>
+					<ezui-dateinput class="w-full" label="From Date" icon="timer" size="m" [(value)]="currentMinDate" [min]="minDate()" [max]="currentMaxDate()" (valueChange)="loadWeightsWithin()"/>
+					<ezui-dateinput class="w-full" label="To Date" icon="timer" size="m" [(value)]="currentMaxDate" [min]="currentMinDate()" [max]="maxDate()" (valueChange)="loadWeightsWithin()"/>
 				</div>
 			</div>
 
@@ -179,12 +179,12 @@ export class WGTWeights {
         {
             label:"Reload",
             icon:"rotate-ccw",
-            command: () => this.loadWeights()
+            command: (s,i) => this.loadWeights()
         } as MenuBarItem,
         {
             label:"Add Weight Log",
             icon:"plus",
-            command: () => this.showAddWeightLog()
+            command: (s,i) => this.showAddWeightLog()
         } as MenuBarItem,
         {
             label:"Data Management",
@@ -192,17 +192,17 @@ export class WGTWeights {
                 {
                     label:"Import Logs",
                     icon:"file-down",
-                    command: () => this.inputFile.nativeElement.click()
+                    command: (s,i) => this.inputFile.nativeElement.click()
                 } as MenuBarItem,
                 {
                     label:"Export Logs",
                     icon:"file-up",
-                    command: () => this.exportLogs()
+                    command: (s,i) => this.exportLogs()
                 } as MenuBarItem,
                 {
                     label:"Delete Log Range",
                     icon:"trash-2",
-                    command: () => this.purgeLogs()
+                    command: (s,i) => this.purgeLogs()
                 } as MenuBarItem
             ] as MenuBarItem[]
         } as MenuBarItem

@@ -39,7 +39,7 @@ import { BirdsService } from './services/birdsService';
 					</div>
 				</div>
 				<ezui-dateinput label="Birthday" icon="cake" size="m" [(value)]="current.birthDate"/>
-				<ezui-markdowneditor [(value)]="current.description"/>
+				<ezui-markdowneditor class="h-full" [(value)]="current.description"/>
 
 				<div class="flex flex-row gap-2 items-center" style="min-height:3rem">
 					<button tuiButton size="s" iconStart="save" (click)="saveItem()">Save</button>
@@ -59,8 +59,8 @@ export class CORBirds extends BaseCRUDInterface {
         return {
             id:'',
             name: 'New Bird',
-            description: 'description',
-            type: '',
+            description: 'Description',
+            type: 'Bird',
             icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFEAAABRCAYAAACqj0o2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGHaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49J++7vycgaWQ9J1c1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCc/Pg0KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyI+PHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj48cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0idXVpZDpmYWY1YmRkNS1iYTNkLTExZGEtYWQzMS1kMzNkNzUxODJmMWIiIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIj48dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPjwvcmRmOkRlc2NyaXB0aW9uPjwvcmRmOlJERj48L3g6eG1wbWV0YT4NCjw/eHBhY2tldCBlbmQ9J3cnPz4slJgLAAACXUlEQVR4Xu3aQYriQBTG8Ze5QfACYnTtwlq6NrmBuUI2HiCeQC8SwbWgKxdxF4VcQFcuE8QT1GxmQqe6YWzmo/OE7wdCtJ7Q/AlWoe1Za63Qf/nlvkDfx4gAjAjAiACMCMCIAIwIwIgAjAjAiACMCMCIAIwIwIgAjAjAiACMCMCIAIwIwIgAjAjAiACMCMCIAIwIwIgAqiLebjdZLpcSRZF4ntc8hsOhxHEsm83GfYsOVok0Ta2I/PNhjLFlWbpv75RnFfxDUxRFcjgcmudBEMhsNpN+vy8iItvtVs7nc7Pu+74cj0cZj8fNa51yq/601WrVutPSNHVHrLXW5nlufd9v5oIgsFVVuWOd6DzixzDz+dxdbinLshU8yzJ3pBOdRszzvBXler26I58kSdLMJ0niLnei0935fr9LGIZijBFjjAwGA3fkk7+fk/JnN9eg04hxHMt+v5eiKKQoCnf5S8/ns7meTCatta6o2J1fVde1jEYjeTweIiKS57lMp1N37Md1eid+R13XEkVREzAMQxUBRRQccV5RlmVrFzfGqDne2K5351dkWaY6oNUecbfbtY5ASZKoC2g1R6yqqnUHajkTfkVtxI9fSIRh6C6ronZ3vlwuzfVisWitaaP2nOh5XnNdVZX0er3WuiZvEVHpn9hQG/GdqP1MfCeMCKAy4ul0av1QtV6v3RFVVEZ8N4wIwIgAPOIA8E4EYEQARgRgRABGBGBEAEYEYEQARgRgRABGBGBEAEYEYEQARgRgRABGBGBEAEYEYEQARgRgRABGBGBEAEYEYEQARgRgRIDfog0jIDoFSggAAAAASUVORK5CYII=',
             birthDate: new Date()
         } as BirdModel;

@@ -25,7 +25,7 @@ You can then open the website on `http://localhost:52905`.
 ## Implementation Details
 
 The tech-stack is:
-* Database: SQL Server 2022 using TSQL
+* Database: SQL Server 2025 using TSQL
 * API:      ASP.NET Web API using .NET 10
 * Frontend: Angular 22 project using Taiga UI 5
 
