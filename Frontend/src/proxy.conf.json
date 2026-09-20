@@ -1,6 +1,6 @@
 {
   "/endpoints/**": {
-    "target": "http://iridion-feathertracker:63098",
+    "target": "https://localhost:63094",
     "secure": false
   }
 }
